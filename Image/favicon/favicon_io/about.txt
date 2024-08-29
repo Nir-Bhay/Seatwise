@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Marvel
+- Font Author: Copyright (c) 2011, Carolina Trebol <ca@fromzero.org>, with Reserved Font Name "Marvel".
+- Font Source: https://fonts.gstatic.com/s/marvel/v16/nwpXtKeoNgBV0qa4k1TALXuqzhA7.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

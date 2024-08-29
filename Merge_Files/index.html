@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeatWise</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="../Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Upload and Merge Excel Files</h1>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" multiple accept=".xlsx" />
+            <button type="submit">Upload and Merge</button>
+        </form>
+        <a id="downloadLink" style="display: none;">Download Merged File</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

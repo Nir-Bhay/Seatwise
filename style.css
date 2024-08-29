@@ -1,4 +1,4 @@
-/* Reset some default browser styles */
+
 * {
     margin: 0;
     padding: 0;
@@ -15,14 +15,15 @@ header {
     padding: 20px;
     color: white;
     position: relative;
-    z-index: 3; /* Ensure header is above the container */
+    z-index: 3;
+    
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
- /* Ensure navbar is above the container */
+    
 }
 
 .logo {
@@ -35,7 +36,8 @@ header {
     display: flex;
     list-style: none;
     position: relative;
-    z-index: 3; /* Ensure nav-links are above the container */
+    z-index: 3;
+    
 }
 
 .nav-links li {
@@ -69,7 +71,7 @@ header {
     transition: all 0.3s ease;
 }
 
-/* Burger animation */
+
 .toggle .line1 {
     transform: rotate(-45deg) translate(-5px, 5px);
 }
@@ -94,10 +96,11 @@ button {
     overflow: hidden;
     z-index: 1;
     box-shadow: 6px 6px 12px #c5c5c5,
-                -6px -6px 12px #ffffff;
-   }
-   
-   button::before {
+        -6px -6px 12px #ffffff;
+    cursor: pointer;
+}
+
+button::before {
     content: '';
     width: 0;
     height: 3em;
@@ -109,11 +112,11 @@ button {
     transition: .5s ease;
     display: block;
     z-index: -1;
-   }
-   
-   button:hover::before {
+}
+
+button:hover::before {
     width: 9em;
-   }
+}
 
 .container {
     display: flex;
@@ -130,7 +133,8 @@ button {
     position: relative;
     overflow: hidden;
     height: 100vh;
-    z-index: 1; /* Lower z-index to be behind navbar */
+    z-index: 1;
+   
 }
 
 .text-box {
@@ -160,7 +164,7 @@ button {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Full height of the container */
+    height: 100%;
     z-index: 1;
     overflow: hidden;
 }
@@ -176,10 +180,11 @@ button {
     .container {
         flex-direction: row;
         background-color: #f9f9f9;
-        height: 90vh; /* Adjust height for desktop */
+        height: 90vh;
     }
 
-    .text-box, .image-box {
+    .text-box,
+    .image-box {
         position: static;
         flex: 1;
     }
@@ -211,7 +216,8 @@ button {
         transition: transform 0.5s ease-in;
         transform: translateX(100%);
         gap: 20px;
-        z-index: 3; /* Ensure nav-links are above the container */
+        z-index: 3;
+       
     }
 
     .logo {
