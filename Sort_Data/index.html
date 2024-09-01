@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,20 @@
     <link rel="shortcut icon" href="../Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
-    
 </head>
+
 <body>
     <div class="container">
         <h1>Sort and Download User Data</h1>
         <input type="file" id="fileInput" />
         <button onclick="processFile()">Load Data</button>
-        <button onclick="downloadPDF()">Download PDF</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+        <!-- <button onclick="downloadPDF()" id="downloadBtn" disabled>Download PDF</button> -->
+
+        <div id="pdfViewerContainer">
+            <iframe id="pdfViewer" style="width: 100%; height: 500px;" hidden></iframe>
+        </div>
+
         <table id="dataTable">
             <thead>
                 <tr>
@@ -31,4 +38,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="index.js"></script>
 </body>
+
 </html>
