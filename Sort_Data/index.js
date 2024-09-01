@@ -132,12 +132,12 @@ function downloadPDF() {
     doc.text("Prog./Branch: BBA - 601", 10, startY);
     doc.text("Sem.: VI", 70, startY);
     doc.text("Status: REGULAR/ATKT", 105, startY);
-    doc.text("No. of Candidate: 28", 165, startY);
+    doc.text("No. of Candidate: 30", 165, startY);
 
     startY += rowHeight;
     doc.text("PRESENT: ", 10, startY);
     doc.text("ABSENT: ", 70, startY);
-    doc.text("Total: 28", 165, startY);
+    doc.text("Total: 30", 165, startY);
 
     startY += rowHeight * 2;
     doc.text("DESIGN.", 10, startY);
