@@ -26,7 +26,6 @@ function processFile() {
 
 // Sort data based on the numeric part and prefix of the student ID
 function sortData(data) {
-
     return data.sort((a, b) => {
         const numA = getNumericPart(a['Student']);
         const numB = getNumericPart(b['Student']);
@@ -75,33 +74,31 @@ function displayData(data) {
     $('#dataTable').DataTable();
 }
 
-// Generate and display the PDF
-function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Add title and headers
+// Function to add header and footer to each page of the PDF
+function addHeaderAndFooter(doc, pageNum, totalPages) {
+    // Header
     doc.setFontSize(12);
     doc.text("SAGE UNIVERSITY, BHOPAL", 105, 15, { align: "center" });
     doc.text("ESE Spring 2023-24", 105, 22, { align: "center" });
     doc.text("Room No - 113", 105, 29, { align: "center" });
 
-    // Add time, date, and other details
+    // Time, Date, and Page Number
     doc.setFontSize(10);
     doc.text("TIME: 10:30 AM - 01:30 PM", 10, 35);
     doc.text("DATE: 07.06.2024", 165, 35);
+    doc.text(`Page ${pageNum} of ${totalPages}`, 105, 290, { align: "center" });
 
-    // Add table header
+    // Footer
     doc.setFontSize(10);
-    const header = ["ROW-I", "ROW-II", "ROW-III", "ROW-IV"];
-    let startX = 10;
-    let startY = 45;
-    const rowHeight = 10;
-    const colWidth = 45; // Adjust column width based on the content
+    doc.text("Prog./Branch: BBA - 601", 10, 285);
+    doc.text("Sem.: VI", 70, 285);
+    doc.text("Status: REGULAR/ATKT", 105, 285);
+}
 
-    header.forEach((col, i) => {
-        doc.text(col, startX + i * colWidth, startY);
-    });
+// Generate and display the PDF
+function generatePDF(isPreview = true) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
     // Collect data from the table
     const table = document.getElementById('dataTable');
@@ -110,30 +107,34 @@ function generatePDF() {
     // Prepare data for rows and columns similar to the image
     let tableData = [];
     for (let i = 1; i < rows.length; i++) {
-        // start from 1 to skip header
-
         const cells = rows[i].getElementsByTagName('td');
         tableData.push(cells[0].innerText.trim());
-
     }
 
     // Handle multiple pages if the number of seats exceeds 30
     const seatsPerPage = 30;
     let pageData = [];
-
     for (let i = 0; i < tableData.length; i += seatsPerPage) {
         pageData.push(tableData.slice(i, i + seatsPerPage));
     }
 
+    const totalPages = pageData.length;
     pageData.forEach((data, pageIndex) => {
         if (pageIndex > 0) {
             doc.addPage();
-            startY = 45;
-            header.forEach((col, i) => {
-                doc.text(col, startX + i * colWidth, startY);
-            });
-            startY += rowHeight;
         }
+
+        addHeaderAndFooter(doc, pageIndex + 1, totalPages);
+
+        const header = ["ROW-I", "ROW-II", "ROW-III", "ROW-IV"];
+        let startX = 10;
+        let startY = 45;
+        const rowHeight = 10;
+        const colWidth = 45; // Adjust column width based on the content
+
+        header.forEach((col, i) => {
+            doc.text(col, startX + i * colWidth, startY);
+        });
 
         const formattedData = [];
         for (let i = 0; i < data.length; i += 4) {
@@ -143,19 +144,13 @@ function generatePDF() {
         // Draw table content
         formattedData.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
-                doc.text(cell, startX + cellIndex * colWidth, startY + rowIndex * rowHeight);
+                doc.text(cell, startX + cellIndex * colWidth, startY + (rowIndex + 1) * rowHeight);
             });
         });
 
         // Add footer details if on the last page
-        if (pageIndex === pageData.length - 1) {
+        if (pageIndex === totalPages - 1) {
             startY += (formattedData.length + 2) * rowHeight;
-            doc.text("Prog./Branch: BBA - 601", 10, startY);
-            doc.text("Sem.: VI", 70, startY);
-            doc.text("Status: REGULAR/ATKT", 105, startY);
-            doc.text("No. of Candidate: " + tableData.length, 165, startY);
-
-            startY += rowHeight;
             doc.text("PRESENT: ", 10, startY);
             doc.text("ABSENT: ", 70, startY);
             doc.text("Total: " + tableData.length, 165, startY);
@@ -167,17 +162,22 @@ function generatePDF() {
         }
     });
 
-    // Display the PDF in the iframe
-    const pdfData = doc.output('datauristring');
-    const pdfViewer = document.getElementById('pdfViewer');
-    pdfViewer.src = pdfData;
-    pdfViewer.hidden = false;
+    // Display the PDF in the iframe if preview is requested
+    if (isPreview) {
+        const pdfData = doc.output('datauristring');
+        const pdfViewer = document.getElementById('pdfViewer');
+        pdfViewer.src = pdfData;
+        pdfViewer.hidden = false;
 
-    // Enable download button
-    const downloadBtn = document.getElementById('downloadBtn');
-    downloadBtn.disabled = false;
+        // Enable download button
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.disabled = false;
+    } else {
+        doc.save('Exam_Seating.pdf');
+    }
 }
 
+// Function to download the PDF
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
