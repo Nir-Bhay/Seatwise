@@ -145,5 +145,5 @@ function downloadPDF() {
     doc.text("SIGNATURE WITH DATE", 165, startY);
 
     // Save the PDF
-    doc.save('sorted_data.pdf');
+    doc.save('Exam_Seeting.pdf');
 }
