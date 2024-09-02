@@ -77,22 +77,23 @@ function displayData(data) {
 // Function to add header and footer to each page of the PDF
 function addHeaderAndFooter(doc, pageNum, totalPages) {
     // Header
-    doc.setFontSize(12);
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
     doc.text("SAGE UNIVERSITY, BHOPAL", 105, 15, { align: "center" });
-    doc.text("ESE Spring 2023-24", 105, 22, { align: "center" });
-    doc.text("Room No - 113", 105, 29, { align: "center" });
 
-    // Time, Date, and Page Number
-    doc.setFontSize(10);
-    doc.text("TIME: 10:30 AM - 01:30 PM", 10, 35);
-    doc.text("DATE: 07.06.2024", 165, 35);
-    doc.text(`Page ${pageNum} of ${totalPages}`, 105, 290, { align: "center" });
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text("ESE Spring 2023-24", 105, 22, { align: "center" });
+    doc.text("Room No - ______", 105, 29, { align: "center" });
+    doc.text("Time: 10:30 AM - 01:30 PM", 200, 50, { align: "right" });
+    doc.text("Date: 07.06.2024", 15, 50);
+    doc.text("Sem.: VI", 105, 50, { align: "center" });
 
     // Footer
     doc.setFontSize(10);
-    doc.text("Prog./Branch: BBA - 601", 10, 285);
-    doc.text("Sem.: VI", 70, 285);
-    doc.text("Status: REGULAR/ATKT", 105, 285);
+    doc.text("Prepared By: Exam Cell", 15, 285);
+    doc.text(`Page ${pageNum} of ${totalPages}`, 105, 285, { align: "center" });
+    doc.text("SAGE University, Bhopal", 165, 285, { align: "right" });
 }
 
 // Generate and display the PDF
@@ -104,7 +105,7 @@ function generatePDF(isPreview = true) {
     const table = document.getElementById('dataTable');
     const rows = table.getElementsByTagName('tr');
 
-    // Prepare data for rows and columns similar to the image
+    // Prepare data for rows and columns
     let tableData = [];
     for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].getElementsByTagName('td');
@@ -112,7 +113,7 @@ function generatePDF(isPreview = true) {
     }
 
     // Handle multiple pages if the number of seats exceeds 30
-    const seatsPerPage = 30;
+    const seatsPerPage = 28;
     let pageData = [];
     for (let i = 0; i < tableData.length; i += seatsPerPage) {
         pageData.push(tableData.slice(i, i + seatsPerPage));
@@ -126,9 +127,10 @@ function generatePDF(isPreview = true) {
 
         addHeaderAndFooter(doc, pageIndex + 1, totalPages);
 
+        // Draw the table header
         const header = ["ROW-I", "ROW-II", "ROW-III", "ROW-IV"];
         let startX = 10;
-        let startY = 45;
+        let startY = 60;
         const rowHeight = 10;
         const colWidth = 45; // Adjust column width based on the content
 
@@ -142,24 +144,29 @@ function generatePDF(isPreview = true) {
         }
 
         // Draw table content
+        startY += rowHeight;
         formattedData.forEach((row, rowIndex) => {
             row.forEach((cell, cellIndex) => {
                 doc.text(cell, startX + cellIndex * colWidth, startY + (rowIndex + 1) * rowHeight);
             });
         });
 
-        // Add footer details if on the last page
-        if (pageIndex === totalPages - 1) {
-            startY += (formattedData.length + 2) * rowHeight;
-            doc.text("PRESENT: ", 10, startY);
-            doc.text("ABSENT: ", 70, startY);
-            doc.text("Total: " + tableData.length, 165, startY);
+        // Add additional footer details
+        startY += (formattedData.length + 2) * rowHeight;
+        doc.text("Prog./Branch: BBA - 601", 10, startY);
+        doc.text("Sem.: VI", 70, startY);
+        doc.text("Status: REGULAR/ATKT", 105, startY);
+        doc.text("No. of Candidate: 28", 165, startY);
 
-            startY += rowHeight * 2;
-            doc.text("DESIGN.", 10, startY);
-            doc.text("BRANCH", 70, startY);
-            doc.text("SIGNATURE WITH DATE", 165, startY);
-        }
+        startY += rowHeight;
+        doc.text("PRESENT: ", 10, startY);
+        doc.text("ABSENT: ", 70, startY);
+        doc.text("Total: 28", 165, startY);
+
+        startY += rowHeight * 2;
+        doc.text("DESIGN.", 10, startY);
+        doc.text("BRANCH", 70, startY);
+        doc.text("SIGNATURE WITH DATE", 165, startY);
     });
 
     // Display the PDF in the iframe if preview is requested
@@ -173,83 +180,11 @@ function generatePDF(isPreview = true) {
         const downloadBtn = document.getElementById('downloadBtn');
         downloadBtn.disabled = false;
     } else {
-        doc.save('Exam_Seating.pdf');
+        doc.save('Exam_Seating_Arrangement.pdf');
     }
 }
 
 // Function to download the PDF
 function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Add title and headers
-    doc.setFontSize(12);
-    doc.text("SAGE UNIVERSITY, BHOPAL", 105, 15, { align: "center" });
-    doc.text("ESE Spring 2023-24", 105, 22, { align: "center" });
-    doc.text("Room No - 113", 105, 29, { align: "center" });
-
-    // Add time, date, and other details
-    doc.setFontSize(10);
-    doc.text("TIME: 10:30 AM - 01:30 PM", 10, 35);
-    doc.text("DATE: 07.06.2024", 165, 35);
-
-    // Add table header
-    doc.setFontSize(10);
-    const header = ["ROW-I", "ROW-II", "ROW-III", "ROW-IV"];
-    let startX = 10;
-    let startY = 45;
-    const rowHeight = 10;
-    const colWidth = 45; // Adjust column width based on the content
-
-    header.forEach((col, i) => {
-        doc.text(col, startX + i * colWidth, startY);
-    });
-
-    // Collect data from the table
-    const table = document.getElementById('dataTable');
-    const rows = table.getElementsByTagName('tr');
-
-    // Prepare data for rows and columns similar to the image
-    let tableData = [];
-    for (let i = 1; i < rows.length; i++) {
-        // start from 1 to skip header
-
-        const cells = rows[i].getElementsByTagName('td');
-        tableData.push(cells[0].innerText.trim());
-
-    }
-
-    // Assuming the data is grouped into 4 columns, and the rest can be adjusted as needed
-    const formattedData = [];
-    for (let i = 0; i < tableData.length; i += 4) {
-        formattedData.push(tableData.slice(i, i + 4));
-    }
-
-    // Draw table content
-    startY += rowHeight;
-    formattedData.forEach((row, rowIndex) => {
-        row.forEach((cell, cellIndex) => {
-            doc.text(cell, startX + cellIndex * colWidth, startY + rowIndex * rowHeight);
-        });
-    });
-
-    // Add footer details
-    startY += (formattedData.length + 2) * rowHeight;
-    doc.text("Prog./Branch: BBA - 601", 10, startY);
-    doc.text("Sem.: VI", 70, startY);
-    doc.text("Status: REGULAR/ATKT", 105, startY);
-    doc.text("No. of Candidate: 28", 165, startY);
-
-    startY += rowHeight;
-    doc.text("PRESENT: ", 10, startY);
-    doc.text("ABSENT: ", 70, startY);
-    doc.text("Total: 28", 165, startY);
-
-    startY += rowHeight * 2;
-    doc.text("DESIGN.", 10, startY);
-    doc.text("BRANCH", 70, startY);
-    doc.text("SIGNATURE WITH DATE", 165, startY);
-
-    // Save the PDF
-    doc.save('Exam_Seeting.pdf');
+    generatePDF(false);
 }
