@@ -65,7 +65,7 @@ function extractLastDigit(enrollmentNumber) {
     return match ? parseInt(match[1], 10) : 0;
 }
 
-function generateExcelBlob(dat  a) {
+function generateExcelBlob(data) {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Merged Data');
