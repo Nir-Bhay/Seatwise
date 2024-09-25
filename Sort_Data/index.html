@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeatWise</title>
+    <title>Seat-Wise</title>
     <link rel="shortcut icon" href="../Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="style.css">
@@ -13,105 +13,10 @@
 <body>
     <div class="container">
         <h1>Sort and Download User Data</h1>
-        <h2>Feed the Data </h2>
-        <!-- Dynamic Input Section -->
-        <div class="dynamic-inputs">
-
-            <!-- Branch Name Dropdown -->
-            <div class="form-group">
-                <label for="branchName">Branch Name:</label>
-                <select id="branchName" onchange="updateProgramBranch()" required>
-                    <option value="">Select Branch</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="Management">Management</option>
-                    <option value="Law">Law</option>
-                </select>
-
-            </div>
-
-            <!-- Program/Branch Dropdown -->
-            <div class="form-group">
-                <label for="progBranch">Program/Branch:</label>
-                <select id="progBranch" required>
-                    <option value="">Select Program</option>
-                </select>
-            </div>
-
-            <!-- Exam Time Dropdown -->
-            <div class="form-group">
-                <label for="examTime">Exam Time:</label>
-                <select id="examTime" required>
-                    <option value="">Select Time</option>
-                    <option value="09:00 AM - 12:00 PM">09:00 AM - 12:00 PM</option>
-                    <option value="10:30 AM - 01:30 PM">10:30 AM - 01:30 PM</option>
-                    <option value="02:00 PM - 05:00 PM">02:00 PM - 05:00 PM</option>
-                </select>
-            </div>
-
-            <!-- Exam Date Input -->
-            <div class="form-group">
-                <label for="examDate">Exam Date:</label>
-                <input type="date" id="examDate" required>
-            </div>
-
-            <!-- Semester Dropdown -->
-            <div class="form-group">
-                <label for="semester">Semester:</label>
-                <select id="semester" required>
-                    <option value="">Select Semester</option>
-                    <option value="I">I</option>
-                    <option value="II">II</option>
-                    <option value="III">III</option>
-                    <option value="IV">IV</option>
-                    <option value="V">V</option>
-                    <option value="VI">VI</option>
-                    <option value="VII">VII</option>
-                    <option value="VIII">VIII</option>
-                </select>
-            </div>
-
-            <!-- Status Dropdown -->
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <select id="status" required>
-                    <option value="REGULAR">Regular</option>
-                    <option value="ATKT">ATKT</option>
-                    <option value="BOTH">Both</option>
-                </select>
-            </div>
-
-            <!-- Number of Headers Dropdown -->
-            <div class="form-group">
-                <label for="numHeaders">Number of Headers:</label>
-                <select id="numHeaders" required>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                </select>
-            </div>
-
-            <!-- Number of Candidates per Classroom Input -->
-            <div class="form-group">
-                <label for="numCandidates">Number of Candidates per Classroom:</label>
-                <input type="number" id="numCandidates" value="28" min="1" max="100" required>
-            </div>
-
-        </div>
-
-        <!-- File Upload and Controls -->
-        <div class="controls">
-            <input type="file" id="fileInput" class="file-input" />
-            <button onclick="startProcess('processFile')">Load Data</button>
-        </div>
-
-
-
-        <div class="controls">
-            <button onclick="startProcess('generatePDF')">Generate PDF</button>
-            <button onclick="startProcess('downloadPDF')" id="downloadBtn" disabled>Download PDF</button>
-        </div>
+        <input type="file" id="fileInput" />
+        <button onclick="processFile()">Load Data</button>
+        <button onclick="generatePDF()">Generate PDF</button>
+        <!-- <button onclick="downloadPDF()" id="downloadBtn" disabled>Download PDF</button> -->
 
         <div id="pdfViewerContainer">
             <iframe id="pdfViewer" style="width: 100%; height: 600px;" hidden></iframe>
