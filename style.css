@@ -12,9 +12,9 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #ffffff;
     padding: 20px;
-    color: white;
+    color: rgb(0, 0, 0);
     position: relative;
     z-index: 8;
     
@@ -31,6 +31,7 @@ header {
     font-size: 24px;
     font-weight: bold;
     transition: color 0.3s ease;
+    cursor: pointer;
 }
 
 .nav-links {
@@ -47,7 +48,7 @@ header {
 }
 
 .nav-links li a {
-    color: white;
+    color: rgb(0, 0, 0);
     text-decoration: none;
     font-size: 18px;
 }
