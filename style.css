@@ -271,10 +271,7 @@
 
  }
 
- .hero-image1 img:hover {
-     /* transform: scale(1.05); */
-     /* Scale up on hover */
- }
+
 
  .steps {
      display: flex;
