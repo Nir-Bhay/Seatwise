@@ -288,6 +288,7 @@ function generatePDF(isPreview = true) {
         doc.text("BRANCH", 70, startY);            // Center-left
         doc.text("SIGNATURE WITH DATE", 165, startY); // Right-aligned
 
+        
     });
 
     // Display the PDF in the iframe if preview is requested

@@ -4,70 +4,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeatWise</title>
-    <link rel="shortcut icon" href="./Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <title>Streamline Exam Arrangements with Ease</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./About/About.css">
-    <link rel="stylesheet" href="./footer/footer.css">
+
 </head>
 
 <body>
-    <section id="Home"> 
 
-        <header>
-            <nav class="navbar">
-                <div class="logo">SeatWise</div>
-                <ul class="nav-links">
-                    <li><a href="#Home">Home</a></li>
-                    <li><a href="#About">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="burger">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
+    <!-- Header Section -->
+    <!-- Header Section -->
+    <header id="header">
+        <div class="logo">SeatWise</div>
+        <nav id="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact Us</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            &#9776; <!-- This is the hamburger icon -->
+        </div>
+        <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
+        <div id="mobile-menu">
+            <div class="close-menu" id="close-menu">&times;</div> <!-- Close button -->
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact Us</a>
+        </div>
+
+    </header>
+
+
+    <br>
+    <br>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Streamline Exam Arrangements with Ease</h1>
+            <p>Simplifying and automating the process of organizing exams with efficient seating plans, schedules, and
+                student data management.</p>
+            <div class="hero-buttons">
+                <a href="./Merge_Files/index.html" class="btn primary-btn">Merge_Excel_Files</a>
+                <a href="./Sort_Data/index.html" class="btn secondary-btn">Seat Allocation</a>
+            </div>
+
+            <img src="Image/indexpage/napkin-selection (7).svg" alt="Exam Scheduling Image" />
+            <!-- <div class="howeIMage hero-image">
+            </div> -->
+        </div>
+        <div class="hero-image">
+            <img src="./Image/Website/Landing.svg" alt="Exam arrangement illustration">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="h2">Key Features</h2>
+
+        <div class="features-grid">
+            <!-- Automated Exam Scheduling Feature -->
+            <div class="feature-card">
+
+                <div class="feature-icon">🗓️</div>
+                <h3>Automated Exam Scheduling</h3>
+                <p>Easily generate exam timetables based on student data and room availability, ensuring no overlap and
+                    optimized timing.</p>
+
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection.svg" alt="Exam Scheduling Image" />
                 </div>
-            </nav>
-        </header>
-        <div class="container1">
-            <div class="text-box">
-                <h2>Streamline Exam Arrangements with Ease</h2>
-                <p>Our student arrangement system is designed to simplify and automate the process of organizing exams. Whether you're managing seating plans, exam schedules, or student data, our platform ensures everything runs smoothly.</p> 
-                <a href="./Merge_Files/index.html"><button>Merge_Excel_Files</button></a>
-                <a href="./Sort_Data/index.html"><button>Seat Allocation</button></a>
             </div>
-            <div class="image-box">
-                <img src="./Image/Website/Landing.svg" alt="Description of image">
-            </div>
-        </div>
-        
 
+            <!-- Seating Plan Management Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>AI-Powered Seating Plan Management</h3>
+                <p>Dynamically allocate seating using AI algorithms that take into account room size, student
+                    preferences,
+                    and exam constraints.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (1).svg" alt="Seating Plan Image" />
+                </div>
+            </div>
+
+            <!-- Student Data Integration Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Seamless Student Data Integration</h3>
+                <p>Sync and manage student information effortlessly by importing data or connecting to your
+                    institution's
+                    student management systems.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (2).svg" alt="Student Data Image" />
+                </div>
+            </div>
+
+            <!-- Real-Time Notifications Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">🔔</div>
+                <h3>Real-Time Notifications</h3>
+                <p>Instantly notify students of exam schedules, seating arrangements, and any last-minute changes
+                    through
+                    automated notifications.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (3).svg" alt="Real-Time Notifications Image" />
+                </div>
+            </div>
+
+            <!-- Analytics & Reports Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Comprehensive Analytics & Reports</h3>
+                <p>Get detailed reports on exam arrangements, student distribution, and overall performance, helping to
+                    make
+                    data-driven decisions.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (4).svg" alt="Analytics and Reports Image" />
+                </div>
+            </div>
+
+            <!-- AI Optimization Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Optimization for Seamless Management</h3>
+                <p>Leverage AI to continuously optimize exam scheduling and seating arrangements based on student and
+                    room
+                    data, learning from past experiences.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (5).svg" alt="AI Optimization Image" />
+                </div>
+            </div>
+
+            <!-- Security & Compliance Feature -->
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Enhanced Security & Compliance</h3>
+                <p>Ensure student data is protected with top-level security protocols and full compliance with education
+                    standards and regulations.</p>
+                <!-- Placeholder for future image -->
+                <div class="feature-image">
+                    <img src="Image/indexpage/napkin-selection (6).svg" alt="Security Image" />
+                </div>
+            </div>
+
+        </div>
     </section>
 
-    <section id="About">
-        <div class="container">
-            <h1>About Seat_Wise</h1>
-            <div class="intro">
-                <p>Welcome to our Student Arrangement System! Our goal is to streamline the student examination process and make scheduling easier and more efficient.</p>
+
+
+
+
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="h2">How It Works</h2>
+        <div class="hero-image1">
+            <img src="Image/indexpage/napkin-selection (8).svg" alt="Security Image" />
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">📁</div>
+                <h3 class="step-title">Upload Student Data</h3>
+                <p>Easily import or sync student data into the platform.</p>
             </div>
-            
-            <div class="mission">
-                <h2>Our Mission</h2>
-                <p>We are dedicated to providing a user-friendly platform that helps educational institutions manage student exams more effectively. Our mission is to enhance the educational experience through innovative technology.</p>
+            <div class="step">
+                <div class="step-icon">⚙️</div>
+                <h3 class="step-title">Set Exam Parameters</h3>
+                <p>Define exam schedules, seating capacities, and exam types.</p>
             </div>
-            <div class="contact">
-                <h2>Contact Us</h2>
-                <p>If you have any questions, feel free to reach out to us at <a href="mailto:info@example.com">dipukumardevcod@gmail.com</a>.</p>
+            <div class="step">
+                <div class="step-icon">💻</div>
+                <h3 class="step-title">Automate Arrangements</h3>
+                <p>Let the system automatically generate the exam seating and scheduling.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">📱</div>
+                <h3 class="step-title">Monitor & Adjust</h3>
+                <p>Make real-time changes and send notifications.</p>
             </div>
         </div>
     </section>
 
 
+
+
+
+    <!-- Why Choose Us Section -->
+    <section class="why-us">
+        <h2 class="h2">Why Choose Us</h2>
+        <div class="whyus">
+            <div>
+                <span class="counter">1000+</span>
+                <p>Exams organized successfully</p>
+            </div>
+            <div>
+                <span class="counter">500+</span>
+                <p>Institutions onboard</p>
+            </div>
+            <div>
+                <span class="counter">98%</span>
+                <p>Satisfaction rate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonials">
+        <h2 class="h2">What People Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-logo">Logo</div>
+                <p>"This platform has transformed our exam management process!"</p>
+                <p>- Institution 1</p>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-logo">Logo</div>
+                <p>"Managing seating arrangements is now a breeze!"</p>
+                <p>- Institution 2</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <h2>Start Organizing Exams Today</h2>
+        <!-- <a href="#contact">Have questions? Get in touch with us!</a> -->
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div id="footer_sub_box">
             <div class="footer_sub_box">
-                <h4>SeatWise®️</h4>
+                <h4>Seat-Wise®</h4>
             </div>
             <div class="footer_sub_box">
                 <h4>Social Links</h4>
@@ -78,10 +257,11 @@
             </div>
             <div class="footer_sub_box">
                 <h4>Website Links</h4>
-                <a href="#Home">Home |</a>
-                <a href="#About">About |</a>
-                <a href="#project">Project |</a>
-                <a href="#contact">Contact Us </a>
+                <a href="#home">Home |</a>
+                <a href="#features">Features|</a>
+                <a href="#how-it-works">How It Works|</a>
+                <a href="#contact">Contact Us</a>
+                
             </div>
             <div class="footer_sub_box">
                 <h4>Contact Us</h4>
@@ -90,11 +270,45 @@
             </div>
         </div>
         <div id="Right">
-            <p>&copy; 2024 SiteWise®. All Rights Reserved.</p>
+            <p>&copy; 2024 Seat-Wise®. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <script src="app.js"></script>
+
+    <script>
+
+
+
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+    </script>
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active'); // Toggle mobile menu
+        });
+
+        document.getElementById('close-menu').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.remove('active'); // Hide mobile menu when close button is clicked
+        });
+
+        // Close the menu when clicking outside of it
+        window.addEventListener('click', function (event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                mobileMenu.classList.remove('active'); // Hide the mobile menu
+            }
+        });
+
+    </script>
+
+
+
 </body>
 
 </html>
