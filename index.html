@@ -13,15 +13,28 @@
 <body>
 
     <!-- Header Section -->
+    <!-- Header Section -->
     <header id="header">
         <div class="logo">SeatWise</div>
-        <nav>
+        <nav id="nav-links">
             <a href="#home">Home</a>
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
             <a href="#contact">Contact Us</a>
         </nav>
+        <div class="hamburger" id="hamburger">
+            &#9776; <!-- This is the hamburger icon -->
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact Us</a>
+        </div>
     </header>
+
+
     <br>
     <br>
     <!-- Hero Section -->
@@ -258,12 +271,32 @@
 
 
     <script>
+
+
+
         window.addEventListener('scroll', function () {
             const header = document.getElementById('header');
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
 
     </script>
+    <script>
+        document.getElementById('hamburger').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active'); // Toggle 'active' class to show/hide mobile menu
+        });
+
+        // Close the menu when clicking outside of it
+        window.addEventListener('click', function (event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                mobileMenu.classList.remove('active'); // Hide the mobile menu
+            }
+        });
+    </script>
+
+
 
 </body>
 
