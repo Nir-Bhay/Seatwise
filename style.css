@@ -800,3 +800,57 @@
          margin-left: 0px;
      }
  }
+
+ footer {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    text-align: center;
+}
+
+#footer_sub_box {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.footer_sub_box {
+    flex: 1 1 calc(25% - 20px); /* Four boxes in a row with some margin */
+    margin: 10px;
+    min-width: 200px; /* Ensures that boxes don't get too small */
+}
+
+.footer_sub_box h4 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #000000;
+}
+
+#Right {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+    .footer_sub_box {
+        flex: 1 1 calc(50% - 20px); /* Two boxes per row */
+    }
+}
+
+/* Responsive Design for Mobiles */
+@media (max-width: 480px) {
+    .footer_sub_box {
+        flex: 1 1 100%; /* Full width for each box */
+        margin: 10px 0;
+    }
+
+    #footer_sub_box {
+        padding: 10px;
+    }
+}

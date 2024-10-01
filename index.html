@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Streamline Exam Arrangements with Ease</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
@@ -26,14 +27,14 @@
             &#9776; <!-- This is the hamburger icon -->
         </div>
         <!-- Mobile Menu -->
-    <!-- Mobile Menu -->
-    <div id="mobile-menu">
-        <div class="close-menu" id="close-menu">&times;</div> <!-- Close button -->
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#contact">Contact Us</a>
-    </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu">
+            <div class="close-menu" id="close-menu">&times;</div> <!-- Close button -->
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact Us</a>
+        </div>
 
     </header>
 
@@ -243,32 +244,33 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <div class="footer-links">
-                <h3>Contact Us</h3>
-                <p>Email: dipukumardevcod@example.com</p>
-                <p>Phone: 9699696966</p>
-                <p>Address: bhopal</p>
+        <div id="footer_sub_box">
+            <div class="footer_sub_box">
+                <h4>Seat-Wise®</h4>
             </div>
-            <div class="footer-links">
-                <h3>Quick Links</h3>
-                <p><a href="#">Terms & Conditions</a></p>
-                <p><a href="#">Privacy Policy</a></p>
-                <p><a href="#">FAQ</a></p>
+            <div class="footer_sub_box">
+                <h4>Social Links</h4>
+                <a href="https://github.com/dipukumardev"><i class="ri-github-fill"></i></a> |
+                <a href="https://www.linkedin.com/in/dipu-kumar-39283b259/"><i class="ri-linkedin-box-line"></i> </a> |
+                <a href="#"><i class="ri-twitter-x-line"></i></a> |
+                <a href="https://www.instagram.com/dipu_kumar0_/"><i class="ri-instagram-line"></i></a> |
             </div>
-            <div class="footer-links">
-                <h3>Follow Us</h3>
-                <p>Stay connected with us on social media!</p>
-                <div class="social-icons">
-                    <a href="#"><img src="icons/facebook.svg" alt="Facebook" /></a>
-                    <a href="#"><img src="icons/twitter.svg" alt="Twitter" /></a>
-                    <a href="#"><img src="icons/linkedin.svg" alt="LinkedIn" /></a>
-                    <a href="#"><img src="icons/instagram.svg" alt="Instagram" /></a>
-                </div>
+            <div class="footer_sub_box">
+                <h4>Website Links</h4>
+                <a href="#home">Home |</a>
+                <a href="#features">Features|</a>
+                <a href="#how-it-works">How It Works|</a>
+                <a href="#contact">Contact Us</a>
+                
+            </div>
+            <div class="footer_sub_box">
+                <h4>Contact Us</h4>
+                Whatapp:7870655593 | <br>
+                Email:dipukumardevcode@gmail.com
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Your Company Name. All Rights Reserved.</p>
+        <div id="Right">
+            <p>&copy; 2024 Seat-Wise®. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -285,23 +287,23 @@
     </script>
     <script>
         document.getElementById('hamburger').addEventListener('click', function () {
-                const mobileMenu = document.getElementById('mobile-menu');
-                mobileMenu.classList.toggle('active'); // Toggle mobile menu
-            });
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active'); // Toggle mobile menu
+        });
 
-            document.getElementById('close-menu').addEventListener('click', function () {
-                const mobileMenu = document.getElementById('mobile-menu');
-                mobileMenu.classList.remove('active'); // Hide mobile menu when close button is clicked
-            });
+        document.getElementById('close-menu').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.remove('active'); // Hide mobile menu when close button is clicked
+        });
 
-            // Close the menu when clicking outside of it
-            window.addEventListener('click', function (event) {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const hamburger = document.getElementById('hamburger');
-                if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
-                    mobileMenu.classList.remove('active'); // Hide the mobile menu
-                }
-            });
+        // Close the menu when clicking outside of it
+        window.addEventListener('click', function (event) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                mobileMenu.classList.remove('active'); // Hide the mobile menu
+            }
+        });
 
     </script>
 
