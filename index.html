@@ -26,12 +26,15 @@
             &#9776; <!-- This is the hamburger icon -->
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu">
-            <a href="#home">Home</a>
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#contact">Contact Us</a>
-        </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu">
+        <div class="close-menu" id="close-menu">&times;</div> <!-- Close button -->
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contact">Contact Us</a>
+    </div>
+
     </header>
 
 
@@ -282,18 +285,24 @@
     </script>
     <script>
         document.getElementById('hamburger').addEventListener('click', function () {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('active'); // Toggle 'active' class to show/hide mobile menu
-        });
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenu.classList.toggle('active'); // Toggle mobile menu
+            });
 
-        // Close the menu when clicking outside of it
-        window.addEventListener('click', function (event) {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const hamburger = document.getElementById('hamburger');
-            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
-                mobileMenu.classList.remove('active'); // Hide the mobile menu
-            }
-        });
+            document.getElementById('close-menu').addEventListener('click', function () {
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenu.classList.remove('active'); // Hide mobile menu when close button is clicked
+            });
+
+            // Close the menu when clicking outside of it
+            window.addEventListener('click', function (event) {
+                const mobileMenu = document.getElementById('mobile-menu');
+                const hamburger = document.getElementById('hamburger');
+                if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                    mobileMenu.classList.remove('active'); // Hide the mobile menu
+                }
+            });
+
     </script>
 
 
