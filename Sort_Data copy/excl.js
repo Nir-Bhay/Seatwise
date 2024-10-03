@@ -6,7 +6,7 @@ document.getElementById('file4').addEventListener('change', handleFile);
 let data1 = [];
 let data2 = [];
 let data3 = [];
-let data4 = [];
+let data4 = [] ;
 let doc; // Global variable to store the PDF document
 
 function handleFile(event) {
