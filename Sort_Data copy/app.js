@@ -32,7 +32,7 @@ function handleFile(event) {
 }
 
 function updateProgramOptions() {
-    const branch = document.getElementById('branchName').value;
+    const branch = document.getElementById('CollageName').value;
     const programBranch = document.getElementById('programBranch');
     programBranch.innerHTML = ''; // Clear existing options
 
@@ -54,7 +54,7 @@ function updateProgramOptions() {
 }
 
 function generatePDF() {
-    const branchName = document.getElementById('branchName').value;
+    const CollageName = document.getElementById('CollageName').value;
     const programBranch = document.getElementById('programBranch').value;
     const examTime = document.getElementById('examTime').value;
     const examDate = document.getElementById('examDate').value;
@@ -86,7 +86,7 @@ function generatePDF() {
         // Header
         doc.setFontSize(14);
         doc.setFont("helvetica", "bold");
-        doc.text(branchName.toUpperCase(), 105, 15, { align: "center" });
+        doc.text(CollageName.toUpperCase(), 105, 15, { align: "center" });
 
         doc.setFontSize(15);
         doc.setFont("helvetica", "normal");

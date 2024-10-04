@@ -27,7 +27,7 @@ function processFile() {
 
 
 function updateProgramBranch() {
-    const branch = document.getElementById('branchName').value;
+    const branch = document.getElementById('CollageName').value;
     const progBranchSelect = document.getElementById('progBranch');
 
     // Clear existing options
@@ -57,7 +57,7 @@ function updateProgramBranch() {
 // Collect settings from the form inputs
 function collectSettings() {
     return {
-        branchName: document.getElementById('branchName').value.trim(),
+        CollageName: document.getElementById('CollageName').value.trim(),
         examTime: document.getElementById('examTime').value.trim(),
         examDate: document.getElementById('examDate').value.trim(),
         semester: document.getElementById('semester').value.trim(),
@@ -135,7 +135,7 @@ function displayData(data) {
 function addHeaderAndFooter(doc, pageNum, totalPages, settings) {
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text(settings.branchName.toUpperCase(), 105, 15, { align: "center" });
+    doc.text(settings.CollageName.toUpperCase(), 105, 15, { align: "center" });
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
@@ -316,7 +316,7 @@ function downloadPDF() {
 // Validate user input before generating PDF
 function validateInputs() {
     const settings = collectSettings();
-    if (!settings.branchName || !settings.examTime || !settings.examDate || !settings.semester || !settings.numHeaders || !settings.numCandidates) {
+    if (!settings.CollageName || !settings.examTime || !settings.examDate || !settings.semester || !settings.numHeaders || !settings.numCandidates) {
         alert('Please fill in all fields.');
         return false;
     }
