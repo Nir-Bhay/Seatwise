@@ -33,15 +33,15 @@
 
             <!-- Dropdowns -->
             <div class="form-group">
-                <label for="CollageName">College/University Name:</label>
-                <select id="CollageName" class="form-control">
-                    <option value="Choose College/University:">Choose College/University:</option>
-                    <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
-                    <option value="SIRT, Bhopal">SIRT, Bhopal</option>
+                <label for="CollageName">Collage/University Name</label>
+                <select id="CollageName" class="form-control"  onchange="updateProgramOptions()" >
+                    <option value="Choose Collage/University:">Choose Collage/University:</option>
+                    <option value="SAGE University,Bhopal">SAGE University,Bhopal</option>
+                    <option value="SIRT,Bhopal">SIRT,Bhopal</option>
                     <!-- Add more options as needed -->
                 </select>
             </div>
-
+           
             <div class="form-group">
                 <label for="programBranch">Program/Branch:</label>
                 <select id="programBranch" class="form-control">
@@ -71,18 +71,49 @@
                     <option value="I">I</option>
                     <option value="II">II</option>
                     <option value="III">III</option>
-                  
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                    <option value="VI">VI</option>
+                    <option value="VII">VII</option>
+                    <option value="VIII">VIII</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="status">Student Status:</label>
+                <label for="status">Status:</label>
                 <select id="status" class="form-control">
-                    <option value="Backlog">Select the Student:</option>
+                    <option value="Backlog">Secletd the Student:</option>
                     <option value="Regular">Regular</option>
                     <option value="Backlog">ATKT</option>
                     <option value="Both">Both</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numRows">Number of Rows:</label>
+                <input type="number" id="numRows" class="form-control" min="3">
+            </div>
+
+            <div class="form-group">
+                <label for="numColumns">Number of Columns:</label>
+                <select id="numColumns" class="form-control">
+                    <option value="0">Select the Number of Colums:</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="numCandidates">Number of Candidates per Classroom:</label>
+                <input type="number" id="numCandidates" class="form-control" min="1">
             </div>
 
             <div class="form-group">
@@ -93,11 +124,6 @@
                 </select>
             </div>
 
-            <!-- Page Specific Inputs -->
-            <h3>Page Details</h3>
-            <div id="pageDetailsContainer"></div>
-            <button type="button" class="btn btn-secondary" onclick="addPageDetail()">Add Another Page</button>
-
             <!-- Buttons -->
             <div class="form-group">
                 <button type="button" class="btn btn-primary" onclick="generatePDF()">Generate PDF</button>
@@ -107,9 +133,9 @@
 
         <!-- PDF Preview -->
         <div id="pdfPreview" class="pdf-preview"></div>
+        <!-- Loading Bar -->
+        <div id="loadingBar" class="loading-bar"></div>
     </div>
-
-    <!-- JS Libraries for XLSX and jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="app.js"></script>

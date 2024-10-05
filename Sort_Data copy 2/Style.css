@@ -1,3 +1,4 @@
+/* Base Styles */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f0f4f8;
@@ -5,6 +6,7 @@ body {
     padding: 0;
     color: #333;
 }
+
 .container {
     max-width: 900px;
     margin: 40px auto;
@@ -128,49 +130,4 @@ select:hover {
     button {
         width: 100%;
     }
-}
-
-
-
-
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 30px;
-}
-
-h1,
-h3,
-h4 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.page-detail {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #d3d3d3;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.page-detail h4 {
-    margin-bottom: 15px;
-}
-
-button {
-    display: block;
-    width: 100%;
-}
-
-#pdfPreview {
-    margin-top: 20px;
 }
