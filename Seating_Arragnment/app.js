@@ -117,9 +117,9 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     const height = pdf.internal.pageSize.getHeight();
 
     // Header
-    pdf.setFontSize(14);
-    pdf.setFont("helvetica", "bold");
-    pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
+    // pdf.setFontSize(14);
+    // pdf.setFont("helvetica", "bold");
+    // pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
 
     pdf.setFontSize(20);
     pdf.setFont("helvetica", "bold");
