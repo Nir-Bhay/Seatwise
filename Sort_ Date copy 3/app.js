@@ -126,29 +126,31 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.text(`SAGE UNIVERSITY BHOPAL`, width / 2, margin + 20, { align: "center" });
 
     pdf.setFontSize(15);
-    pdf.setFont("helvetica", "normal");
+    pdf.setFont("helvetica", "bold");
     pdf.text(`Room No - ${roomNumber}`, width / 2, margin + 50, { align: "center" });
-    pdf.text(`Time: ${examTime}`, width - margin, margin + 50, { align: "right" });
-    pdf.text(`Date: ${examDate}`, margin, margin + 50);
-    pdf.text(`Sem.: ${semester}`, width / 2, margin + 70, { align: "center" });
+    pdf.text(`Time: ${examTime}`, width - margin, margin + 60, { align: "right" });
+    pdf.text(`Date: ${examDate}`, width - margin, margin + 75, { align: "right" } );
+    pdf.text(`Sem.: ${semester}`, width / 2, margin + 80, { align: "center" });
+    pdf.text(` `, width / 2, margin + 90, { align: "center" });
+    pdf.text(` `, width / 2, margin + 110, { align: "center" });
 
     // Footer
     pdf.setFontSize(13);
     pdf.setFont("helvetica", "bold");
-    pdf.text(`Program/Branch: ${programBranch}`, margin, height - 110);
-    pdf.text(`Semester: ${semester}`, margin + 150, height - 110);
-    pdf.text(`Status: ${status}`, margin + 300, height - 110);
+    pdf.text(`Program/Branch: ${programBranch}`, margin, height - 120);
+    pdf.text(`Semester: ${semester}`, margin + 200, height - 120);
+    pdf.text(`Status: ${status}`, margin + 380, height - 120);
     pdf.text(`No. of Candidates: ${numCandidates}`, margin, height - 90);
-    pdf.text(`PRESENT: `, margin + 100, height - 90);
-    pdf.text(`ABSENT: `, margin + 200, height - 90);
-    pdf.text(`Total: ${numCandidates}`, margin + 300, height - 90);
-    pdf.text(`DESIGN.`, margin, height - 70);
-    pdf.text(`BRANCH`, margin + 100, height - 70);
-    pdf.text(`SIGNATURE WITH DATE`, margin + 200, height - 70);
+    pdf.text(`PRESENT: `, margin + 200, height - 90);
+    pdf.text(`ABSENT: `, margin + 400, height - 90);
+    pdf.text(`Total: ${numCandidates}`, margin + 600, height - 90);
+    pdf.text(`DESIGN.`, margin, height - 60);
+    pdf.text(`BRANCH`, margin + 200, height - 60);
+    pdf.text(`SIGNATURE WITH DATE`, margin + 400, height - 60);
 
     // Page Number at the bottom
     pdf.setFontSize(10);
-    pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin, height - margin);
+    pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin - 40, height - margin);
 }
 
 
