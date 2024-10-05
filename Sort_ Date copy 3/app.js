@@ -110,39 +110,42 @@ function generatePDF() {
 
 
 // Add Headers and Footers
+// Add Headers and Footers
 function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, roomNumber, numCandidates) {
     const margin = 40;
     const width = pdf.internal.pageSize.getWidth();
+    const height = pdf.internal.pageSize.getHeight();
 
     // Header
     pdf.setFontSize(14);
     pdf.setFont("helvetica", "bold");
-    pdf.text(collageName.toUpperCase(), 148, 15, { align: "center" });
+    pdf.text(collageName.toUpperCase(), width / 2, margin + 5, { align: "center" });
 
     pdf.setFontSize(15);
     pdf.setFont("helvetica", "normal");
-    pdf.text(`ESE Spring 2023-24`, 148, 22, { align: "center" });
-    pdf.text(`Room No - ${roomNumber}`, 148, 29, { align: "center" });
-    pdf.text(`Time: ${examTime}`, 287, 50, { align: "right" });
-    pdf.text(`Date: ${examDate}`, 10, 50);
-    pdf.text(`Sem.: ${semester}`, 148, 50, { align: "center" });
+    pdf.text(`ESE Spring 2023-24`, width / 2, margin + 25, { align: "center" });
+    pdf.text(`Room No - ${roomNumber}`, width / 2, margin + 45, { align: "center" });
+    pdf.text(`Time: ${examTime}`, width - margin, margin + 45, { align: "right" });
+    pdf.text(`Date: ${examDate}`, margin, margin + 45);
+    pdf.text(`Sem.: ${semester}`, width / 2, margin + 65, { align: "center" });
 
     // Footer
     pdf.setFontSize(13);
-    pdf.text(`Program/Branch: ${programBranch}`, 10, 190);
-    pdf.text(`Semester: ${semester}`, 90, 190);
-    pdf.text(`Status: ${status}`, 180, 190);
-    pdf.text(`No. of Candidates: ${numCandidates}`, 10, 205);
-    pdf.text("PRESENT: ", 70, 205);
-    pdf.text("ABSENT: ", 130, 205);
-    pdf.text(`Total: ${numCandidates}`, 260, 205);
-    pdf.text("DESIGN.", 10, 225);
-    pdf.text("BRANCH", 70, 225);
-    pdf.text("SIGNATURE WITH DATE", 125, 225);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(`Program/Branch: ${programBranch}`, margin, height - 105);
+    pdf.text(`Semester: ${semester}`, margin + 80, height - 105);
+    pdf.text(`Status: ${status}`, margin + 170, height - 105);
+    pdf.text(`No. of Candidates: ${numCandidates}`, margin, height - 85);
+    pdf.text("PRESENT: ", margin + 80, height - 85);
+    pdf.text("ABSENT: ", margin + 160, height - 85);
+    pdf.text(`Total: ${numCandidates}`, margin + 240, height - 85);
+    pdf.text("DESIGN.", margin, height - 65);
+    pdf.text("BRANCH", margin + 80, height - 65);
+    pdf.text("SIGNATURE WITH DATE", margin + 160, height - 65); 
 
     // Page Number at the bottom
     pdf.setFontSize(10);
-    pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin - 40, pdf.internal.pageSize.getHeight() - margin);
+    pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin - 40, height - margin);
 }
 
 
@@ -161,6 +164,9 @@ function addDataColumns(pdf, pageDetail, pageIndex) {
     let xPos = margin;
     let yPos = 120;
 
+    pdf.setFontSize(14);
+    pdf.setFont("helvetica", "bold");
+    
     for (let i = 0; i < pageDetail.numCandidates; i++) {
         const dataIndex = pageIndex * pageDetail.numCandidates + i;
 
