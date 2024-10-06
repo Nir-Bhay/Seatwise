@@ -215,8 +215,9 @@ function addDataColumnsHorizontal(pdf, pageDetail, pageIndex) {
 
 
     yPos += rowHeight;
-
-    pdf.setFont("Times New Roman", "normal"); // Set font to normal for data content
+    
+    pdf.setFontSize(14);
+    pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
         const dataIndex = pageIndex * pageDetail.numCandidates + i;
@@ -263,7 +264,7 @@ function addDataColumnsVertical(pdf, pageDetail, pageIndex) {
 
     yPos += rowHeight;
 
-    pdf.setFontSize(12);
+    pdf.setFontSize(14);
     pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
