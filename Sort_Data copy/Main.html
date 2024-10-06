@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
+    <title>Exam Hall Seating Arrangement</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Exam Hall Seating Arrangement 0 </h1>
+        <form id="examForm">
+            <!-- File Uploads -->
+            <div class="form-group">
+                <label for="file1">Upload Excel File 1:</label>
+                <input type="file" id="file1" class="form-control" accept=".xlsx">
+            </div>
+            <div class="form-group">
+                <label for="file2">Upload Excel File 2:</label>
+                <input type="file" id="file2" class="form-control" accept=".xlsx">
+            </div>
+            <div class="form-group">
+                <label for="file3">Upload Excel File 3 (optional):</label>
+                <input type="file" id="file3" class="form-control" accept=".xlsx">
+            </div>
+            <div class="form-group">
+                <label for="file4">Upload Excel File 4 (optional):</label>
+                <input type="file" id="file4" class="form-control" accept=".xlsx">
+            </div>
+
+            <!-- Dropdowns -->
+            <div class="form-group">
+                <label for="CollageName">College/University Name:</label>
+                <select id="CollageName" class="form-control">
+                    <option value="Choose College/University:">Choose College/University:</option>
+                    <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
+                    <option value="SIRT, Bhopal">SIRT, Bhopal</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="programBranch">Program/Branch:</label>
+                <select id="programBranch" class="form-control">
+                    <option value="CSE">CSE</option>
+                    <option value="AI">AI</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="examTime">Exam Time:</label>
+                <select id="examTime" class="form-control">
+                    <option value="9:00 AM - 12:00 PM">9:00 AM - 12:00 PM</option>
+                    <option value="2:00 PM - 5:00 PM">2:00 PM - 5:00 PM</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="examDate">Exam Date:</label>
+                <input type="date" id="examDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="semester">Semester:</label>
+                <select id="semester" class="form-control">
+                    <option value="1">Select the Semester</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                  
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Student Status:</label>
+                <select id="status" class="form-control">
+                    <option value="Backlog">Select the Student:</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Backlog">ATKT</option>
+                    <option value="Both">Both</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="arrangementType">Arrangement Type:</label>
+                <select id="arrangementType" class="form-control">
+                    <option value="vertical">Vertical</option>
+                    <option value="horizontal">Horizontal</option>
+                </select>
+            </div>
+
+            <!-- Page Specific Inputs -->
+            <h3>Page Details</h3>
+            <div id="pageDetailsContainer"></div>
+            <button type="button" class="btn btn-secondary" onclick="addPageDetail()">Add Another Page</button>
+
+            <!-- Buttons -->
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" onclick="generatePDF()">Generate PDF</button>
+                <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Download PDF</button>
+            </div>
+        </form>
+
+        <!-- PDF Preview -->
+        <div id="pdfPreview" class="pdf-preview"></div>
+    </div>
+
+    <!-- JS Libraries for XLSX and jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
