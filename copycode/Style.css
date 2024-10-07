@@ -187,23 +187,3 @@ button {
         font-size: 14px;
     }
 }
-
-/* Add custom styles for the theme customization section */
-/* .form-group {
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.form-group label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccd5e0;
-    transition: border-color 0;} */

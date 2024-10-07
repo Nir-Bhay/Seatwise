@@ -124,124 +124,33 @@ function generatePDF() {
     const examDate = document.getElementById('examDate')?.value || '';
     const semester = document.getElementById('semester')?.value || '';
     const status = document.getElementById('status')?.value || '';
-   
 
-
-
-    // Collect page details from inputs directly
-    // const pageDetailsArray = pageDetailsArray.map((pageDetail, index) => ({
-    //     roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-    //     numCandidates: parseInt(document.getElementById(`numCandidates${index + 1}`).value),
-    //     numColumns: parseInt(document.getElementById(`numColumns${index + 1}`).value)
+    // const pageDetailsArray = Array.from(document.getElementsByClassName('page-detail')).map((pageDetail, index) => ({
+    //     roomNumber: document.getElementById(`roomNumber${index + 1}`)?.value || '',
+    //     numCandidates: document.getElementById(`numCandidates${index + 1}`)?.value || '',
+    //     numColumns: document.getElementById(`numColumns${index + 1}`)?.value || ''
     // }));
-
-
-    // Apply theme settings if enabled
-    // if (applyTheme) {
-    //     const fontFamily = document.getElementById('fontFamily')?.value || 'helvetica';
-    //     const fontSize = parseInt(document.getElementById('fontSize')?.value) || 14;
-    //     const fontWeight = document.getElementById('fontWeight')?.value || 'normal';
-    //     const textColor = document.getElementById('textColor')?.value || '#000000';
-
-    //     pdf.setFont(fontFamily);
-    //     pdf.setFontSize(fontSize);
-    //     pdf.setFontType(fontWeight);
-    //     pdf.setTextColor(textColor);
-    // }
-
 
     const arrangementType = document.getElementById('arrangementType')?.value || '';
 
-    let previousDataCount = 0;
-
     pageDetailsArray.forEach((pageDetail, index) => {
         if (index > 0) pdf.addPage();
- 
         addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
 
         if (arrangementType === 'horizontal') {
-            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
+            addDataColumnsHorizontal(pdf, pageDetail, index);
         } else {
-            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount);
+            addDataColumnsVertical(pdf, pageDetail, index);
         }
     });
 
-    // Ensure the PDF can be downloaded
-    // pdf.save('seating-arrangement.pdf'); 
-    // / Preview the PDF
     const blob = pdf.output('blob');
     const url = URL.createObjectURL(blob);
     const iframe = `<iframe src="${url}" width="100%" height="600px" style="border: none;"></iframe>`;
     document.getElementById('pdfPreview').innerHTML = iframe;
 }
 
-function downloadPDF() {
-    const { jsPDF } = window.jspdf;
 
-    // Custom size: same width as A4, but with increased height (e.g., 1000pt)
-    const customHeight = 1000;  // Set your desired height here
-    const pdf = new jsPDF({
-        orientation: 'landscape', // You can change to 'portrait' if needed
-        unit: 'pt',
-        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
-    });
-
-    const collageName = document.getElementById('CollageName')?.value || '';
-    const programBranch = document.getElementById('programBranch')?.value || '';
-    const examTime = document.getElementById('examTime')?.value || '';
-    const examDate = document.getElementById('examDate')?.value || '';
-    const semester = document.getElementById('semester')?.value || '';
-    const status = document.getElementById('status')?.value || '';
-    const selectedFont = document.getElementById('fontSelection').value;
-
-
-
-  
-
-    // // Collect page details from inputs directly
-    // const pageDetailsArray = pageDetailsArray.map((pageDetail, index) => ({
-    //     roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-    //     numCandidates: parseInt(document.getElementById(`numCandidates${index + 1}`).value),
-    //     numColumns: parseInt(document.getElementById(`numColumns${index + 1}`).value)
-    // }));
-
-    
-    // Apply theme settings if enabled
-    // if (applyTheme) {
-    //     const fontFamily = document.getElementById('fontFamily')?.value || 'helvetica';
-    //     const fontSize = parseInt(document.getElementById('fontSize')?.value) || 14;
-    //     const fontWeight = document.getElementById('fontWeight')?.value || 'normal';
-    //     const textColor = document.getElementById('textColor')?.value || '#000000';
-
-    //     pdf.setFont(fontFamily);
-    //     pdf.setFontSize(fontSize);
-    //     pdf.setFontType(fontWeight);
-    //     pdf.setTextColor(textColor);
-    // }
-
-
-
-    const arrangementType = document.getElementById('arrangementType')?.value || '';
-
-    let previousDataCount = 0;
-
-    pageDetailsArray.forEach((pageDetail, index) => {
-        if (index > 0) pdf.addPage();
-        pdf.setFont(selectedFont);
-    
-
-        addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
-
-        if (arrangementType === 'horizontal') {
-            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
-        } else {
-            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount);
-        }
-    });
-
-    // Ensure the PDF can be downloaded
-    pdf.save('seating-arrangement.pdf'); 
-}
 
 
 // Add Headers and Footers
@@ -296,7 +205,7 @@ function getRomanNumeral(number) {
 
 
 // Add Data Columns Horizontally
-function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
+function addDataColumnsHorizontal(pdf, pageDetail, pageIndex) {
     const margin = 40;
     const colWidth = (pdf.internal.pageSize.getWidth() - margin * 2) / pageDetail.numColumns;
     const rowHeight = 20;
@@ -324,7 +233,7 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
     pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
-        const dataIndex = previousDataCount + i;
+        const dataIndex = pageIndex * pageDetail.numCandidates + i;
         if (dataIndex >= totalData.length) break;
 
         const value = totalData[dataIndex];
@@ -338,14 +247,12 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
             pdf.text(value, xPos + (i % pageDetail.numColumns) * colWidth, yPos);
         }
     }
-
-    return previousDataCount + pageDetail.numCandidates;
 }
 
 
 
 // Add Data Columns Vertically
-function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
+function addDataColumnsVertical(pdf, pageDetail, pageIndex) {
     const margin = 40;
     const colWidth = (pdf.internal.pageSize.getWidth() - margin * 2) / pageDetail.numColumns;
     const rowHeight = 20;
@@ -367,13 +274,14 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
         pdf.text(`ROW ${getRomanNumeral(col)}`, xPos + col * colWidth, yPos);
     }
 
+
     yPos += rowHeight;
 
     pdf.setFontSize(14);
-    pdf.setFont("Times New Roman", "normal"); // Set font to normal for data content
+    pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
-        const dataIndex = previousDataCount + i;
+        const dataIndex = pageIndex * pageDetail.numCandidates + i;
         if (dataIndex >= totalData.length) break;
 
         const value = totalData[dataIndex];
@@ -387,59 +295,7 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
             pdf.text(value, xPos, yPos + ((i % totalRows) + 1) * rowHeight); // +1 to avoid merging with headers
         }
     }
-
-    return previousDataCount + pageDetail.numCandidates;
 }
 
 
 
-// Save form data to localStorage
-function saveFormData() {
-    const formData = {
-        collageName: document.getElementById('CollageName').value,
-        programBranch: document.getElementById('programBranch').value,
-        examTime: document.getElementById('examTime').value,
-        examDate: document.getElementById('examDate').value,
-        semester: document.getElementById('semester').value,
-        status: document.getElementById('status').value,
-        pageDetails: pageDetailsArray.map((pageDetail, index) => ({
-            roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-            numCandidates: document.getElementById(`numCandidates${index + 1}`).value,
-            numColumns: document.getElementById(`numColumns${index + 1}`).value
-        }))
-    };
-    localStorage.setItem('formData', JSON.stringify(formData));
-}
-
-// Load form data from localStorage
-function loadFormData() {
-    const formData = JSON.parse(localStorage.getItem('formData'));
-    if (!formData) return;
-
-    document.getElementById('CollageName').value = formData.collageName;
-    document.getElementById('programBranch').value = formData.programBranch;
-    document.getElementById('examTime').value = formData.examTime;
-    document.getElementById('examDate').value = formData.examDate;
-    document.getElementById('semester').value = formData.semester;
-    document.getElementById('status').value = formData.status;
-
-    pageDetailsArray = formData.pageDetails || [];
-    const pageDetailsContainer = document.getElementById('pageDetailsContainer');
-    pageDetailsContainer.innerHTML = '';
-    pageDetailsArray.forEach((pageDetail, i) => {
-        const div = document.createElement('div');
-        div.classList.add('page-detail');
-        div.innerHTML = `
-            <strong>Page ${i + 1}</strong><br>
-            Room: ${pageDetail.roomNumber}, Candidates: ${pageDetail.numCandidates}, Columns: ${pageDetail.numColumns}
-            <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${i})">Remove</button>
-        `;
-        pageDetailsContainer.appendChild(div);
-    });
-}
-
-// Add event listeners to save form data on input change
-window.addEventListener('input', saveFormData);
-
-// Load form data when the page loads
-window.addEventListener('load', loadFormData);
