@@ -257,7 +257,7 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
 
     pdf.setFontSize(20);
     pdf.setFont("Times New Roman", "bold");
-    pdf.text(`SAGE UNIVERSITY BHOPAL`, width / 2, margin + 20, { align: "center" });
+    pdf.text(`LNCT, Group of Collage,Bhopal`, width / 2, margin + 20, { align: "center" });
 
     pdf.setFontSize(15);
     pdf.setFont("Times New Roman", "bold");
