@@ -97,12 +97,25 @@ function removePageDetail(index) {
 
 
 
+// function generatePDF() {
+//     const { jsPDF } = window.jspdf;
+//     const pdf = new jsPDF({
+//         orientation: 'landscape',
+//         unit: 'pt',
+//         format: 'a3'
+//     });
+
+// custome size of the PDF
+
 function generatePDF() {
     const { jsPDF } = window.jspdf;
+    
+    // Custom size: same width as A4, but with increased height (e.g., 1000pt)
+    const customHeight = 1000;  // Set your desired height here
     const pdf = new jsPDF({
-        orientation: 'landscape',
+        orientation: 'landscape', // You can change to 'portrait' if needed
         unit: 'pt',
-        format: 'a4'
+        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
     });
 
     const collageName = document.getElementById('CollageName')?.value || '';
