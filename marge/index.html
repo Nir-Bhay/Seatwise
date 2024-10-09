@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Excel Sheets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Merge Excel Sheets</h1>
+
+        <input type="file" id="file1" accept=".xlsx" />
+        <input type="file" id="file2" accept=".xlsx" />
+
+        <div id="columnSelection" style="display:none;">
+            <h2>Select Columns</h2>
+            <label for="sheet1Column">Sheet 1 Column:</label>
+            <select id="sheet1Column"></select>
+
+            <label for="sheet2Column">Sheet 2 Column:</label>
+            <select id="sheet2Column"></select>
+        </div>
+
+        <div id="delimiterSelection" style="display:none;">
+            <h2>Select Delimiter</h2>
+            <label for="delimiter">Delimiter:</label>
+            <input type="text" id="delimiter" placeholder="Enter delimiter (e.g., space, comma)" />
+        </div>
+
+        <button id="previewBtn" style="display:none;">Preview Merged Data</button>
+    </div>
+    <div class="containers"></div>
+    <div id="previewSection" style="display:none;">
+        <h2>Merged Data Preview</h2>
+        <textarea id="mergedDataPreview" rows="10" cols="50"></textarea>
+        <button id="downloadBtn">Download Merged Data</button>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
