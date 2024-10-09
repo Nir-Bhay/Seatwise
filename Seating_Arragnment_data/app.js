@@ -306,8 +306,17 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
 
     let xPos = margin;
     let yPos = 240; // Adjusted start position to avoid merging with headers
+    // Adjust font size based on the number of columns
+    let fontSize;
+    if (pageDetail.numColumns <= 3) {
+        fontSize = 14;
+    } else if (pageDetail.numColumns <= 5) {
+        fontSize = 11;
+    } else {
+        fontSize = 9;
+    }
 
-    pdf.setFontSize(14);
+    pdf.setFontSize(fontSize);
     pdf.setFont("Times New Roman", "bold");
 
     // Adding column headers in Roman numerals
@@ -319,8 +328,8 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
 
 
     yPos += rowHeight;
-    
-    pdf.setFontSize(14);
+
+    pdf.setFontSize(fontSize);
     pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
@@ -356,8 +365,17 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
 
     let xPos = margin;
     let yPos = 210; // Adjusted start position to avoid merging with headers
+    // Adjust font size based on the number of columns
+    let fontSize;
+    if (pageDetail.numColumns <= 3) {
+        fontSize = 14;
+    } else if (pageDetail.numColumns <= 5) {
+        fontSize = 11;
+    } else {
+        fontSize = 9;
+    }
 
-    pdf.setFontSize(14);
+    pdf.setFontSize(fontSize);
     pdf.setFont("Times New Roman", "bold");
 
     // Adding column headers in Roman numerals
@@ -369,9 +387,11 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
 
     yPos += rowHeight;
 
-    pdf.setFontSize(14);
-    pdf.setFont("Times New Roman", "normal"); // Set font to normal for data content
 
+    pdf.setFontSize(fontSize);
+    pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
+
+    
     for (let i = 0; i < pageDetail.numCandidates; i++) {
         const dataIndex = previousDataCount + i;
         if (dataIndex >= totalData.length) break;
