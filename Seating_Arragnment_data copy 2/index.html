@@ -13,26 +13,11 @@
     <div class="container">
         <h1>Exam Hall Seating Arrangement</h1>
 
-        <button class="custom-button" data-href="marge/index.html">Merge Data File...</button>
+        <button class="custom-button" data-href="./marge/index.html">Merge Data File...</button>
 
         <form id="examForm">
-            <!-- File Uploads -->
-            <div class="form-group">
-                <label for="file1">Upload Excel File 1:</label>
-                <input type="file" id="file1" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file2">Upload Excel File 2:</label>
-                <input type="file" id="file2" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file3">Upload Excel File 3 (optional):</label>
-                <input type="file" id="file3" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file4">Upload Excel File 4 (optional):</label>
-                <input type="file" id="file4" class="form-control" accept=".xlsx">
-            </div>
+        
+          
 
             <!-- Dropdowns -->
             <div class="form-group">
@@ -42,7 +27,8 @@
                     <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
                     <option value="LNCT, Group of Collage,Bhopal">LNCT, Group of Collage,Bhopal</option>
                     <option value="SIRT, Bhopal">SIRT, Bhopal</option>
-                    <!-- Add more options as needed -->
+                    <!-- Add more options as needed --> 
+                            
                 </select>
             </div>
 
@@ -71,7 +57,7 @@
             </div>
 
             <div class="form-group">
-                <label for="semester">Semester:</label>
+                <label for="semester">Semester:</label> <br>
                 <select id="semester" class="form-control">
                     <option value="">Select the Semester</option>
                     <option value="I">I</option>
@@ -102,6 +88,15 @@
                     <option value="vertical">Vertical</option>
                 </select>
             </div>
+
+            <div id="fileInputsContainer">
+                <div class="form-group">
+                    <label for="file1">Upload Excel File 1:</label>
+                    <input type="file" id="file1" class="form-control" accept=".xlsx">
+                </div>
+            </div>
+            <button type="button" onclick="addFileInput()">Add More Files</button>
+
 
             <!-- Page Specific Inputs -->
             <h3>Page Details</h3>
@@ -175,7 +170,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const mergeButton = document.querySelector('.custom-button');
 
@@ -185,7 +180,7 @@
             });
         });
 
-    </script>
+    </script> -->
 </body>
 
 </html>
