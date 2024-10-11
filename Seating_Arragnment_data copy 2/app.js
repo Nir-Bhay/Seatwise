@@ -1,8 +1,4 @@
-// File upload handlers
 document.getElementById('file1').addEventListener('change', handleFile);
-document.getElementById('file2').addEventListener('change', handleFile);
-document.getElementById('file3').addEventListener('change', handleFile);
-document.getElementById('file4').addEventListener('change', handleFile);
 
 let data1 = [], data2 = [], data3 = [], data4 = [];
 let pageDetailsArray = [];
@@ -28,11 +24,40 @@ function handleFile(event) {
             else if (event.target.id === 'file2') data2 = json.flat();
             else if (event.target.id === 'file3') data3 = json.flat();
             else if (event.target.id === 'file4') data4 = json.flat();
+
+            checkDataPresence(); // Check data presence to proceed
         } catch (error) {
             alert("Error processing file: " + error.message);
         }
     };
     reader.readAsArrayBuffer(file);
+}
+
+// Function to add more file inputs dynamically
+function addFileInput() {
+    const fileInputsContainer = document.getElementById('fileInputsContainer');
+    const currentCount = fileInputsContainer.children.length;
+    if (currentCount >= 4) return; // Limit to 4 file inputs
+
+    const fileIndex = currentCount + 1;
+    const newFileInput = document.createElement('div');
+    newFileInput.classList.add('form-group');
+    newFileInput.innerHTML = `
+        <label for="file${fileIndex}">Upload Excel File ${fileIndex}:</label>
+        <input type="file" id="file${fileIndex}" class="form-control" accept=".xlsx">
+    `;
+    fileInputsContainer.appendChild(newFileInput);
+
+    document.getElementById(`file${fileIndex}`).addEventListener('change', handleFile);
+}
+
+function checkDataPresence() {
+    if (data1.length > 0 || data2.length > 0 || data3.length > 0 || data4.length > 0) {
+        console.log("At least one file is loaded, proceeding with further operations.");
+        // Proceed with other operations
+    } else {
+        alert("No data loaded from files.");
+    }
 }
 
 
@@ -110,45 +135,20 @@ function removePageDetail(index) {
 function generatePDF() {
     const { jsPDF } = window.jspdf;
     
-    // Custom size: same width as A4, but with increased height (e.g., 1000pt)
-    const customHeight = 1000;  // Set your desired height here
+   
     const pdf = new jsPDF({
         orientation: 'landscape', // You can change to 'portrait' if needed
         unit: 'pt',
-        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        // format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        format: 'A4' // A4 width (595.28 pt), custom height
     });
-
+    
     const collageName = document.getElementById('CollageName')?.value || '';
     const programBranch = document.getElementById('programBranch')?.value || '';
     const examTime = document.getElementById('examTime')?.value || '';
     const examDate = document.getElementById('examDate')?.value || '';
     const semester = document.getElementById('semester')?.value || '';
     const status = document.getElementById('status')?.value || '';
-   
-
-
-
-    // Collect page details from inputs directly
-    // const pageDetailsArray = pageDetailsArray.map((pageDetail, index) => ({
-    //     roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-    //     numCandidates: parseInt(document.getElementById(`numCandidates${index + 1}`).value),
-    //     numColumns: parseInt(document.getElementById(`numColumns${index + 1}`).value)
-    // }));
-
-
-    // Apply theme settings if enabled
-    // if (applyTheme) {
-    //     const fontFamily = document.getElementById('fontFamily')?.value || 'helvetica';
-    //     const fontSize = parseInt(document.getElementById('fontSize')?.value) || 14;
-    //     const fontWeight = document.getElementById('fontWeight')?.value || 'normal';
-    //     const textColor = document.getElementById('textColor')?.value || '#000000';
-
-    //     pdf.setFont(fontFamily);
-    //     pdf.setFontSize(fontSize);
-    //     pdf.setFontType(fontWeight);
-    //     pdf.setTextColor(textColor);
-    // }
-
 
     const arrangementType = document.getElementById('arrangementType')?.value || '';
 
@@ -175,15 +175,22 @@ function generatePDF() {
     document.getElementById('pdfPreview').innerHTML = iframe;
 }
 
+
+
+
+
+
+
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
 
     // Custom size: same width as A4, but with increased height (e.g., 1000pt)
-    const customHeight = 1000;  // Set your desired height here
+    // const customHeight = 1000;  // Set your desired height here
     const pdf = new jsPDF({
         orientation: 'landscape', // You can change to 'portrait' if needed
         unit: 'pt',
-        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        // format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        format: 'A4' // A4 width (595.28 pt), custom height
     });
 
     const collageName = document.getElementById('CollageName')?.value || '';
