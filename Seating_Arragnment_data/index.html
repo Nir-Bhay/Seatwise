@@ -13,48 +13,51 @@
     <div class="container">
         <h1>Exam Hall Seating Arrangement</h1>
 
-        <button class="custom-button" data-href="marge/index.html">Merge Data File...</button>
+        <button class="custom-button" data-href="./marge/index.html">Merge Data File...</button>
 
         <form id="examForm">
-            <!-- File Uploads -->
-            <div class="form-group">
-                <label for="file1">Upload Excel File 1:</label>
-                <input type="file" id="file1" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file2">Upload Excel File 2:</label>
-                <input type="file" id="file2" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file3">Upload Excel File 3 (optional):</label>
-                <input type="file" id="file3" class="form-control" accept=".xlsx">
-            </div>
-            <div class="form-group">
-                <label for="file4">Upload Excel File 4 (optional):</label>
-                <input type="file" id="file4" class="form-control" accept=".xlsx">
-            </div>
+
 
             <!-- Dropdowns -->
             <div class="form-group">
-                <label for="CollageName">College/University Name:</label>
-                <select id="CollageName" class="form-control">
+                <label for="CollegeName">College/University Name:</label>
+                <select id="CollegeName" class="form-control">
                     <option value="">Choose College/University:</option>
                     <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
-                    <option value="LNCT, Group of Collage,Bhopal">LNCT, Group of Collage,Bhopal</option>
+                    <option value="LNCT, Group of College,Bhopal">LNCT, Group of College,Bhopal</option>
                     <option value="SIRT, Bhopal">SIRT, Bhopal</option>
                     <!-- Add more options as needed -->
+                    <option value="Custom">Custom</option> <!-- For custom input -->
                 </select>
+                <input type="text" id="customCollege" class="form-control" placeholder="Enter custom college name"
+                    style="display:none;" />
             </div>
+<div class="form-group">
+    <label for="branch">Branch:</label> <br>
+    <select id="branch" class="form-control">
+        <option value="Select Branch">Select Branch:</option>
+        <option value="B.Tech">B.Tech</option>
+        <option value="BCA">BCA</option>
+        <option value="B.Sc">B.Sc</option>
+        <option value="B.A">B.A</option>
+        <option value="B.Com">B.Com</option>
+        <option value="M.Tech">M.Tech</option>
+        <option value="MCA">MCA</option>
+        <option value="M.A">M.A</option>
+        <option value="M.Com">M.Com</option>
+        <option value="Custom">Custom</option> <!-- For custom input -->
+    </select>
+    <input type="text" id="customBranch" class="form-control" placeholder="Enter custom branch" style="display:none;" />
+</div>
 
-            <div class="form-group">
-                <label for="programBranch">Program/Branch:</label>
-                <select id="programBranch" class="form-control">
-                    <option value="Select Program/Branch">Select Program/Branch:</option>
-                    <option value="CSE">CSE</option>
-                    <option value="AI">AI</option>
-                    <option value="Cyber Security">Cyber Security</option>
-                </select>
-            </div>
+<div class="form-group">
+    <label for="program">Program:</label> <br>
+    <select id="program" class="form-control">
+        <option value="Select Program">Select Program:</option>
+    </select>
+    <input type="text" id="customProgram" class="form-control" placeholder="Enter custom program"
+        style="display:none;" />
+</div>
 
             <div class="form-group">
                 <label for="examTime">Exam Time:</label>
@@ -62,7 +65,12 @@
                     <option value="Select Timing:">Select the Exam Timing</option>
                     <option value="9:00 AM - 12:00 PM">10:30 AM - 01:30 PM</option>
                     <option value="2:00 PM - 5:00 PM">2:00 PM - 05:00 PM</option>
+                    <option value="Custom">Custom</option> <!-- For custom input -->
                 </select>
+                <input type="time" id="customStartTime" class="form-control" placeholder="Start Time"
+                    style="display:none;" />
+                <input type="time" id="customEndTime" class="form-control" placeholder="End Time"
+                    style="display:none;" />
             </div>
 
             <div class="form-group">
@@ -71,7 +79,7 @@
             </div>
 
             <div class="form-group">
-                <label for="semester">Semester:</label>
+                <label for="semester">Semester:</label> <br>
                 <select id="semester" class="form-control">
                     <option value="">Select the Semester</option>
                     <option value="I">I</option>
@@ -102,6 +110,15 @@
                     <option value="vertical">Vertical</option>
                 </select>
             </div>
+
+            <div id="fileInputsContainer">
+                <div class="form-group">
+                    <label for="file1">Upload Excel File 1:</label>
+                    <input type="file" id="file1" class="form-control" accept=".xlsx">
+                </div>
+            </div>
+            <button type="button" onclick="addFileInput()">Add More Files</button>
+
 
             <!-- Page Specific Inputs -->
             <h3>Page Details</h3>
@@ -175,7 +192,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const mergeButton = document.querySelector('.custom-button');
 
@@ -185,7 +202,7 @@
             });
         });
 
-    </script>
+    </script> -->
 </body>
 
 </html>

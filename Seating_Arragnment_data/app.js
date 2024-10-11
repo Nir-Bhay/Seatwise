@@ -1,8 +1,4 @@
-// File upload handlers
 document.getElementById('file1').addEventListener('change', handleFile);
-document.getElementById('file2').addEventListener('change', handleFile);
-document.getElementById('file3').addEventListener('change', handleFile);
-document.getElementById('file4').addEventListener('change', handleFile);
 
 let data1 = [], data2 = [], data3 = [], data4 = [];
 let pageDetailsArray = [];
@@ -28,6 +24,8 @@ function handleFile(event) {
             else if (event.target.id === 'file2') data2 = json.flat();
             else if (event.target.id === 'file3') data3 = json.flat();
             else if (event.target.id === 'file4') data4 = json.flat();
+
+            checkDataPresence(); // Check data presence to proceed
         } catch (error) {
             alert("Error processing file: " + error.message);
         }
@@ -35,6 +33,32 @@ function handleFile(event) {
     reader.readAsArrayBuffer(file);
 }
 
+// Function to add more file inputs dynamically
+function addFileInput() {
+    const fileInputsContainer = document.getElementById('fileInputsContainer');
+    const currentCount = fileInputsContainer.children.length;
+    if (currentCount >= 4) return; // Limit to 4 file inputs
+
+    const fileIndex = currentCount + 1;
+    const newFileInput = document.createElement('div');
+    newFileInput.classList.add('form-group');
+    newFileInput.innerHTML = `
+        <label for="file${fileIndex}">Upload Excel File ${fileIndex}:</label>
+        <input type="file" id="file${fileIndex}" class="form-control" accept=".xlsx">
+    `;
+    fileInputsContainer.appendChild(newFileInput);
+
+    document.getElementById(`file${fileIndex}`).addEventListener('change', handleFile);
+}
+
+function checkDataPresence() {
+    if (data1.length > 0 || data2.length > 0 || data3.length > 0 || data4.length > 0) {
+        console.log("At least one file is loaded, proceeding with further operations.");
+        // Proceed with other operations
+    } else {
+        alert("No data loaded from files.");
+    }
+}
 
 
 // Show Popup
@@ -107,57 +131,172 @@ function removePageDetail(index) {
 
 // custome size of the PDF
 
+
+
+
+
+
+document.getElementById('CollegeName').addEventListener('change', function () {
+    const collegeName = this.value;
+    const customCollegeInput = document.getElementById('customCollege');
+
+    if (collegeName === 'Custom') {
+        customCollegeInput.style.display = 'block';
+    } else {
+        customCollegeInput.style.display = 'none';
+    }
+
+});
+
+
+
+document.getElementById('branch').addEventListener('change', function () {
+    const branch = this.value;
+    const customBranchInput = document.getElementById('customBranch');
+    const programSelect = document.getElementById('program');
+    programSelect.innerHTML = ''; // Clear previous options
+
+    if (branch === 'Custom') {
+        customBranchInput.style.display = 'block';
+        programSelect.style.display = 'none';
+    } else {
+        customBranchInput.style.display = 'none';
+        programSelect.style.display = 'block';
+
+        let programs = [];
+        switch (branch) {
+            case 'B.Tech':
+                programs = ['CSE', 'AI', 'Cyber Security'];
+                break;
+            case 'BCA':
+                programs = ['Regular BCA'];
+                break;
+            case 'B.Sc':
+                programs = ['Agriculture'];
+                break;
+            case 'B.A':
+                programs = ['Various Specializations'];
+                break;
+            case 'B.Com':
+                programs = ['Regular B.Com'];
+                break;
+            case 'M.Tech':
+                programs = ['CSE', 'AI'];
+                break;
+            case 'MCA':
+                programs = ['Regular MCA'];
+                break;
+            case 'M.A':
+                programs = ['Various Specializations'];
+                break;
+            case 'M.Com':
+                programs = ['Regular M.Com'];
+                break;
+            default:
+                programs = ['Select Program'];
+        }
+
+        programs.forEach(program => {
+            const newOption = document.createElement('option');
+            newOption.value = program;
+            newOption.text = program;
+            programSelect.appendChild(newOption);
+        });
+
+        const customProgramOption = document.createElement('option');
+        customProgramOption.value = 'Custom';
+        customProgramOption.text = 'Custom';
+        programSelect.appendChild(customProgramOption);
+    }
+});
+
+document.getElementById('program').addEventListener('change', function () {
+    const program = this.value;
+    const customProgramInput = document.getElementById('customProgram');
+
+    if (program === 'Custom') {
+        customProgramInput.style.display = 'block';
+    } else {
+        customProgramInput.style.display = 'none';
+    }
+});
+
+
+
+
+
+document.getElementById('examTime').addEventListener('change', function () {
+    const examTime = this.value;
+    const customStartTimeInput = document.getElementById('customStartTime');
+    const customEndTimeInput = document.getElementById('customEndTime');
+
+    if (examTime === 'Custom') {
+        customStartTimeInput.type = 'text';
+        customEndTimeInput.type = 'text';
+
+        customStartTimeInput.setAttribute('placeholder', 'Start Time (hh:mm AM/PM)');
+        customEndTimeInput.setAttribute('placeholder', 'End Time (hh:mm AM/PM)');
+
+        customStartTimeInput.style.display = 'block';
+        customEndTimeInput.style.display = 'block';
+    } else {
+        customStartTimeInput.style.display = 'none';
+        customEndTimeInput.style.display = 'none';
+    }
+});
+
+
+
+
+
+
+
+
+
+function addOptions(selectElement, optionsArray) {
+    optionsArray.forEach(option => {
+        const newOption = document.createElement('option');
+        newOption.value = option;
+        newOption.text = option;
+        selectElement.appendChild(newOption);
+    });
+}
+
+
+
 function generatePDF() {
     const { jsPDF } = window.jspdf;
-    
-    // Custom size: same width as A4, but with increased height (e.g., 1000pt)
-    const customHeight = 1000;  // Set your desired height here
     const pdf = new jsPDF({
-        orientation: 'landscape', // You can change to 'portrait' if needed
+        orientation: 'landscape',
         unit: 'pt',
-        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        format: 'A4'
     });
 
-    const collageName = document.getElementById('CollageName')?.value || '';
-    const programBranch = document.getElementById('programBranch')?.value || '';
+    const collegeName = document.getElementById('CollegeName')?.value || '';
+    const customCollege = document.getElementById('customCollege')?.value || '';
+    const branch = document.getElementById('branch')?.value || '';
+    const customBranch = document.getElementById('customBranch')?.value || '';
+    const program = document.getElementById('program')?.value || '';
+    const customProgram = document.getElementById('customProgram')?.value || '';
     const examTime = document.getElementById('examTime')?.value || '';
+    const customStartTime = document.getElementById('customStartTime')?.value || '';
+    const customEndTime = document.getElementById('customEndTime')?.value || '';
     const examDate = document.getElementById('examDate')?.value || '';
     const semester = document.getElementById('semester')?.value || '';
     const status = document.getElementById('status')?.value || '';
-   
-
-
-
-    // Collect page details from inputs directly
-    // const pageDetailsArray = pageDetailsArray.map((pageDetail, index) => ({
-    //     roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-    //     numCandidates: parseInt(document.getElementById(`numCandidates${index + 1}`).value),
-    //     numColumns: parseInt(document.getElementById(`numColumns${index + 1}`).value)
-    // }));
-
-
-    // Apply theme settings if enabled
-    // if (applyTheme) {
-    //     const fontFamily = document.getElementById('fontFamily')?.value || 'helvetica';
-    //     const fontSize = parseInt(document.getElementById('fontSize')?.value) || 14;
-    //     const fontWeight = document.getElementById('fontWeight')?.value || 'normal';
-    //     const textColor = document.getElementById('textColor')?.value || '#000000';
-
-    //     pdf.setFont(fontFamily);
-    //     pdf.setFontSize(fontSize);
-    //     pdf.setFontType(fontWeight);
-    //     pdf.setTextColor(textColor);
-    // }
-
 
     const arrangementType = document.getElementById('arrangementType')?.value || '';
-
     let previousDataCount = 0;
 
     pageDetailsArray.forEach((pageDetail, index) => {
         if (index > 0) pdf.addPage();
- 
-        addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
+
+        const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
+        const displayBranch = branch === 'Custom' ? customBranch : branch;
+        const displayProgram = program === 'Custom' ? customProgram : program;
+        const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
+
+        addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
 
         if (arrangementType === 'horizontal') {
             previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
@@ -166,24 +305,27 @@ function generatePDF() {
         }
     });
 
-    // Ensure the PDF can be downloaded
-    // pdf.save('seating-arrangement.pdf'); 
-    // / Preview the PDF
     const blob = pdf.output('blob');
     const url = URL.createObjectURL(blob);
     const iframe = `<iframe src="${url}" width="100%" height="600px" style="border: none;"></iframe>`;
     document.getElementById('pdfPreview').innerHTML = iframe;
 }
 
+
+
+
+
+
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
 
     // Custom size: same width as A4, but with increased height (e.g., 1000pt)
-    const customHeight = 1000;  // Set your desired height here
+    // const customHeight = 1000;  // Set your desired height here
     const pdf = new jsPDF({
         orientation: 'landscape', // You can change to 'portrait' if needed
         unit: 'pt',
-        format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        // format: [750.28, customHeight] // A4 width (595.28 pt), custom height
+        format: 'A4' // A4 width (595.28 pt), custom height
     });
 
     const collageName = document.getElementById('CollageName')?.value || '';
