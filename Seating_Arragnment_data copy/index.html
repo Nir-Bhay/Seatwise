@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
+    <title>Exam Hall Seating Arrangement</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Exam Hall Seating Arrangement</h1>
+
+        <button class="custom-button" data-href="./marge/index.html">Merge Data File...</button>
+
+        <form id="examForm">
+
+
+            <!-- Dropdowns -->
+            <div class="form-group">
+                <label for="CollegeName">College/University Name:</label>
+                <select id="CollegeName" class="form-control">
+                    <option value="">Choose College/University:</option>
+                    <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
+                    <option value="LNCT, Group of College,Bhopal">LNCT, Group of College,Bhopal</option>
+                    <option value="SIRT, Bhopal">SIRT, Bhopal</option>
+                    <!-- Add more options as needed -->
+                    <option value="Custom">Custom</option> <!-- For custom input -->
+                </select>
+                <input type="text" id="customCollege" class="form-control" placeholder="Enter custom college name"
+                    style="display:none;" />
+            </div>
+<div class="form-group">
+    <label for="branch">Branch:</label> <br>
+    <select id="branch" class="form-control">
+        <option value="Select Branch">Select Branch:</option>
+        <option value="B.Tech">B.Tech</option>
+        <option value="BCA">BCA</option>
+        <option value="B.Sc">B.Sc</option>
+        <option value="B.A">B.A</option>
+        <option value="B.Com">B.Com</option>
+        <option value="M.Tech">M.Tech</option>
+        <option value="MCA">MCA</option>
+        <option value="M.A">M.A</option>
+        <option value="M.Com">M.Com</option>
+        <option value="Custom">Custom</option> <!-- For custom input -->
+    </select>
+    <input type="text" id="customBranch" class="form-control" placeholder="Enter custom branch" style="display:none;" />
+</div>
+
+<div class="form-group">
+    <label for="program">Program:</label> <br>
+    <select id="program" class="form-control">
+        <option value="Select Program">Select Program:</option>
+    </select>
+    <input type="text" id="customProgram" class="form-control" placeholder="Enter custom program"
+        style="display:none;" />
+</div>
+
+            <div class="form-group">
+                <label for="examTime">Exam Time:</label>
+                <select id="examTime" class="form-control">
+                    <option value="Select Timing:">Select the Exam Timing</option>
+                    <option value="9:00 AM - 12:00 PM">10:30 AM - 01:30 PM</option>
+                    <option value="2:00 PM - 5:00 PM">2:00 PM - 05:00 PM</option>
+                    <option value="Custom">Custom</option> <!-- For custom input -->
+                </select>
+                <input type="time" id="customStartTime" class="form-control" placeholder="Start Time"
+                    style="display:none;" />
+                <input type="time" id="customEndTime" class="form-control" placeholder="End Time"
+                    style="display:none;" />
+            </div>
+
+            <div class="form-group">
+                <label for="examDate">Exam Date:</label>
+                <input type="date" id="examDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="semester">Semester:</label> <br>
+                <select id="semester" class="form-control">
+                    <option value="">Select the Semester</option>
+                    <option value="I">I</option>
+                    <option value="II">II</option>
+                    <option value="III">III</option>
+                    <option value="IV">IV</option>
+                    <option value="V">V</option>
+                    <option value="VI">VI</option>
+                    <option value="VII">VII</option>
+                    <option value="VIII">VIII</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Student Status:</label>
+                <select id="status" class="form-control">
+                    <option value="">Select Student Status</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Backlog">ATKT</option>
+                    <option value="Both">Both</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="arrangementType">Arrangement Type :</label>
+                <select id="arrangementType" class="form-control">
+                    <option value="horizontal">Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                </select>
+            </div>
+
+            <div id="fileInputsContainer">
+                <div class="form-group">
+                    <label for="file1">Upload Excel File 1:</label>
+                    <input type="file" id="file1" class="form-control" accept=".xlsx">
+                </div>
+            </div>
+            <button type="button" onclick="addFileInput()">Add More Files</button>
+
+
+            <!-- Page Specific Inputs -->
+            <h3>Page Details</h3>
+            <div id="pageDetailsContainer"></div>
+            <button type="button" class="custom-button" onclick="showPopup()">Add Another Page</button>
+
+            <!-- Popup Modal -->
+            <div id="popupForm" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h4>Add Page Details</h4>
+                    <div class="form-group">
+                        <label for="popupRoomNumber">Room Number:</label>
+                        <input type="text" id="popupRoomNumber" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="popupNumCandidates">Number of Candidates:</label>
+                        <input type="number" id="popupNumCandidates" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="popupNumColumns">Number of Columns:</label>
+                        <input type="number" id="popupNumColumns" class="form-control">
+                    </div>
+                    <button type="button" class="custom-button" onclick="addPageDetail()">Add Page</button>
+                </div>
+            </div>
+            <!-- Theme Customization -->
+            <!-- <h3>Customize PDF Theme</h3>
+            <div class="form-group">
+                <label for="fontFamily">Font Family:</label>
+                <select id="fontFamily" class="form-control">
+                    <option value="helvetica">Helvetica</option>
+                    <option value="times">Times New Roman</option>
+                    <option value="courier">Courier</option>
+                    <option value="arial">Arial</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fontSize">Font Size:</label>
+                <input type="number" id="fontSize" class="form-control" value="14">
+            </div>
+            <div class="form-group">
+                <label for="fontWeight">Font Weight:</label>
+                <select id="fontWeight" class="form-control">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="textColor">Text Color:</label>
+                <input type="color" id="textColor" class="form-control" value="#000000">
+            </div> -->
+
+
+
+            <!-- Buttons -->
+            <div class="form-group">
+                <button type="button" class="custom-button" onclick="generatePDF()">Generate PDF</button>
+                <br>
+
+
+            </div>
+        </form>
+
+        <!-- PDF Preview -->
+        <div id="pdfPreview" class="pdf-preview"></div>
+        <button type="button" class="custom-button" onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <!-- JS Libraries for XLSX and jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const mergeButton = document.querySelector('.custom-button');
+
+            mergeButton.addEventListener('click', function () {
+                const url = this.getAttribute('data-href');
+                window.location.href = url; // Redirects to the specified URL
+            });
+        });
+
+    </script> -->
+</body>
+
+</html>
