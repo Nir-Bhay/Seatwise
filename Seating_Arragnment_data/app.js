@@ -264,7 +264,6 @@ function addOptions(selectElement, optionsArray) {
 
 
 
-
 function generatePDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({
@@ -275,7 +274,10 @@ function generatePDF() {
 
     const collegeName = document.getElementById('CollegeName')?.value || '';
     const customCollege = document.getElementById('customCollege')?.value || '';
-    const programBranch = document.getElementById('programBranch')?.value || '';
+    const branch = document.getElementById('branch')?.value || '';
+    const customBranch = document.getElementById('customBranch')?.value || '';
+    const program = document.getElementById('program')?.value || '';
+    const customProgram = document.getElementById('customProgram')?.value || '';
     const examTime = document.getElementById('examTime')?.value || '';
     const customStartTime = document.getElementById('customStartTime')?.value || '';
     const customEndTime = document.getElementById('customEndTime')?.value || '';
@@ -290,8 +292,11 @@ function generatePDF() {
         if (index > 0) pdf.addPage();
 
         const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
+        const displayBranch = branch === 'Custom' ? customBranch : branch;
+        const displayProgram = program === 'Custom' ? customProgram : program;
         const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
-        addHeaderFooter(pdf, displayCollegeName, programBranch, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
+
+        addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
 
         if (arrangementType === 'horizontal') {
             previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
@@ -305,6 +310,7 @@ function generatePDF() {
     const iframe = `<iframe src="${url}" width="100%" height="600px" style="border: none;"></iframe>`;
     document.getElementById('pdfPreview').innerHTML = iframe;
 }
+
 
 
 
