@@ -338,7 +338,7 @@ function downloadPDF() {
 
 
 
-  
+
 
     // // Collect page details from inputs directly
     // const pageDetailsArray = pageDetailsArray.map((pageDetail, index) => ({
@@ -347,7 +347,7 @@ function downloadPDF() {
     //     numColumns: parseInt(document.getElementById(`numColumns${index + 1}`).value)
     // }));
 
-    
+
     // Apply theme settings if enabled
     // if (applyTheme) {
     //     const fontFamily = document.getElementById('fontFamily')?.value || 'helvetica';
@@ -370,7 +370,7 @@ function downloadPDF() {
     pageDetailsArray.forEach((pageDetail, index) => {
         if (index > 0) pdf.addPage();
         pdf.setFont(selectedFont);
-    
+
 
         addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
 
@@ -382,7 +382,7 @@ function downloadPDF() {
     });
 
     // Ensure the PDF can be downloaded
-    pdf.save('seating-arrangement.pdf'); 
+    pdf.save('seating-arrangement.pdf');
 }
 
 
@@ -439,40 +439,56 @@ function getRomanNumeral(number) {
 
 // Add Data Columns Horizontally
 function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
-    const margin = 40;
-    const colWidth = (pdf.internal.pageSize.getWidth() - margin * 2) / pageDetail.numColumns;
+    const margin = 15; // Reduced margin
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const colSpacing = 10; // Add some space between columns
+    const colWidth = (pageWidth - margin * 2 - colSpacing * (pageDetail.numColumns - 1)) / pageDetail.numColumns;
     const rowHeight = 20;
 
     const data = [data1, data2, data3, data4].filter(arr => arr.length > 0);
     const totalData = data.flat();
 
     let xPos = margin;
-    let yPos = 160; // Adjusted start position to avoid merging with headers
-    // Adjust font size based on the number of columns
+    let yPos = 160;
+
+    const context = document.createElement('canvas').getContext('2d');
+    context.font = '14px Times New Roman'; // Initial font size for measurement
+
+    const sampleText = totalData[0] || '';
+    const maxCharWidth = 150; // Example max width in pixels, adjust as needed
+    const textWidth = context.measureText(sampleText).width;
+
     let fontSize;
-    if (pageDetail.numColumns <= 3) {
-        fontSize = 14;
-    } else if (pageDetail.numColumns <= 5) {
-        fontSize = 11;
-    } else {
-        fontSize = 9;
+    switch (pageDetail.numColumns) {
+        case 3:
+            fontSize = textWidth > maxCharWidth ? Math.max(9, 14 * maxCharWidth / textWidth) : 14;
+            break;
+        case 4:
+            fontSize = textWidth > maxCharWidth ? Math.max(8, 12 * maxCharWidth / textWidth) : 12;
+            break;
+        case 5:
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 10;
+            break;
+        case 6:
+            fontSize = textWidth > maxCharWidth ? Math.max(6, 9 * maxCharWidth / textWidth) : 9;
+            break;
+        default:
+            fontSize = textWidth > maxCharWidth ? Math.max(5, 8 * maxCharWidth / textWidth) : 8;
     }
 
     pdf.setFontSize(fontSize);
-    pdf.setFont("Times New Roman", "bold");
+    pdf.setFont("Helvetica", "bold");
 
-    // Adding column headers in Roman numerals
     for (let col = 0; col < pageDetail.numColumns; col++) {
-        pdf.setFontSize(14);
-        pdf.setFont("Times New Roman", "bold");
-        pdf.text(`ROW ${getRomanNumeral(col)}`, xPos + col * colWidth, yPos);
+        const headerXPos = xPos + col * (colWidth + colSpacing) + colWidth / 2;
+        pdf.setFontSize(fontSize + 2); // slightly bigger font for headers
+        pdf.text(`ROW ${getRomanNumeral(col)}`, headerXPos, yPos, { align: 'center' });
     }
-
 
     yPos += rowHeight;
 
     pdf.setFontSize(fontSize);
-    pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
+    pdf.setFont("Helvetica", "normal");
 
     for (let i = 0; i < pageDetail.numCandidates; i++) {
         const dataIndex = previousDataCount + i;
@@ -486,7 +502,7 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
             }
             if (yPos + rowHeight > pdf.internal.pageSize.getHeight() - margin) break;
 
-            pdf.text(value, xPos + (i % pageDetail.numColumns) * colWidth, yPos);
+            pdf.text(value, xPos + (i % pageDetail.numColumns) * (colWidth + colSpacing) + colWidth / 2, yPos, { align: 'center' });
         }
     }
 
@@ -495,10 +511,11 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
 
 
 
-// Add Data Columns Vertically
 function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
-    const margin = 40;
-    const colWidth = (pdf.internal.pageSize.getWidth() - margin * 2) / pageDetail.numColumns;
+    const margin = 15;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const colSpacing = 10;
+    const colWidth = (pageWidth - margin * 2 - colSpacing * (pageDetail.numColumns - 1)) / pageDetail.numColumns;
     const rowHeight = 20;
     const totalRows = Math.ceil(pageDetail.numCandidates / pageDetail.numColumns);
 
@@ -506,34 +523,47 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
     const totalData = data.flat();
 
     let xPos = margin;
-    let yPos = 210; // Adjusted start position to avoid merging with headers
-    // Adjust font size based on the number of columns
+    let yPos = 160;
+
+    const context = document.createElement('canvas').getContext('2d');
+    context.font = '14px Times New Roman'; // Initial font size for measurement
+
+    const sampleText = totalData[0] || '';
+    const maxCharWidth = 150;
+    const textWidth = context.measureText(sampleText).width;
+
     let fontSize;
-    if (pageDetail.numColumns <= 3) {
-        fontSize = 14;
-    } else if (pageDetail.numColumns <= 5) {
-        fontSize = 11;
-    } else {
-        fontSize = 9;
+    switch (pageDetail.numColumns) {
+        case 3:
+            fontSize = textWidth > maxCharWidth ? Math.max(9, 14 * maxCharWidth / textWidth) : 14;
+            break;
+        case 4:
+            fontSize = textWidth > maxCharWidth ? Math.max(8, 12 * maxCharWidth / textWidth) : 12;
+            break;
+        case 5:
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 10;
+            break;
+        case 6:
+            fontSize = textWidth > maxCharWidth ? Math.max(6, 9 * maxCharWidth / textWidth) : 9;
+            break;
+        default:
+            fontSize = textWidth > maxCharWidth ? Math.max(5, 8 * maxCharWidth / textWidth) : 8;
     }
 
     pdf.setFontSize(fontSize);
-    pdf.setFont("Times New Roman", "bold");
+    pdf.setFont("Helvetica", "bold");
 
-    // Adding column headers in Roman numerals
     for (let col = 0; col < pageDetail.numColumns; col++) {
-        pdf.setFontSize(14);
-        pdf.setFont("Times New Roman", "bold");
-        pdf.text(`ROW ${getRomanNumeral(col)}`, xPos + col * colWidth, yPos);
+        const headerXPos = xPos + col * (colWidth + colSpacing) + colWidth / 2;
+        pdf.setFontSize(fontSize + 2);
+        pdf.text(`ROW ${getRomanNumeral(col)}`, headerXPos, yPos, { align: 'center' });
     }
 
     yPos += rowHeight;
 
-
     pdf.setFontSize(fontSize);
-    pdf.setFont("Times New Roman", "bold"); // Set font to normal for data content
+    pdf.setFont("Helvetica", "normal");
 
-    
     for (let i = 0; i < pageDetail.numCandidates; i++) {
         const dataIndex = previousDataCount + i;
         if (dataIndex >= totalData.length) break;
@@ -541,17 +571,30 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
         const value = totalData[dataIndex];
         if (typeof value === 'string' && value.trim() !== '') {
             if (i % totalRows === 0 && i !== 0) {
-                yPos = 160; // Reset Y position after reaching row count
-                xPos += colWidth; // Move to the next column
+                yPos = 160 + rowHeight;
+                xPos += colWidth + colSpacing;
             }
-            if (xPos + colWidth > pdf.internal.pageSize.getWidth() - margin) break; // Stop if reaching page end
+            if (xPos + colWidth > pageWidth - margin) break;
 
-            pdf.text(value, xPos, yPos + ((i % totalRows) + 1) * rowHeight); // +1 to avoid merging with headers
+            pdf.text(value, xPos + colWidth / 2, yPos + ((i % totalRows) + 1) * rowHeight, { align: 'center' });
         }
     }
 
     return previousDataCount + pageDetail.numCandidates;
 }
+
+function getRomanNumeral(num) {
+    const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+    return roman[num] || num;
+}
+
+
+
+
+
+
+
+
 
 
 
