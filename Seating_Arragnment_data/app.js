@@ -447,7 +447,7 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
     const totalData = data.flat();
 
     let xPos = margin;
-    let yPos = 240; // Adjusted start position to avoid merging with headers
+    let yPos = 160; // Adjusted start position to avoid merging with headers
     // Adjust font size based on the number of columns
     let fontSize;
     if (pageDetail.numColumns <= 3) {
@@ -541,7 +541,7 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
         const value = totalData[dataIndex];
         if (typeof value === 'string' && value.trim() !== '') {
             if (i % totalRows === 0 && i !== 0) {
-                yPos = 260; // Reset Y position after reaching row count
+                yPos = 160; // Reset Y position after reaching row count
                 xPos += colWidth; // Move to the next column
             }
             if (xPos + colWidth > pdf.internal.pageSize.getWidth() - margin) break; // Stop if reaching page end
