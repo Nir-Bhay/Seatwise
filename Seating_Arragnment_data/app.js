@@ -393,20 +393,20 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     const height = pdf.internal.pageSize.getHeight();
 
     // Header
-    pdf.setFontSize(14);
-    pdf.setFont("Times New Roman", "bold");
-    pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
+    // pdf.setFontSize(14);
+    // pdf.setFont("Times New Roman", "bold");
+    // pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
 
     pdf.setFontSize(20);
     pdf.setFont("Times New Roman", "bold");
-    pdf.text(`SAGE University,Bhopal`, width / 2, margin + 20, { align: "center" });
+    pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
 
     pdf.setFontSize(15);
     pdf.setFont("Times New Roman", "bold");
     pdf.text(`Room No - ${roomNumber}`, width / 2, margin + 50, { align: "center" });
     pdf.text(`Time: ${examTime}`, width - margin, margin + 60, { align: "right" });
     pdf.text(`Date: ${examDate}`, width - margin, margin + 75, { align: "right" });
-    pdf.text(`Sem.: ${semester}`, width / 2, margin + 80, { align: "center" });
+    // pdf.text(`Sem.: ${semester}`, width / 2, margin + 80, { align: "center" });
     // pdf.text(` `, width / 2, margin + 85, { align: "center" });
     // pdf.text(` `, width / 2, margin + 110, { align: "center" });
 
@@ -414,12 +414,12 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.setFontSize(13);
     pdf.setFont("Times New Roman", "bold");
     pdf.text(`Program/Branch: ${programBranch}`, margin, height - 120);
-    pdf.text(`Semester: ${semester}`, margin + 200, height - 120);
+    pdf.text(`Semester: ${semester}`, margin + 300, height - 120);
     pdf.text(`Status: ${status}`, margin + 380, height - 120);
-    pdf.text(`No. of Candidates: ${numCandidates}`, margin, height - 90);
+    pdf.text(`No. of Candidates: ${numCandidates * 2}`, margin, height - 90);
     pdf.text(`PRESENT: `, margin + 200, height - 90);
     pdf.text(`ABSENT: `, margin + 400, height - 90);
-    pdf.text(`Total: ${numCandidates}`, margin + 600, height - 90);
+    pdf.text(`Total: ${numCandidates *2}`, margin + 600, height - 90);
     pdf.text(`DESIGN.`, margin, height - 60);
     pdf.text(`BRANCH`, margin + 200, height - 60);
     pdf.text(`SIGNATURE WITH DATE`, margin + 400, height - 60);
@@ -467,10 +467,11 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
             fontSize = textWidth > maxCharWidth ? Math.max(8, 12 * maxCharWidth / textWidth) : 12;
             break;
         case 5:
-            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 10;
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
             break;
         case 6:
-            fontSize = textWidth > maxCharWidth ? Math.max(6, 9 * maxCharWidth / textWidth) : 9;
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
+            fontWeight = 'bold';
             break;
         default:
             fontSize = textWidth > maxCharWidth ? Math.max(5, 8 * maxCharWidth / textWidth) : 8;
