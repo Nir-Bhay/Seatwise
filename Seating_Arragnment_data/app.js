@@ -374,7 +374,9 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.text(`No. of Candidates: ${numCandidates * 2}`, margin, height - 90);
     pdf.text(`PRESENT: `, margin + 200, height - 90);
     pdf.text(`ABSENT: `, margin + 400, height - 90);
+
     pdf.text(`Total: ${numCandidates * 2}`, margin + 600, height - 90);
+
     pdf.text(`DESIGN.`, margin, height - 60);
     pdf.text(`BRANCH`, margin + 200, height - 60);
     pdf.text(`SIGNATURE WITH DATE`, margin + 400, height - 60);
@@ -431,10 +433,18 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
             fontSize = textWidth > maxCharWidth ? Math.max(9, 13 * maxCharWidth / textWidth) : 13;
             break;
         case 5:
+
             fontSize = textWidth > maxCharWidth ? Math.max(8, 12 * maxCharWidth / textWidth) : 12;
             break;
         case 6:
             fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 10;
+
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
+            break;
+        case 6:
+            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
+            fontWeight = 'bold';
+
             break;
         default:
             fontSize = textWidth > maxCharWidth ? Math.max(5, 8 * maxCharWidth / textWidth) : 8;
