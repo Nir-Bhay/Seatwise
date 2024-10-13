@@ -143,44 +143,18 @@
                         <label for="popupNumColumns">Number of Columns:</label>
                         <input type="number" id="popupNumColumns" class="form-control">
                     </div>
+                    <div class="form-group">
+                        <label for="rows">Number of Rows (optional):</label>
+                        <input type="number" id="rows" class="form-control" placeholder="Enter number of rows">
+                    </div>
                     <button type="button" class="custom-button" onclick="addPageDetail()">Add Page</button>
                 </div>
             </div>
-            <!-- Theme Customization -->
-            <!-- <h3>Customize PDF Theme</h3>
-            <div class="form-group">
-                <label for="fontFamily">Font Family:</label>
-                <select id="fontFamily" class="form-control">
-                    <option value="helvetica">Helvetica</option>
-                    <option value="times">Times New Roman</option>
-                    <option value="courier">Courier</option>
-                    <option value="arial">Arial</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="fontSize">Font Size:</label>
-                <input type="number" id="fontSize" class="form-control" value="14">
-            </div>
-            <div class="form-group">
-                <label for="fontWeight">Font Weight:</label>
-                <select id="fontWeight" class="form-control">
-                    <option value="normal">Normal</option>
-                    <option value="bold">Bold</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="textColor">Text Color:</label>
-                <input type="color" id="textColor" class="form-control" value="#000000">
-            </div> -->
-
-
 
             <!-- Buttons -->
             <div class="form-group">
                 <button type="button" class="custom-button" onclick="generatePDF()">Generate PDF</button>
                 <br>
-
-
             </div>
         </form>
 
@@ -193,17 +167,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const mergeButton = document.querySelector('.custom-button');
-
-            mergeButton.addEventListener('click', function () {
-                const url = this.getAttribute('data-href');
-                window.location.href = url; // Redirects to the specified URL
-            });
-        });
-
-    </script> -->
 </body>
 
 </html>
