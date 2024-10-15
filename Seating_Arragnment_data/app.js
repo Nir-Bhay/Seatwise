@@ -532,6 +532,7 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
     const context = document.createElement('canvas').getContext('2d');
     context.font = `${fontSize}px Times New Roman`;
     const maxCharWidth = 150;
+    
     const textWidth = context.measureText(totalData[0] || '').width;
     fontSize = Math.min(fontSize, (maxCharWidth / textWidth) * fontSize);
 
@@ -550,20 +551,14 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
 
     for (let i = 0; i < totalData.length; i++) {
         const value = totalData[i]; // Get the current value from the array
-
-        // Check if the value is a non-empty string
+    // Check if the value is a non-empty string
         if (typeof value === 'string' && value.trim() !== '') {
-
             // Check if it's time to move to the next column (every 'totalRows' items)
             if (i % totalRows === 0 && i !== 0) {
                 xPos += colWidth + colSpacing; // Move to the next column
                 yPos = 160 + rowHeight; // Reset the y position for the new column
             }
-
-            // Check if the current y position plus row height exceeds the page height minus margin
-            if (yPos + rowHeight > pageHeight - margin) break;
-
-            // Add text to the PDF at the calculated position
+           if (yPos + rowHeight > pageHeight - margin) break;
             pdf.text(value, xPos + colWidth / 2, yPos + (i % totalRows) * (rowHeight + colSpacing), { align: 'center' });
         }
     }
