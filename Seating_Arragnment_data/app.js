@@ -1,3 +1,4 @@
+
 document.getElementById('file1').addEventListener('change', handleFile);
 
 let data1 = [], data2 = [], data3 = [], data4 = [];
@@ -531,6 +532,7 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
     const context = document.createElement('canvas').getContext('2d');
     context.font = `${fontSize}px Times New Roman`;
     const maxCharWidth = 150;
+    
     const textWidth = context.measureText(totalData[0] || '').width;
     fontSize = Math.min(fontSize, (maxCharWidth / textWidth) * fontSize);
 
@@ -548,16 +550,19 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
     pdf.setFont("Helvetica", "bold");
 
     for (let i = 0; i < totalData.length; i++) {
-        const value = totalData[i];
+        const value = totalData[i]; // Get the current value from the array
+    // Check if the value is a non-empty string
         if (typeof value === 'string' && value.trim() !== '') {
+            // Check if it's time to move to the next column (every 'totalRows' items)
             if (i % totalRows === 0 && i !== 0) {
-                xPos += colWidth + colSpacing;
-                yPos = 160 + rowHeight;
+                xPos += colWidth + colSpacing; // Move to the next column
+                yPos = 160 + rowHeight; // Reset the y position for the new column
             }
-            if (yPos + rowHeight > pageHeight - margin) break;
+           if (yPos + rowHeight > pageHeight - margin) break;
             pdf.text(value, xPos + colWidth / 2, yPos + (i % totalRows) * (rowHeight + colSpacing), { align: 'center' });
         }
     }
+
 
     return previousDataCount + totalData.length;
 }
