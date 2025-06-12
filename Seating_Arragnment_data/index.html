@@ -5,166 +5,478 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
-    <title>Exam Hall Seating Arrangement</title>
-    <link rel="stylesheet" href="Style.css">
+    <title>Exam Hall Seating Arrangement | Seat-Wise</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Exam Hall Seating Arrangement</h1>
-
-
-
-        <form id="examForm">
-
-
-            <!-- Dropdowns -->
-            <div class="form-group">
-                <label for="CollegeName">College/University Name:</label>
-                <select id="CollegeName" class="form-control">
-                    <option value="">Choose College/University:</option>
-                    <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
-                    <!-- <option value="LNCT, Group of College,Bhopal">LNCT, Group of College,Bhopal</option> -->
-                    <!-- <option value="SIRT, Bhopal">SIRT, Bhopal</option> -->
-                    <!-- Add more options as needed -->
-                    <option value="Custom">Custom</option> <!-- For custom input -->
-                </select>
-                <input type="text" id="customCollege" class="form-control" placeholder="Enter custom college name"
-                    style="display:none;" />
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="ri-layout-grid-fill"></i>
+                <span>Seat-Wise</span>
             </div>
-            <div class="form-group">
-                <label for="branch">Branch:</label> <br>
-                <select id="branch" class="form-control">
-                    <option value="Select Branch">Select Branch:</option>
-                    <option value="B.Tech">B.Tech</option>
-                    <option value="BCA">BCA</option>
-                    <option value="B.Sc">B.Sc</option>
-                    <option value="B.A">B.A</option>
-                    <option value="B.Com">B.Com</option>
-                    <option value="M.Tech">M.Tech</option>
-                    <option value="MCA">MCA</option>
-                    <option value="M.A">M.A</option>
-                    <option value="M.Com">M.Com</option>
-                    <option value="Custom">Custom</option> <!-- For custom input -->
-                </select>
-                <input type="text" id="customBranch" class="form-control" placeholder="Enter custom branch"
-                    style="display:none;" />
+            <div class="user-info">
+                <span class="user-email" id="userEmail"></span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="ri-logout-box-r-line"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="page-header">
+            <h1>
+                <i class="ri-file-list-3-line"></i>
+                Exam Hall Seating Arrangement
+            </h1>
+            <p>Configure exam details and generate professional seating arrangements</p>
+        </div>
+
+        <form id="examForm" class="exam-form">
+            <!-- Section 1: Basic Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="ri-information-line"></i>
+                        Basic Information
+                    </h2>
+                    <span class="section-number">1</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="CollegeName">
+                            <i class="ri-building-line"></i>
+                            College/University Name
+                        </label>
+                        <select id="CollegeName" class="form-control">
+                            <option value="">Choose College/University</option>
+                            <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <input type="text" id="customCollege" class="form-control"
+                            placeholder="Enter custom college name" style="display:none;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="branch">
+                            <i class="ri-git-branch-line"></i>
+                            Branch
+                        </label>
+                        <select id="branch" class="form-control">
+                            <option value="Select Branch">Select Branch</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="BCA">BCA</option>
+                            <option value="B.Sc">B.Sc</option>
+                            <option value="B.A">B.A</option>
+                            <option value="B.Com">B.Com</option>
+                            <option value="M.Tech">M.Tech</option>
+                            <option value="MCA">MCA</option>
+                            <option value="M.A">M.A</option>
+                            <option value="M.Com">M.Com</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <input type="text" id="customBranch" class="form-control" placeholder="Enter custom branch"
+                            style="display:none;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="program">
+                            <i class="ri-book-2-line"></i>
+                            Program
+                        </label>
+                        <select id="program" class="form-control">
+                            <option value="Select Program">Select Program</option>
+                        </select>
+                        <input type="text" id="customProgram" class="form-control" placeholder="Enter custom program"
+                            style="display:none;" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="semester">
+                            <i class="ri-number-1"></i>
+                            Semester
+                        </label>
+                        <select id="semester" class="form-control">
+                            <option value="">Select Semester</option>
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                            <option value="VII">VII</option>
+                            <option value="VIII">VIII</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="program">Program:</label> <br>
-                <select id="program" class="form-control">
-                    <option value="Select Program">Select Program:</option>
-                </select>
-                <input type="text" id="customProgram" class="form-control" placeholder="Enter custom program"
-                    style="display:none;" />
+            <!-- Section 2: Exam Details -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="ri-calendar-line"></i>
+                        Exam Details
+                    </h2>
+                    <span class="section-number">2</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="examTime">
+                            <i class="ri-time-line"></i>
+                            Exam Time
+                        </label>
+                        <select id="examTime" class="form-control">
+                            <option value="Select Timing:">Select Exam Timing</option>
+                            <option value="10:30 AM - 01:30 PM">10:30 AM - 01:30 PM</option>
+                            <option value="2:00 PM - 05:00 PM">2:00 PM - 05:00 PM</option>
+                            <option value="Custom">Custom</option>
+                        </select>
+                        <div class="custom-time-inputs" style="display:none;">
+                            <input type="time" id="customStartTime" class="form-control" placeholder="Start Time" />
+                            <input type="time" id="customEndTime" class="form-control" placeholder="End Time" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="examDate">
+                            <i class="ri-calendar-check-line"></i>
+                            Exam Date
+                        </label>
+                        <input type="date" id="examDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">
+                            <i class="ri-user-line"></i>
+                            Student Status
+                        </label>
+                        <select id="status" class="form-control">
+                            <option value="">Select Student Status</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Backlog">ATKT</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrangementType">
+                            <i class="ri-layout-line"></i>
+                            Arrangement Type
+                        </label>
+                        <select id="arrangementType" class="form-control">
+                            <option value="vertical">Vertical</option>
+                            <option value="horizontal">Horizontal</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="examTime">Exam Time:</label>
-                <select id="examTime" class="form-control">
-                    <option value="Select Timing:">Select the Exam Timing</option>
-                    <option value="9:00 AM - 12:00 PM">10:30 AM - 01:30 PM</option>
-                    <option value="2:00 PM - 5:00 PM">2:00 PM - 05:00 PM</option>
-                    <option value="Custom">Custom</option> <!-- For custom input -->
-                </select>
-                <input type="time" id="customStartTime" class="form-control" placeholder="Start Time"
-                    style="display:none;" />
-                <input type="time" id="customEndTime" class="form-control" placeholder="End Time"
-                    style="display:none;" />
-            </div>
+            <!-- Section 3: Data Files -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="ri-file-excel-2-line"></i>
+                        Student Data Files
+                    </h2>
+                    <span class="section-number">3</span>
+                </div>
 
-            <div class="form-group">
-                <label for="examDate">Exam Date:</label>
-                <input type="date" id="examDate" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="semester">Semester:</label> <br>
-                <select id="semester" class="form-control">
-                    <option value="">Select the Semester</option>
-                    <option value="I">I</option>
-                    <option value="II">II</option>
-                    <option value="III">III</option>
-                    <option value="IV">IV</option>
-                    <option value="V">V</option>
-                    <option value="VI">VI</option>
-                    <option value="VII">VII</option>
-                    <option value="VIII">VIII</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="status">Student Status:</label>
-                <select id="status" class="form-control">
-                    <option value="">Select Student Status</option>
-                    <option value="Regular">Regular</option>
-                    <option value="Backlog">ATKT</option>
-                    <option value="Both">Both</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="arrangementType">Arrangement Type :</label>
-                <select id="arrangementType" class="form-control">
-                    <option value="horizontal">Horizontal</option>
-                    <option value="vertical">Vertical</option>
-                </select>
-            </div>
-
-            <div id="fileInputsContainer">
                 <div class="form-group">
-                    <label for="file1">Upload Excel File 1:</label>
-                    <input type="file" id="file1" class="form-control" accept=".xlsx">
+                    <label for="dataEntryType">
+                        <i class="ri-stack-line"></i>
+                        Data Entry Type
+                    </label>
+                    <select id="dataEntryType" class="form-control">
+                        <option value="single">Single</option>
+                        <option value="double">Double</option>
+                    </select>
+                </div>
+
+                <div id="fileInputsContainer" class="file-inputs-container">
+                    <div class="file-upload-card">
+                        <div class="file-icon">
+                            <i class="ri-file-excel-2-line"></i>
+                        </div>
+                        <label for="file1" class="file-label">
+                            Upload Excel File 1
+                            <input type="file" id="file1" class="file-input" accept=".xlsx">
+                        </label>
+                        <span class="file-name" id="fileName1">No file chosen</span>
+                    </div>
+                    <div class="file-upload-card" id="file2Container" style="display: none;">
+                        <div class="file-icon">
+                            <i class="ri-file-excel-2-line"></i>
+                        </div>
+                        <label for="file2" class="file-label">
+                            Upload Excel File 2
+                            <input type="file" id="file2" class="file-input" accept=".xlsx">
+                        </label>
+                        <span class="file-name" id="fileName2">No file chosen</span>
+                    </div>
+                </div>
+
+                <button type="button" class="add-file-btn" onclick="addFileInput()">
+                    <i class="ri-add-line"></i>
+                    Add More Files
+                </button>
+            </div>
+
+            <!-- Section 4: Custom Configuration -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="ri-settings-3-line"></i>
+                        Custom Configuration
+                    </h2>
+                    <span class="section-number">4</span>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="blankRows">
+                            <i class="ri-layout-row-line"></i>
+                            Leave every nth row blank
+                        </label>
+                        <input type="number" id="blankRows" class="form-control" min="1" placeholder="e.g., 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doubleDataColumns">
+                            <i class="ri-layout-column-line"></i>
+                            Columns with double data
+                        </label>
+                        <input type="text" id="doubleDataColumns" class="form-control" placeholder="e.g., 1,3">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customHeaders">
+                            <i class="ri-text"></i>
+                            Custom Headers
+                        </label>
+                        <input type="text" id="customHeaders" class="form-control" placeholder="e.g., Name, Age, Grade">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fontSize">
+                            <i class="ri-font-size-2"></i>
+                            Font Size
+                        </label>
+                        <input type="number" id="fontSize" class="form-control" min="5" max="20" value="12">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cellBorders">
+                            <i class="ri-border-all-line"></i>
+                            Cell Borders
+                        </label>
+                        <select id="cellBorders" class="form-control">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rowHeight">
+                            <i class="ri-line-height"></i>
+                            Row Height
+                        </label>
+                        <input type="number" id="rowHeight" class="form-control" min="10" max="50" value="20">
+                    </div>
                 </div>
             </div>
-            <button type="button" onclick="addFileInput()">Add More Files</button>
 
-
-            <!-- Page Specific Inputs -->
-            <h3>Page Details</h3>
-            <div id="pageDetailsContainer"></div>
-            <button type="button" class="custom-button" onclick="showPopup()">Add Another Page</button>
-
-            <!-- Popup Modal -->
-            <div id="popupForm" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h4>Add Page Details</h4>
-                    <div class="form-group">
-                        <label for="popupRoomNumber">Room Number:</label>
-                        <input type="text" id="popupRoomNumber" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="popupNumCandidates">Number of Candidates:</label>
-                        <input type="number" id="popupNumCandidates" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="popupNumColumns">Number of Columns:</label>
-                        <input type="number" id="popupNumColumns" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="rows">Number of Rows (optional):</label>
-                        <input type="number" id="rows" class="form-control" placeholder="Enter number of rows">
-                    </div>
-                    <button type="button" class="custom-button" onclick="addPageDetail()">Add Page</button>
+            <!-- Section 5: Room Details -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="ri-door-open-line"></i>
+                        Room Configuration
+                    </h2>
+                    <span class="section-number">5</span>
                 </div>
+
+                <div id="pageDetailsContainer" class="room-details-container"></div>
+
+                <button type="button" class="add-room-btn" onclick="showPopup()">
+                    <i class="ri-add-circle-line"></i>
+                    Add Room
+                </button>
             </div>
 
-            <!-- Buttons -->
-            <div class="form-group">
-                <button type="button" class="custom-button" onclick="generatePDF()">Generate PDF</button>
-                <br>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" class="btn btn-primary" onclick="generatePDF()">
+                    <i class="ri-file-pdf-line"></i>
+                    Generate PDF
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    <i class="ri-refresh-line"></i>
+                    Reset Form
+                </button>
             </div>
         </form>
 
-        <!-- PDF Preview -->
-        <div id="pdfPreview" class="pdf-preview"></div>
-        <button type="button" class="custom-button" onclick="downloadPDF()">Download PDF</button>
+        <!-- PDF Preview Section -->
+        <div id="pdfPreviewSection" class="pdf-preview-section" style="display: none;">
+            <div class="preview-header">
+                <h2>
+                    <i class="ri-file-pdf-line"></i>
+                    PDF Preview
+                </h2>
+                <button type="button" class="btn btn-download" onclick="downloadPDF()">
+                    <i class="ri-download-line"></i>
+                    Download PDF
+                </button>
+            </div>
+            <div id="pdfPreview" class="pdf-preview"></div>
+        </div>
     </div>
-    <!-- JS Libraries for XLSX and jsPDF -->
+
+    <!-- Room Details Modal -->
+    <div id="popupForm" class="modal">
+        <div class="modal-overlay" onclick="closePopup()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="ri-door-open-line"></i>
+                    Add Room Details
+                </h3>
+                <button class="modal-close" onclick="closePopup()">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="popupRoomNumber">
+                        <i class="ri-hashtag"></i>
+                        Room Number
+                    </label>
+                    <input type="text" id="popupRoomNumber" class="form-control" placeholder="e.g., 101">
+                </div>
+
+                <div class="form-group">
+                    <label for="popupNumCandidates">
+                        <i class="ri-group-line"></i>
+                        Number of Candidates
+                    </label>
+                    <input type="number" id="popupNumCandidates" class="form-control" placeholder="e.g., 30">
+                </div>
+
+                <div class="form-group">
+                    <label for="popupNumColumns">
+                        <i class="ri-layout-column-line"></i>
+                        Number of Columns
+                    </label>
+                    <input type="number" id="popupNumColumns" class="form-control" placeholder="e.g., 6">
+                </div>
+
+                <div class="form-group">
+                    <label for="rows">
+                        <i class="ri-layout-row-line"></i>
+                        Number of Rows (optional)
+                    </label>
+                    <input type="number" id="rows" class="form-control" placeholder="Leave empty for auto-calculation">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closePopup()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="addPageDetail()">Add Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="ri-loader-4-line"></i>
+            <p>Generating PDF...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Check authentication
+        (function () {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = '../auth.html';
+            }
+
+            const userEmail = sessionStorage.getItem('userEmail');
+            document.getElementById('userEmail').textContent = userEmail || 'Guest User';
+        })();
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '../auth.html';
+        }
+
+        // Update file name display
+        document.querySelectorAll('.file-input').forEach(input => {
+            input.addEventListener('change', function () {
+                const fileName = this.files[0]?.name || 'No file chosen';
+                const fileNameSpan = this.closest('.file-upload-card').querySelector('.file-name');
+                fileNameSpan.textContent = fileName;
+                fileNameSpan.classList.add('file-selected');
+            });
+        });
+
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all form data?')) {
+                document.getElementById('examForm').reset();
+                pageDetailsArray = [];
+                document.getElementById('pageDetailsContainer').innerHTML = '';
+                showToast('Form reset successfully', 'success');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Progress bar update
+        function updateProgress() {
+            const form = document.getElementById('examForm');
+            const inputs = form.querySelectorAll('input[required], select[required]');
+            const filled = Array.from(inputs).filter(input => input.value).length;
+            const progress = (filled / inputs.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // Add event listeners for progress update
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('change', updateProgress);
+            element.addEventListener('input', updateProgress);
+        });
+    </script>
 </body>
 
 </html>

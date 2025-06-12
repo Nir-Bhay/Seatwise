@@ -1,5 +1,5 @@
-
 document.getElementById('file1').addEventListener('change', handleFile);
+document.getElementById('file2').addEventListener('change', handleFile);
 
 let data1 = [], data2 = [], data3 = [], data4 = [];
 let pageDetailsArray = [];
@@ -8,7 +8,21 @@ let pageDetailsArray = [];
 function handleFile(event) {
     const file = event.target.files[0];
     if (!file) {
-        alert("No file selected!");
+        showToast('No file selected', 'error');
+        return;
+    }
+
+    if (!file.name.endsWith('.xlsx')) {
+        showToast('Please upload an Excel file (.xlsx)', 'error');
+        event.target.value = '';
+        return;
+    }
+
+    // Show file size
+    const fileSize = (file.size / 1024 / 1024).toFixed(2);
+    if (fileSize > 10) {
+        showToast('File size should be less than 10MB', 'error');
+        event.target.value = '';
         return;
     }
 
@@ -26,9 +40,10 @@ function handleFile(event) {
             else if (event.target.id === 'file3') data3 = json.flat();
             else if (event.target.id === 'file4') data4 = json.flat();
 
-            checkDataPresence(); // Check data presence to proceed
+            checkDataPresence();
+            showToast('File uploaded successfully', 'success');
         } catch (error) {
-            alert("Error processing file: " + error.message);
+            showToast("Error processing file: " + error.message, 'error');
         }
     };
     reader.readAsArrayBuffer(file);
@@ -38,7 +53,7 @@ function handleFile(event) {
 function addFileInput() {
     const fileInputsContainer = document.getElementById('fileInputsContainer');
     const currentCount = fileInputsContainer.children.length;
-    if (currentCount >= 4) return; // Limit to 4 file inputs
+    if (currentCount >= 4) return;
 
     const fileIndex = currentCount + 1;
     const newFileInput = document.createElement('div');
@@ -55,16 +70,17 @@ function addFileInput() {
 function checkDataPresence() {
     if (data1.length > 0 || data2.length > 0 || data3.length > 0 || data4.length > 0) {
         console.log("At least one file is loaded, proceeding with further operations.");
-        // Proceed with other operations
     } else {
-        alert("No data loaded from files.");
+        console.log("No data loaded from files.");
     }
 }
-
 
 // Show Popup
 function showPopup() {
     document.getElementById('popupForm').style.display = 'block';
+    setTimeout(() => {
+        document.getElementById('popupRoomNumber').focus();
+    }, 100);
 }
 
 // Close Popup
@@ -72,18 +88,15 @@ function closePopup() {
     document.getElementById('popupForm').style.display = 'none';
 }
 
-// Adding page details dynamically with HTML form inputs
-
-
+// Adding page details
 function addPageDetail() {
-    const pageCount = pageDetailsArray.length + 1;
     const roomNumber = document.getElementById('popupRoomNumber').value;
     const numCandidates = document.getElementById('popupNumCandidates').value;
     const numColumns = document.getElementById('popupNumColumns').value;
-    const rows = document.getElementById('rows').value; // New row input
+    const rows = document.getElementById('rows').value;
 
-    if (!roomNumber || !numColumns) {
-        alert("Please fill in all details.");
+    if (!roomNumber || !numCandidates || !numColumns) {
+        showToast('Please fill in all required fields', 'error');
         return;
     }
 
@@ -91,45 +104,69 @@ function addPageDetail() {
         roomNumber: roomNumber,
         numCandidates: parseInt(numCandidates),
         numColumns: parseInt(numColumns),
-        rows: rows ? parseInt(rows) : null // Store row value
+        rows: rows ? parseInt(rows) : null
     });
 
-    // Append page detail to the UI
-    const pageDetailsContainer = document.getElementById('pageDetailsContainer');
-    const div = document.createElement('div');
-    div.classList.add('page-detail');
-    div.innerHTML = `
-        <strong>Page ${pageCount}</strong><br>
-        Room: ${roomNumber}, Candidates: ${numCandidates}, Columns: ${numColumns}, Rows: ${rows || 'N/A'} 
-        <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${pageCount - 1})">Remove</button>
-    `;
-    pageDetailsContainer.appendChild(div);
+    updateRoomDisplay();
     closePopup();
+    showToast('Room added successfully', 'success');
+
+    // Clear form
+    document.getElementById('popupRoomNumber').value = '';
+    document.getElementById('popupNumCandidates').value = '';
+    document.getElementById('popupNumColumns').value = '';
+    document.getElementById('rows').value = '';
 }
-
-
-
-
 
 // Remove page detail
 function removePageDetail(index) {
-    pageDetailsArray.splice(index, 1);
-    const pageDetailsContainer = document.getElementById('pageDetailsContainer');
-    pageDetailsContainer.innerHTML = '';
-    pageDetailsArray.forEach((pageDetail, i) => {
-        const div = document.createElement('div');
-        div.classList.add('page-detail');
-        div.innerHTML = `
-            <strong>Page ${i + 1}</strong><br>
-            Room: ${pageDetail.roomNumber}, Candidates: ${pageDetail.numCandidates}, Columns: ${pageDetail.numColumns}
-            <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${i})">Remove</button>
+    if (confirm('Are you sure you want to remove this room?')) {
+        pageDetailsArray.splice(index, 1);
+        updateRoomDisplay();
+        showToast('Room removed successfully', 'info');
+    }
+}
+
+// Update room display
+function updateRoomDisplay() {
+    const container = document.getElementById('pageDetailsContainer');
+    container.innerHTML = '';
+
+    pageDetailsArray.forEach((room, index) => {
+        const roomCard = document.createElement('div');
+        roomCard.className = 'room-card';
+        roomCard.innerHTML = `
+            <div class="room-card-header">
+                <div class="room-card-title">
+                    <i class="ri-door-open-line"></i>
+                    Room ${room.roomNumber}
+                </div>
+                <button class="remove-room-btn" onclick="removePageDetail(${index})">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <div class="room-card-details">
+                <div class="room-detail">
+                    <i class="ri-group-line"></i>
+                    <span>${room.numCandidates} Candidates</span>
+                </div>
+                <div class="room-detail">
+                    <i class="ri-layout-column-line"></i>
+                    <span>${room.numColumns} Columns</span>
+                </div>
+                ${room.rows ? `
+                    <div class="room-detail">
+                        <i class="ri-layout-row-line"></i>
+                        <span>${room.rows} Rows</span>
+                    </div>
+                ` : ''}
+            </div>
         `;
-        pageDetailsContainer.appendChild(div);
+        container.appendChild(roomCard);
     });
 }
 
-
-
+// College name change handler
 document.getElementById('CollegeName').addEventListener('change', function () {
     const collegeName = this.value;
     const customCollegeInput = document.getElementById('customCollege');
@@ -139,16 +176,14 @@ document.getElementById('CollegeName').addEventListener('change', function () {
     } else {
         customCollegeInput.style.display = 'none';
     }
-
 });
 
-
-
+// Branch change handler
 document.getElementById('branch').addEventListener('change', function () {
     const branch = this.value;
     const customBranchInput = document.getElementById('customBranch');
     const programSelect = document.getElementById('program');
-    programSelect.innerHTML = ''; // Clear previous options
+    programSelect.innerHTML = '';
 
     if (branch === 'Custom') {
         customBranchInput.style.display = 'block';
@@ -215,132 +250,170 @@ document.getElementById('program').addEventListener('change', function () {
     }
 });
 
-
-
-
-
 document.getElementById('examTime').addEventListener('change', function () {
     const examTime = this.value;
-    const customStartTimeInput = document.getElementById('customStartTime');
-    const customEndTimeInput = document.getElementById('customEndTime');
+    const customTimeInputs = document.querySelector('.custom-time-inputs');
 
     if (examTime === 'Custom') {
+        customTimeInputs.style.display = 'grid';
+        const customStartTimeInput = document.getElementById('customStartTime');
+        const customEndTimeInput = document.getElementById('customEndTime');
         customStartTimeInput.type = 'text';
         customEndTimeInput.type = 'text';
-
         customStartTimeInput.setAttribute('placeholder', 'Start Time (hh:mm AM/PM)');
         customEndTimeInput.setAttribute('placeholder', 'End Time (hh:mm AM/PM)');
-
-        customStartTimeInput.style.display = 'block';
-        customEndTimeInput.style.display = 'block';
     } else {
-        customStartTimeInput.style.display = 'none';
-        customEndTimeInput.style.display = 'none';
+        customTimeInputs.style.display = 'none';
     }
 });
 
+document.getElementById('dataEntryType').addEventListener('change', function () {
+    const dataEntryType = this.value;
+    const file2Container = document.getElementById('file2Container');
 
+    if (dataEntryType === 'double') {
+        file2Container.style.display = 'block';
+    } else {
+        file2Container.style.display = 'none';
+    }
+});
 
-function addOptions(selectElement, optionsArray) {
-    optionsArray.forEach(option => {
-        const newOption = document.createElement('option');
-        newOption.value = option;
-        newOption.text = option;
-        selectElement.appendChild(newOption);
-    });
+// Form validation
+function validateForm() {
+    const requiredFields = [
+        { id: 'CollegeName', name: 'College/University' },
+        { id: 'branch', name: 'Branch' },
+        { id: 'examDate', name: 'Exam Date' },
+        { id: 'semester', name: 'Semester' },
+        { id: 'status', name: 'Student Status' }
+    ];
+
+    for (const field of requiredFields) {
+        const element = document.getElementById(field.id);
+        if (!element.value || element.value === 'Select Branch' || element.value === 'Select Program') {
+            showToast(`Please select ${field.name}`, 'error');
+            element.focus();
+            return false;
+        }
+    }
+
+    if (pageDetailsArray.length === 0) {
+        showToast('Please add at least one room', 'error');
+        document.querySelector('.add-room-btn').focus();
+        return false;
+    }
+
+    const hasFiles = data1.length > 0 || data2.length > 0 || data3.length > 0 || data4.length > 0;
+    if (!hasFiles) {
+        showToast('Please upload at least one Excel file', 'error');
+        return false;
+    }
+
+    return true;
 }
 
+// Show loading overlay
+function showLoading() {
+    document.getElementById('loadingOverlay').style.display = 'block';
+}
 
+// Hide loading overlay
+function hideLoading() {
+    document.getElementById('loadingOverlay').style.display = 'none';
+}
 
-
-
+// Main PDF generation function
 function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'pt',
-        format: 'A4'
-    });
-    const collegeName = document.getElementById('CollegeName')?.value || '';
-    const customCollege = document.getElementById('customCollege')?.value || '';
-    const branch = document.getElementById('branch')?.value || '';
-    const customBranch = document.getElementById('customBranch')?.value || '';
-    const program = document.getElementById('program')?.value || '';
-    const customProgram = document.getElementById('customProgram')?.value || '';
-    const examTime = document.getElementById('examTime')?.value || '';
-    const customStartTime = document.getElementById('customStartTime')?.value || '';
-    const customEndTime = document.getElementById('customEndTime')?.value || '';
-    const examDate = document.getElementById('examDate')?.value || '';
-    const semester = document.getElementById('semester')?.value || '';
-    const status = document.getElementById('status')?.value || '';
-    const arrangementType = document.getElementById('arrangementType')?.value || '';
-    let previousDataCount = 0;
+    if (!validateForm()) {
+        return;
+    }
 
-    pageDetailsArray.forEach((pageDetail, index) => {
-        if (index > 0) pdf.addPage();
-        const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
-        const displayBranch = branch === 'Custom' ? customBranch : branch;
-        const displayProgram = program === 'Custom' ? customProgram : program;
-        const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
-        addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
-        if (arrangementType === 'horizontal') {
-            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
-        } else {
-            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount);
+    showLoading();
+
+    setTimeout(() => {
+        try {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'landscape',
+                unit: 'pt',
+                format: 'A4'
+            });
+
+            // Get form values
+            const blankRows = parseInt(document.getElementById('blankRows').value) || 0;
+            const doubleDataColumns = document.getElementById('doubleDataColumns').value.split(',').map(Number).filter(n => !isNaN(n));
+            const customHeaders = document.getElementById('customHeaders').value.split(',').filter(h => h.trim());
+            const fontSize = parseInt(document.getElementById('fontSize').value) || 12;
+            const cellBorders = document.getElementById('cellBorders').value === 'yes';
+            const rowHeight = parseInt(document.getElementById('rowHeight').value) || 20;
+
+            const collegeName = document.getElementById('CollegeName')?.value || '';
+            const customCollege = document.getElementById('customCollege')?.value || '';
+            const branch = document.getElementById('branch')?.value || '';
+            const customBranch = document.getElementById('customBranch')?.value || '';
+            const program = document.getElementById('program')?.value || '';
+            const customProgram = document.getElementById('customProgram')?.value || '';
+            const examTime = document.getElementById('examTime')?.value || '';
+            const customStartTime = document.getElementById('customStartTime')?.value || '';
+            const customEndTime = document.getElementById('customEndTime')?.value || '';
+            const examDate = document.getElementById('examDate')?.value || '';
+            const semester = document.getElementById('semester')?.value || '';
+            const status = document.getElementById('status')?.value || '';
+            const arrangementType = document.getElementById('arrangementType')?.value || '';
+            const dataEntryType = document.getElementById('dataEntryType')?.value || 'single';
+
+            let previousDataCount = 0;
+
+            pageDetailsArray.forEach((pageDetail, index) => {
+                if (index > 0) pdf.addPage();
+                const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
+                const displayBranch = branch === 'Custom' ? customBranch : branch;
+                const displayProgram = program === 'Custom' ? customProgram : program;
+                const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
+
+                addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
+
+                if (arrangementType === 'horizontal') {
+                    previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType);
+                } else {
+                    previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType);
+                }
+            });
+
+            // Create PDF preview
+            const blob = pdf.output('blob');
+            const url = URL.createObjectURL(blob);
+            const iframe = `<iframe src="${url}" width="100%" height="600px" style="border: none;"></iframe>`;
+            document.getElementById('pdfPreview').innerHTML = iframe;
+
+            // Show preview section
+            document.getElementById('pdfPreviewSection').style.display = 'block';
+
+            // Store PDF for download
+            window.currentPDF = pdf;
+
+            hideLoading();
+            showToast('PDF generated successfully!', 'success');
+            scrollToPdfPreview();
+
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            hideLoading();
+            showToast('Error generating PDF: ' + error.message, 'error');
         }
-    });
-
-    const blob = pdf.output('blob');
-    const url = URL.createObjectURL(blob);
-    const iframe = `<iframe src="${url}" width="100%" height="600px" style="border: none;"></iframe>`;
-    document.getElementById('pdfPreview').innerHTML = iframe;
-
-    document.getElementById('downloadButton').addEventListener('click', function () {
-        pdf.save('seating-arrangement.pdf');
-    });
+    }, 100);
 }
 
+// Download PDF function
 function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'pt',
-        format: 'A4'
-    });
-    const collegeName = document.getElementById('CollegeName')?.value || '';
-    const customCollege = document.getElementById('customCollege')?.value || '';
-    const branch = document.getElementById('branch')?.value || '';
-    const customBranch = document.getElementById('customBranch')?.value || '';
-    const program = document.getElementById('program')?.value || '';
-    const customProgram = document.getElementById('customProgram')?.value || '';
-    const examTime = document.getElementById('examTime')?.value || '';
-    const customStartTime = document.getElementById('customStartTime')?.value || '';
-    const customEndTime = document.getElementById('customEndTime')?.value || '';
-    const examDate = document.getElementById('examDate')?.value || '';
-    const semester = document.getElementById('semester')?.value || '';
-    const status = document.getElementById('status')?.value || '';
-    const arrangementType = document.getElementById('arrangementType')?.value || '';
-    let previousDataCount = 0;
-
-    pageDetailsArray.forEach((pageDetail, index) => {
-        if (index > 0) pdf.addPage();
-        const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
-        const displayBranch = branch === 'Custom' ? customBranch : branch;
-        const displayProgram = program === 'Custom' ? customProgram : program;
-        const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
-        addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
-        if (arrangementType === 'horizontal') {
-            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
-        } else {
-            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount);
-        }
-    });
-
-    pdf.save('seating-arrangement.pdf');
+    if (window.currentPDF) {
+        window.currentPDF.save('seating-arrangement.pdf');
+        showSuccessAnimation();
+        showToast('PDF downloaded successfully!', 'success');
+    } else {
+        showToast('Please generate a PDF first', 'error');
+    }
 }
-
-
-
 
 // Add Headers and Footers
 function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, roomNumber, numCandidates) {
@@ -349,10 +422,6 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     const height = pdf.internal.pageSize.getHeight();
 
     // Header
-    // pdf.setFontSize(14);
-    // pdf.setFont("Times New Roman", "bold");
-    // pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
-
     pdf.setFontSize(20);
     pdf.setFont("Times New Roman", "bold");
     pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
@@ -362,9 +431,6 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.text(`Room No - ${roomNumber}`, width / 2, margin + 50, { align: "center" });
     pdf.text(`Time: ${examTime}`, width - margin, margin + 60, { align: "right" });
     pdf.text(`Date: ${examDate}`, width - margin, margin + 75, { align: "right" });
-    // pdf.text(`Sem.: ${semester}`, width / 2, margin + 80, { align: "center" });
-    // pdf.text(` `, width / 2, margin + 85, { align: "center" });
-    // pdf.text(` `, width / 2, margin + 110, { align: "center" });
 
     // Footer
     pdf.setFontSize(13);
@@ -372,12 +438,10 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.text(`Program/Branch: ${programBranch}`, margin, height - 120);
     pdf.text(`Semester: ${semester}`, margin + 300, height - 120);
     pdf.text(`Status: ${status}`, margin + 380, height - 120);
-    pdf.text(`No. of Candidates: ${numCandidates * 2}`, margin, height - 90);
+    pdf.text(`No. of Candidates: ${numCandidates}`, margin, height - 90);
     pdf.text(`PRESENT: `, margin + 200, height - 90);
     pdf.text(`ABSENT: `, margin + 400, height - 90);
-
-    pdf.text(`Total: ${numCandidates * 2}`, margin + 600, height - 90);
-
+    pdf.text(`Total: ${numCandidates}`, margin + 600, height - 90);
     pdf.text(`DESIGN.`, margin, height - 60);
     pdf.text(`BRANCH`, margin + 200, height - 60);
     pdf.text(`SIGNATURE WITH DATE`, margin + 400, height - 60);
@@ -387,253 +451,408 @@ function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, se
     pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin - 40, height - margin);
 }
 
-
-
-
-
-function getRomanNumeral(number) {
-    const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
-    return romanNumerals[number];
+function getRomanNumeral(num) {
+    const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+    return roman[num] || (num + 1).toString();
 }
 
-
-// Add Data Columns Horizontally
-function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount) {
-    const margin = 15; // Reduced margin
+function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType) {
+    const margin = 15;
     const pageWidth = pdf.internal.pageSize.getWidth();
-    const colSpacing = 10; // Add some space between columns
+    const colSpacing = 0;
     const colWidth = (pageWidth - margin * 2 - colSpacing * (pageDetail.numColumns - 1)) / pageDetail.numColumns;
 
-    const totalRows = pageDetail.rows || Math.ceil(pageDetail.numCandidates / pageDetail.numColumns); // Use rows value if provided
+    const totalRows = pageDetail.rows || Math.ceil(pageDetail.numCandidates / pageDetail.numColumns);
     const data = [data1, data2, data3, data4].filter(arr => arr.length > 0);
     const totalData = data.flat();
 
     let xPos = margin;
     let yPos = 160;
 
-    let rowHeight;
-    if (totalRows > 8) {
-        rowHeight = 20 - (totalRows - 8);
-        rowHeight = Math.max(rowHeight, 10);
-    } else {
-        rowHeight = 20;
-    }
-
-    const context = document.createElement('canvas').getContext('2d');
-    context.font = '14px Times New Roman'; // Initial font size for measurement
-    const sampleText = totalData[0] || '';
-    const maxCharWidth = 150; // Example max width in pixels, adjust as needed
-    const textWidth = context.measureText(sampleText).width;
-    let fontSize;
-
-    switch (pageDetail.numColumns) {
-        case 3:
-            fontSize = textWidth > maxCharWidth ? Math.max(10, 14 * maxCharWidth / textWidth) : 14;
-            break;
-        case 4:
-            fontSize = textWidth > maxCharWidth ? Math.max(9, 13 * maxCharWidth / textWidth) : 13;
-            break;
-        case 5:
-
-            fontSize = textWidth > maxCharWidth ? Math.max(8, 12 * maxCharWidth / textWidth) : 12;
-            break;
-        case 6:
-            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 10;
-
-            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
-            break;
-        case 6:
-            fontSize = textWidth > maxCharWidth ? Math.max(7, 10 * maxCharWidth / textWidth) : 11;
-            fontWeight = 'bold';
-
-            break;
-        default:
-            fontSize = textWidth > maxCharWidth ? Math.max(5, 8 * maxCharWidth / textWidth) : 8;
-    }
-
     pdf.setFontSize(fontSize);
     pdf.setFont("Helvetica", "bold");
+
     for (let col = 0; col < pageDetail.numColumns; col++) {
         const headerXPos = xPos + col * (colWidth + colSpacing) + colWidth / 2;
-        pdf.setFontSize(fontSize + 2); // Slightly bigger font for headers
-        pdf.text(`ROW ${getRomanNumeral(col)}`, headerXPos, yPos, { align: 'center' });
+        const headerText = customHeaders[col] || `ROW ${getRomanNumeral(col)}`;
+        pdf.text(headerText, headerXPos, yPos, { align: 'center' });
     }
     yPos += rowHeight;
-    pdf.setFontSize(fontSize);
     pdf.setFont("Helvetica", "normal");
 
-    const numCandidates = pageDetail.numCandidates || totalRows * pageDetail.numColumns; // Default to rows * columns if not provided
+    const numCandidates = pageDetail.numCandidates || totalRows * pageDetail.numColumns;
 
-    for (let i = 0; i < numCandidates; i++) {
-        const dataIndex = previousDataCount + i;
-        if (dataIndex >= totalData.length) break;
-        const value = totalData[dataIndex];
-        if (typeof value === 'string' && value.trim() !== '') {
-            if (i % pageDetail.numColumns === 0 && i !== 0) {
-                xPos = margin;
-                yPos += rowHeight;
+    for (let row = 0; row < totalRows; row++) {
+        if (blankRows > 0 && (row + 1) % blankRows === 0) {
+            yPos += rowHeight;
+        }
+        for (let col = 0; col < pageDetail.numColumns; col++) {
+            const index = previousDataCount + row * pageDetail.numColumns + col;
+            if (index < totalData.length) {
+                let cellData = totalData[index].toString();
+                if (dataEntryType === 'double' && doubleDataColumns.includes(col + 1)) {
+                    cellData += `\n${totalData[index + 1] || ''}`;
+                }
+                const cellXPos = xPos + col * (colWidth + colSpacing);
+                const cellYPos = yPos + row * rowHeight;
+
+                if (cellBorders) {
+                    pdf.rect(cellXPos, cellYPos - rowHeight + 5, colWidth, rowHeight);
+                }
+
+                pdf.text(cellData, cellXPos + colWidth / 2, cellYPos - rowHeight / 2 + 5, { align: 'center', baseline: 'middle' });
             }
-            if (yPos + rowHeight > pdf.internal.pageSize.getHeight() - margin) break;
-            pdf.text(value, xPos + (i % pageDetail.numColumns) * (colWidth + colSpacing) + colWidth / 2, yPos, { align: 'center' });
         }
     }
-
     return previousDataCount + numCandidates;
 }
 
-
-
-function addDataColumnsVertical(pdf, pageDetail, previousDataCount) {
+function addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType) {
     const margin = 15;
     const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
-    let colSpacing;
     const totalRows = pageDetail.rows || Math.ceil(pageDetail.numCandidates / pageDetail.numColumns);
     const data = [data1, data2, data3, data4].filter(arr => arr.length > 0).flat();
     const totalData = data.slice(previousDataCount, previousDataCount + totalRows * pageDetail.numColumns);
 
     let xPos = margin;
     let yPos = 160;
-
-    // Adjust rowHeight and colSpacing based on number of rows
-    let rowHeight;
-    if (totalRows > 8) {
-        rowHeight = 20 - (totalRows - 8);
-        rowHeight = Math.max(rowHeight, 10);
-    } else {
-        rowHeight = 20;
-    }
-
-    let fontSize;
-    switch (pageDetail.numColumns) {
-        case 3:
-            colSpacing = 15;
-            fontSize = 14;
-            break;
-        case 4:
-            colSpacing = 12;
-            fontSize = 13;
-            break;
-        case 5:
-            colSpacing = 14;
-            fontSize = 8;
-            break;
-        case 6:
-            colSpacing = 13;
-            fontSize = 7;
-            break;
-        default:
-            colSpacing = 10;
-            fontSize = 8;
-    }
+    let colSpacing = 0;
 
     const colWidth = (pageWidth - margin * 2 - colSpacing * (pageDetail.numColumns - 1)) / pageDetail.numColumns;
-
-    const context = document.createElement('canvas').getContext('2d');
-    context.font = `${fontSize}px Times New Roman`;
-    const maxCharWidth = 150;
-    
-    const textWidth = context.measureText(totalData[0] || '').width;
-    fontSize = Math.min(fontSize, (maxCharWidth / textWidth) * fontSize);
 
     pdf.setFontSize(fontSize);
     pdf.setFont("Helvetica", "bold");
 
     for (let col = 0; col < pageDetail.numColumns; col++) {
         const headerXPos = xPos + col * (colWidth + colSpacing) + colWidth / 2;
-        pdf.setFontSize(fontSize + 2);
-        pdf.text(`COLUMN ${getRomanNumeral(col)}`, headerXPos, yPos, { align: 'center' });
+        const headerText = customHeaders[col] || `COLUMN ${getRomanNumeral(col)}`;
+        pdf.text(headerText, headerXPos, yPos, { align: 'center' });
     }
 
     yPos += rowHeight;
-    pdf.setFontSize(fontSize);
-    pdf.setFont("Helvetica", "bold");
+    pdf.setFont("Helvetica", "normal");
 
     for (let i = 0; i < totalData.length; i++) {
-        const value = totalData[i]; // Get the current value from the array
-    // Check if the value is a non-empty string
-        if (typeof value === 'string' && value.trim() !== '') {
-            // Check if it's time to move to the next column (every 'totalRows' items)
-            if (i % totalRows === 0 && i !== 0) {
-                xPos += colWidth + colSpacing; // Move to the next column
-                yPos = 160 + rowHeight; // Reset the y position for the new column
-            }
-           if (yPos + rowHeight > pageHeight - margin) break;
-            pdf.text(value, xPos + colWidth / 2, yPos + (i % totalRows) * (rowHeight + colSpacing), { align: 'center' });
+        if (blankRows > 0 && (i + 1) % blankRows === 0) {
+            yPos += rowHeight;
         }
-    }
+        const value = totalData[i];
+        if (i % totalRows === 0 && i !== 0) {
+            xPos += colWidth + colSpacing;
+            yPos = 160 + rowHeight;
+        }
+        if (yPos + rowHeight > pageHeight - margin) break;
 
+        const cellXPos = xPos;
+        const cellYPos = yPos + (i % totalRows) * (rowHeight + colSpacing);
+
+        if (cellBorders) {
+            pdf.rect(cellXPos, cellYPos - rowHeight + 5, colWidth, rowHeight);
+        }
+
+        pdf.text(value.toString(), cellXPos + colWidth / 2, cellYPos - rowHeight / 2 + 5, { align: 'center', baseline: 'middle' });
+    }
 
     return previousDataCount + totalData.length;
 }
 
-
-
-
-
-
-function getRomanNumeral(num) {
-    const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
-    return roman[num] || num;
+// Toast notification
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 }
 
-
-
-
-
-
-
-
-
-
-
-// Save form data to localStorage
-function saveFormData() {
+// Auto-save form data
+function autoSaveForm() {
     const formData = {
-        collageName: document.getElementById('CollageName').value,
-        programBranch: document.getElementById('programBranch').value,
+        collegeName: document.getElementById('CollegeName').value,
+        customCollege: document.getElementById('customCollege').value,
+        branch: document.getElementById('branch').value,
+        customBranch: document.getElementById('customBranch').value,
+        program: document.getElementById('program').value,
+        customProgram: document.getElementById('customProgram').value,
         examTime: document.getElementById('examTime').value,
         examDate: document.getElementById('examDate').value,
         semester: document.getElementById('semester').value,
         status: document.getElementById('status').value,
-        pageDetails: pageDetailsArray.map((pageDetail, index) => ({
-            roomNumber: document.getElementById(`roomNumber${index + 1}`).value,
-            numCandidates: document.getElementById(`numCandidates${index + 1}`).value,
-            numColumns: document.getElementById(`numColumns${index + 1}`).value
-        }))
+        arrangementType: document.getElementById('arrangementType').value,
+        dataEntryType: document.getElementById('dataEntryType').value,
+        pageDetails: pageDetailsArray
     };
-    localStorage.setItem('formData', JSON.stringify(formData));
+
+    localStorage.setItem('seatWiseFormData', JSON.stringify(formData));
 }
 
-// Load form data from localStorage
-function loadFormData() {
-    const formData = JSON.parse(localStorage.getItem('formData'));
-    if (!formData) return;
+// Load auto-saved data
+function loadAutoSavedData() {
+    const savedData = localStorage.getItem('seatWiseFormData');
+    if (savedData) {
+        try {
+            const data = JSON.parse(savedData);
 
-    document.getElementById('CollageName').value = formData.collageName;
-    document.getElementById('programBranch').value = formData.programBranch;
-    document.getElementById('examTime').value = formData.examTime;
-    document.getElementById('examDate').value = formData.examDate;
-    document.getElementById('semester').value = formData.semester;
-    document.getElementById('status').value = formData.status;
+            // Restore form values
+            document.getElementById('CollegeName').value = data.collegeName || '';
+            document.getElementById('customCollege').value = data.customCollege || '';
+            document.getElementById('branch').value = data.branch || '';
+            document.getElementById('customBranch').value = data.customBranch || '';
+            document.getElementById('program').value = data.program || '';
+            document.getElementById('customProgram').value = data.customProgram || '';
+            document.getElementById('examTime').value = data.examTime || '';
+            document.getElementById('examDate').value = data.examDate || '';
+            document.getElementById('semester').value = data.semester || '';
+            document.getElementById('status').value = data.status || '';
+            document.getElementById('arrangementType').value = data.arrangementType || 'vertical';
+            document.getElementById('dataEntryType').value = data.dataEntryType || 'single';
 
-    pageDetailsArray = formData.pageDetails || [];
-    const pageDetailsContainer = document.getElementById('pageDetailsContainer');
-    pageDetailsContainer.innerHTML = '';
-    pageDetailsArray.forEach((pageDetail, i) => {
-        const div = document.createElement('div');
-        div.classList.add('page-detail');
-        div.innerHTML = `
-            <strong>Page ${i + 1}</strong><br>
-            Room: ${pageDetail.roomNumber}, Candidates: ${pageDetail.numCandidates}, Columns: ${pageDetail.numColumns}
-            <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${i})">Remove</button>
-        `;
-        pageDetailsContainer.appendChild(div);
+            // Restore page details
+            if (data.pageDetails && data.pageDetails.length > 0) {
+                pageDetailsArray = data.pageDetails;
+                updateRoomDisplay();
+            }
+
+            showToast('Previous session restored', 'info');
+        } catch (e) {
+            console.error('Error loading saved data:', e);
+        }
+    }
+}
+
+// Scroll to PDF preview
+function scrollToPdfPreview() {
+    const pdfSection = document.getElementById('pdfPreviewSection');
+    pdfSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Success animation
+function showSuccessAnimation() {
+    const successOverlay = document.createElement('div');
+    successOverlay.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 3000;
+        ">
+            <i class="ri-check-line" style="
+                font-size: 4rem;
+                color: #28a745;
+                display: block;
+                margin-bottom: 1rem;
+            "></i>
+            <h3 style="color: #333; margin: 0;">Success!</h3>
+        </div>
+    `;
+    successOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 2999;
+    `;
+
+    document.body.appendChild(successOverlay);
+
+    setTimeout(() => {
+        successOverlay.style.opacity = '0';
+        successOverlay.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(successOverlay);
+        }, 300);
+    }, 1500);
+}
+
+// Add auto-save listeners
+document.querySelectorAll('input, select').forEach(element => {
+    element.addEventListener('change', autoSaveForm);
+});
+
+// Load saved data on page load
+window.addEventListener('DOMContentLoaded', function () {
+    loadAutoSavedData();
+    updateProgress();
+});
+
+// Update progress
+function updateProgress() {
+    const form = document.getElementById('examForm');
+    const inputs = form.querySelectorAll('input[required], select[required]');
+    const filled = Array.from(inputs).filter(input => input.value).length;
+    const progress = (filled / inputs.length) * 100;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+}
+
+// Add animation to form sections
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.form-section').forEach(section => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(20px)';
+    section.style.transition = 'all 0.6s ease';
+    observer.observe(section);
+});
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', function (e) {
+    // Ctrl/Cmd + G to generate PDF
+    if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
+        e.preventDefault();
+        generatePDF();
+    }
+
+    // Ctrl/Cmd + D to download PDF
+    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        if (window.currentPDF) {
+            downloadPDF();
+        }
+    }
+
+    // Ctrl/Cmd + R to reset form
+    if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+        e.preventDefault();
+        resetForm();
+    }
+
+    // Escape to close modal
+    if (e.key === 'Escape') {
+        closePopup();
+    }
+});
+
+// Add enter key support for modal
+document.getElementById('popupForm').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addPageDetail();
+    }
+});
+
+// Reset form function
+function resetForm() {
+    if (confirm('Are you sure you want to reset all form data?')) {
+        document.getElementById('examForm').reset();
+        pageDetailsArray = [];
+        document.getElementById('pageDetailsContainer').innerHTML = '';
+        data1 = [];
+        data2 = [];
+        data3 = [];
+        data4 = [];
+        document.querySelectorAll('.file-name').forEach(span => {
+            span.textContent = 'No file chosen';
+            span.classList.remove('file-selected');
+        });
+        window.currentPDF = null;
+        document.getElementById('pdfPreviewSection').style.display = 'none';
+        localStorage.removeItem('seatWiseFormData');
+        showToast('Form reset successfully', 'success');
+        updateProgress();
+    }
+}
+
+// Print helper function
+function printPDF() {
+    const iframe = document.querySelector('#pdfPreview iframe');
+    if (iframe) {
+        iframe.contentWindow.print();
+    }
+}
+
+// Add tooltips
+function addTooltip(element, text) {
+    if (!element) return;
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = text;
+    tooltip.style.cssText = `
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+    `;
+
+    element.style.position = 'relative';
+    element.appendChild(tooltip);
+
+    element.addEventListener('mouseenter', () => {
+        tooltip.style.opacity = '1';
+    });
+
+    element.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
     });
 }
 
-// Add event listeners to save form data on input change
-window.addEventListener('input', saveFormData);
+// Add helpful tooltips - check if elements exist before adding tooltips
+const blankRowsLabel = document.querySelector('[for="blankRows"]');
+if (blankRowsLabel && blankRowsLabel.parentElement) {
+    addTooltip(blankRowsLabel.parentElement, 'Leave rows blank for spacing between students');
+}
 
-// Load form data when the page loads
-window.addEventListener('load', loadFormData);
+const doubleDataColumnsLabel = document.querySelector('[for="doubleDataColumns"]');
+if (doubleDataColumnsLabel && doubleDataColumnsLabel.parentElement) {
+    addTooltip(doubleDataColumnsLabel.parentElement, 'Specify columns that should have two students');
+}
+
+const arrangementTypeLabel = document.querySelector('[for="arrangementType"]');
+if (arrangementTypeLabel && arrangementTypeLabel.parentElement) {
+    addTooltip(arrangementTypeLabel.parentElement, 'Choose how students are arranged in the room');
+}
+
+// Update file name display - moved to DOMContentLoaded to ensure elements exist
+window.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.file-input').forEach(input => {
+        input.addEventListener('change', function () {
+            const fileName = this.files[0]?.name || 'No file chosen';
+            const fileNameSpan = this.closest('.file-upload-card').querySelector('.file-name');
+            if (fileNameSpan) {
+                fileNameSpan.textContent = fileName;
+                fileNameSpan.classList.add('file-selected');
+            }
+        });
+    });
+});
+
+// Add event listeners for progress update
+document.querySelectorAll('input, select').forEach(element => {
+    element.addEventListener('change', updateProgress);
+    element.addEventListener('input', updateProgress);
+});
+
+console.log('Seat-Wise Enhanced UI loaded successfully!');

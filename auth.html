@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Sign Up - Seat-Wise</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="./Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary-color: #7c3aed;
+            --accent-color: #06b6d4;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        .bg-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            top: -150px;
+            left: -100px;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            bottom: -200px;
+            right: -150px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        /* Main container */
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .logo h2 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Toggle buttons */
+        .auth-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form styles */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: var(--text-secondary);
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Error and success messages */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Loading state */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+
+            .logo h2 {
+                font-size: 1.25rem;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <div class="auth-container">
+        <div class="logo">
+            <i class="ri-layout-grid-fill"></i>
+            <h2>Seat-Wise</h2>
+        </div>
+
+        <div class="auth-toggle">
+            <button class="toggle-btn active" onclick="showLogin()">Login</button>
+            <button class="toggle-btn" onclick="showSignup()">Sign Up</button>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <!-- Login Form -->
+        <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-input">
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    <i class="ri-eye-line toggle-password" onclick="togglePassword('loginPassword', this)"></i>
+                </div>
+            </div>
+
+            <div class="form-options">
+                <div class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span id="loginBtnText">Login to Continue</span>
+            </button>
+
+            <div class="divider">
+                <span>Or continue with</span>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn">
+                    <i class="ri-google-fill"></i>
+                    Google
+                </button>
+                <button type="button" class="social-btn">
+                    <i class="ri-microsoft-fill"></i>
+                    Microsoft
+                </button>
+            </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" required placeholder="Enter your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="signupEmail">Email Address</label>
+                <input type="email" id="signupEmail" required placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <div class="password-input">
+                    <input type="password" id="signupPassword" required placeholder="Create a password" minlength="6">
+                    <i class="ri-eye-line toggle-password" onclick="togglePassword('signupPassword', this)"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupConfirmPassword">Confirm Password</label>
+                <div class="password-input">
+                    <input type="password" id="signupConfirmPassword" required placeholder="Confirm your password">
+                    <i class="ri-eye-line toggle-password" onclick="togglePassword('signupConfirmPassword', this)"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <span id="signupBtnText">Create Account</span>
+            </button>
+
+            <div class="divider">
+                <span>Or sign up with</span>
+            </div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn">
+                    <i class="ri-google-fill"></i>
+                    Google
+                </button>
+                <button type="button" class="social-btn">
+                    <i class="ri-microsoft-fill"></i>
+                    Microsoft
+                </button>
+            </div>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html">
+                <i class="ri-arrow-left-line"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between login and signup
+        function showLogin() {
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('signupForm').classList.remove('active');
+            document.querySelectorAll('.toggle-btn')[0].classList.add('active');
+            document.querySelectorAll('.toggle-btn')[1].classList.remove('active');
+            hideMessage();
+        }
+
+              function showSignup() {
+                    document.getElementById('loginForm').classList.remove('active');
+                    document.getElementById('signupForm').classList.add('active');
+                    document.querySelectorAll('.toggle-btn')[0].classList.remove('active');
+                    document.querySelectorAll('.toggle-btn')[1].classList.add('active');
+                    hideMessage();
+                }
+
+                // Toggle password visibility
+                function togglePassword(inputId, icon) {
+                    const input = document.getElementById(inputId);
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('ri-eye-line');
+                        icon.classList.add('ri-eye-off-line');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('ri-eye-off-line');
+                        icon.classList.add('ri-eye-line');
+                    }
+                }
+
+                // Show message
+                function showMessage(text, type) {
+                    const messageEl = document.getElementById('message');
+                    messageEl.textContent = text;
+                    messageEl.className = `message ${type}`;
+                    messageEl.style.display = 'block';
+
+                    // Auto hide after 5 seconds
+                    setTimeout(() => {
+                        hideMessage();
+                    }, 5000);
+                }
+
+                // Hide message
+                function hideMessage() {
+                    const messageEl = document.getElementById('message');
+                    messageEl.style.display = 'none';
+                }
+
+                // Handle login
+                function handleLogin(event) {
+                    event.preventDefault();
+
+                    const email = document.getElementById('loginEmail').value;
+                    const password = document.getElementById('loginPassword').value;
+                    const button = event.target.querySelector('.submit-btn');
+                    const buttonText = document.getElementById('loginBtnText');
+
+                    // Show loading state
+                    buttonText.innerHTML = '<span class="loading"></span> Logging in...';
+                    button.disabled = true;
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        // For demo purposes, accept any email/password
+                        if (email && password) {
+                            showMessage('Login successful! Redirecting...', 'success');
+
+                            // Store user data in sessionStorage
+                            sessionStorage.setItem('isLoggedIn', 'true');
+                            sessionStorage.setItem('userEmail', email);
+
+                            // Redirect after success message
+                            setTimeout(() => {
+                                window.location.href = 'Seating_Arragnment_data/index.html';
+                            }, 1500);
+                        } else {
+                            showMessage('Please enter valid credentials', 'error');
+                            buttonText.textContent = 'Login to Continue';
+                            button.disabled = false;
+                        }
+                    }, 1500);
+                }
+
+                // Handle signup
+                function handleSignup(event) {
+                    event.preventDefault();
+
+                    const name = document.getElementById('signupName').value;
+                    const email = document.getElementById('signupEmail').value;
+                    const password = document.getElementById('signupPassword').value;
+                    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+                    const button = event.target.querySelector('.submit-btn');
+                    const buttonText = document.getElementById('signupBtnText');
+
+                    // Validate passwords match
+                    if (password !== confirmPassword) {
+                        showMessage('Passwords do not match', 'error');
+                        return;
+                    }
+
+                    // Validate password length
+                    if (password.length < 6) {
+                        showMessage('Password must be at least 6 characters', 'error');
+                        return;
+                    }
+
+                    // Show loading state
+                    buttonText.innerHTML = '<span class="loading"></span> Creating account...';
+                    button.disabled = true;
+
+                    // Simulate API call
+                    setTimeout(() => {
+                        if (name && email && password) {
+                            showMessage('Account created successfully! Please login.', 'success');
+
+                            // Switch to login form
+                            setTimeout(() => {
+                                showLogin();
+                                // Pre-fill email
+                                document.getElementById('loginEmail').value = email;
+                            }, 1500);
+
+                            // Reset form
+                            event.target.reset();
+                            buttonText.textContent = 'Create Account';
+                            button.disabled = false;
+                        } else {
+                            showMessage('Please fill all fields correctly', 'error');
+                            buttonText.textContent = 'Create Account';
+                            button.disabled = false;
+                        }
+                    }, 1500);
+                }
+
+                // Social login handlers
+                document.querySelectorAll('.social-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const provider = this.textContent.trim();
+                        showMessage(`${provider} login coming soon!`, 'success');
+                    });
+                });
+
+                // Forgot password handler
+                document.querySelector('.forgot-password').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showMessage('Password reset functionality coming soon!', 'success');
+                });
+
+                // Check if user came from a specific action
+                window.addEventListener('DOMContentLoaded', function () {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const action = urlParams.get('action');
+
+                    if (action === 'signup') {
+                        showSignup();
+                    }
+                });
+
+                // Add input validation visual feedback
+                document.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('blur', function () {
+                        if (this.value && this.checkValidity()) {
+                            this.style.borderColor = '#10b981';
+                        } else if (this.value && !this.checkValidity()) {
+                            this.style.borderColor = '#ef4444';
+                        }
+                    });
+
+                    input.addEventListener('focus', function () {
+                        this.style.borderColor = '';
+                    });
+                });
+
+                // Prevent form resubmission on page refresh
+                if (window.history.replaceState) {
+                    window.history.replaceState(null, null, window.location.href);
+                }
+            </script>
+    </body>
+    
+    </html>

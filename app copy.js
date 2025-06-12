@@ -1,5 +1,5 @@
+
 document.getElementById('file1').addEventListener('change', handleFile);
-document.getElementById('file2').addEventListener('change', handleFile);
 
 let data1 = [], data2 = [], data3 = [], data4 = [];
 let pageDetailsArray = [];
@@ -61,6 +61,7 @@ function checkDataPresence() {
     }
 }
 
+
 // Show Popup
 function showPopup() {
     document.getElementById('popupForm').style.display = 'block';
@@ -72,6 +73,10 @@ function closePopup() {
 }
 
 // Adding page details dynamically with HTML form inputs
+
+
+
+
 
 // Remove page detail
 function removePageDetail(index) {
@@ -90,6 +95,8 @@ function removePageDetail(index) {
     });
 }
 
+
+
 document.getElementById('CollegeName').addEventListener('change', function () {
     const collegeName = this.value;
     const customCollegeInput = document.getElementById('customCollege');
@@ -99,7 +106,10 @@ document.getElementById('CollegeName').addEventListener('change', function () {
     } else {
         customCollegeInput.style.display = 'none';
     }
+
 });
+
+
 
 document.getElementById('branch').addEventListener('change', function () {
     const branch = this.value;
@@ -172,6 +182,10 @@ document.getElementById('program').addEventListener('change', function () {
     }
 });
 
+
+
+
+
 document.getElementById('examTime').addEventListener('change', function () {
     const examTime = this.value;
     const customStartTimeInput = document.getElementById('customStartTime');
@@ -192,16 +206,7 @@ document.getElementById('examTime').addEventListener('change', function () {
     }
 });
 
-document.getElementById('dataEntryType').addEventListener('change', function () {
-    const dataEntryType = this.value;
-    const file2Container = document.getElementById('file2Container');
 
-    if (dataEntryType === 'double') {
-        file2Container.style.display = 'block';
-    } else {
-        file2Container.style.display = 'none';
-    }
-});
 
 function addOptions(selectElement, optionsArray) {
     optionsArray.forEach(option => {
@@ -211,6 +216,145 @@ function addOptions(selectElement, optionsArray) {
         selectElement.appendChild(newOption);
     });
 }
+
+
+
+
+
+
+
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'pt',
+        format: 'A4'
+    });
+    const collegeName = document.getElementById('CollegeName')?.value || '';
+    const customCollege = document.getElementById('customCollege')?.value || '';
+    const branch = document.getElementById('branch')?.value || '';
+    const customBranch = document.getElementById('customBranch')?.value || '';
+    const program = document.getElementById('program')?.value || '';
+    const customProgram = document.getElementById('customProgram')?.value || '';
+    const examTime = document.getElementById('examTime')?.value || '';
+    const customStartTime = document.getElementById('customStartTime')?.value || '';
+    const customEndTime = document.getElementById('customEndTime')?.value || '';
+    const examDate = document.getElementById('examDate')?.value || '';
+    const semester = document.getElementById('semester')?.value || '';
+    const status = document.getElementById('status')?.value || '';
+    const arrangementType = document.getElementById('arrangementType')?.value || '';
+    let previousDataCount = 0;
+
+    pageDetailsArray.forEach((pageDetail, index) => {
+        if (index > 0) pdf.addPage();
+        const displayCollegeName = collegeName === 'Custom' ? customCollege : collegeName;
+        const displayBranch = branch === 'Custom' ? customBranch : branch;
+        const displayProgram = program === 'Custom' ? customProgram : program;
+        const displayExamTime = examTime === 'Custom' ? `${customStartTime} - ${customEndTime}` : examTime;
+        addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
+        if (arrangementType === 'horizontal') {
+            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount);
+        } else {
+            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount);
+        }
+    });
+
+    pdf.save('seating-arrangement.pdf');
+}
+
+
+
+
+// Add Headers and Footers
+function addHeaderFooter(pdf, collageName, programBranch, examTime, examDate, semester, status, roomNumber, numCandidates) {
+    const margin = 40;
+    const width = pdf.internal.pageSize.getWidth();
+    const height = pdf.internal.pageSize.getHeight();
+
+    // Header
+    // pdf.setFontSize(14);
+    // pdf.setFont("Times New Roman", "bold");
+    // pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
+
+    pdf.setFontSize(20);
+    pdf.setFont("Times New Roman", "bold");
+    pdf.text(collageName.toUpperCase(), width / 2, margin, { align: "center" });
+
+    pdf.setFontSize(15);
+    pdf.setFont("Times New Roman", "bold");
+    pdf.text(`Room No - ${roomNumber}`, width / 2, margin + 50, { align: "center" });
+    pdf.text(`Time: ${examTime}`, width - margin, margin + 60, { align: "right" });
+    pdf.text(`Date: ${examDate}`, width - margin, margin + 75, { align: "right" });
+    // pdf.text(`Sem.: ${semester}`, width / 2, margin + 80, { align: "center" });
+    // pdf.text(` `, width / 2, margin + 85, { align: "center" });
+    // pdf.text(` `, width / 2, margin + 110, { align: "center" });
+
+    // Footer
+    pdf.setFontSize(13);
+    pdf.setFont("Times New Roman", "bold");
+    pdf.text(`Program/Branch: ${programBranch}`, margin, height - 120);
+    pdf.text(`Semester: ${semester}`, margin + 300, height - 120);
+    pdf.text(`Status: ${status}`, margin + 380, height - 120);
+    pdf.text(`No. of Candidates: ${numCandidates}`, margin, height - 90);
+    pdf.text(`PRESENT: `, margin + 200, height - 90);
+    pdf.text(`ABSENT: `, margin + 400, height - 90);
+
+    pdf.text(`Total: ${numCandidates}`, margin + 600, height - 90);
+
+    pdf.text(`DESIGN.`, margin, height - 60);
+    pdf.text(`BRANCH`, margin + 200, height - 60);
+    pdf.text(`SIGNATURE WITH DATE`, margin + 400, height - 60);
+
+    // Page Number at the bottom
+    pdf.setFontSize(10);
+    pdf.text(`Page ${pdf.internal.getCurrentPageInfo().pageNumber}`, width - margin - 40, height - margin);
+}
+
+
+
+
+
+function getRomanNumeral(number) {
+    const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+    return romanNumerals[number];
+}
+
+
+
+// Function to add page detail
+function addPageDetail() {
+    const pageCount = pageDetailsArray.length + 1;
+    const roomNumber = document.getElementById('popupRoomNumber').value;
+    const numCandidates = document.getElementById('popupNumCandidates').value;
+    const numColumns = document.getElementById('popupNumColumns').value;
+    const rows = document.getElementById('rows').value; // New row input
+
+    if (!roomNumber || !numColumns) {
+        alert("Please fill in all details.");
+        return;
+    }
+
+    pageDetailsArray.push({
+        roomNumber: roomNumber,
+        numCandidates: parseInt(numCandidates),
+        numColumns: parseInt(numColumns),
+        rows: rows ? parseInt(rows) : null // Store row value
+    });
+
+    // Append page detail to the UI
+    const pageDetailsContainer = document.getElementById('pageDetailsContainer');
+    const div = document.createElement('div');
+    div.classList.add('page-detail');
+    div.innerHTML = `
+        <strong>Page ${pageCount}</strong><br>
+        Room: ${roomNumber}, Candidates: ${numCandidates}, Columns: ${numColumns}, Rows: ${rows || 'N/A'} 
+        <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${pageCount - 1})">Remove</button>
+    `;
+    pageDetailsContainer.appendChild(div);
+    closePopup();
+}
+
+
 
 function generatePDF() {
     const { jsPDF } = window.jspdf;
@@ -241,7 +385,6 @@ function generatePDF() {
     const semester = document.getElementById('semester')?.value || '';
     const status = document.getElementById('status')?.value || '';
     const arrangementType = document.getElementById('arrangementType')?.value || '';
-    const dataEntryType = document.getElementById('dataEntryType')?.value || 'single';
     let previousDataCount = 0;
 
     pageDetailsArray.forEach((pageDetail, index) => {
@@ -253,9 +396,9 @@ function generatePDF() {
         addHeaderFooter(pdf, displayCollegeName, `${displayBranch} - ${displayProgram}`, displayExamTime, examDate, semester, status, pageDetail.roomNumber, pageDetail.numCandidates);
 
         if (arrangementType === 'horizontal') {
-            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType);
+            previousDataCount = addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight);
         } else {
-            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType);
+            previousDataCount = addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight);
         }
     });
 
@@ -269,7 +412,7 @@ function generatePDF() {
     });
 }
 
-function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType) {
+function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight) {
     const margin = 15;
     const pageWidth = pdf.internal.pageSize.getWidth();
     const colSpacing = 0;
@@ -303,7 +446,7 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows,
             const index = previousDataCount + row * pageDetail.numColumns + col;
             if (index < totalData.length) {
                 let cellData = totalData[index].toString();
-                if (dataEntryType === 'double' && doubleDataColumns.includes(col + 1)) {
+                if (doubleDataColumns.includes(col + 1)) {
                     cellData += `\n${totalData[index + 1] || ''}`;
                 }
                 const cellXPos = xPos + col * (colWidth + colSpacing);
@@ -320,7 +463,7 @@ function addDataColumnsHorizontal(pdf, pageDetail, previousDataCount, blankRows,
     return previousDataCount + numCandidates;
 }
 
-function addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight, dataEntryType) {
+function addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, doubleDataColumns, customHeaders, fontSize, cellBorders, rowHeight) {
     const margin = 15;
     const pageHeight = pdf.internal.pageSize.getHeight();
     const pageWidth = pdf.internal.pageSize.getWidth();
@@ -371,10 +514,22 @@ function addDataColumnsVertical(pdf, pageDetail, previousDataCount, blankRows, d
     return previousDataCount + totalData.length;
 }
 
+
+
 function getRomanNumeral(num) {
     const roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
     return roman[num] || num;
 }
+
+
+
+
+
+
+
+
+
+
 
 // Save form data to localStorage
 function saveFormData() {
@@ -414,7 +569,7 @@ function loadFormData() {
         div.classList.add('page-detail');
         div.innerHTML = `
             <strong>Page ${i + 1}</strong><br>
-                  Room: ${pageDetail.roomNumber}, Candidates: ${pageDetail.numCandidates}, Columns: ${pageDetail.numColumns}
+            Room: ${pageDetail.roomNumber}, Candidates: ${pageDetail.numCandidates}, Columns: ${pageDetail.numColumns}
             <button type="button" class="btn btn-danger btn-sm" onclick="removePageDetail(${i})">Remove</button>
         `;
         pageDetailsContainer.appendChild(div);
@@ -426,4 +581,3 @@ window.addEventListener('input', saveFormData);
 
 // Load form data when the page loads
 window.addEventListener('load', loadFormData);
-
