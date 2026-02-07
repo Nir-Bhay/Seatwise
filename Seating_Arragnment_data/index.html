@@ -7,1187 +7,535 @@
     <link rel="shortcut icon" href="/Image/favicon/favicon_io/favicon.ico" type="image/x-icon">
     <title>Exam Hall Seating Arrangement | Seat-Wise</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #2563eb;
-    --primary-dark: #1e40af;
-    --primary-light: #3b82f6;
-    --secondary-color: #7c3aed;
-    --accent-color: #06b6d4;
-    --success-color: #10b981;
-    --warning-color: #f59e0b;
-    --error-color: #ef4444;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-light: #94a3b8;
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-    --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 100vh;
-    color: var(--text-primary);
-    line-height: 1.6;
-}
-
-/* Header */
-.header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.logo i {
-    font-size: 1.75rem;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.user-email {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-.logout-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--error-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.logout-btn:hover {
-    background: #dc2626;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
-}
-
-/* Progress Bar */
-.progress-container {
-    width: 100%;
-    height: 4px;
-    background: var(--bg-tertiary);
-    position: sticky;
-    top: 73px;
-    z-index: 99;
-}
-
-.progress-bar {
-    height: 100%;
-    background: var(--gradient-secondary);
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-/* Main Container */
-.main-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-/* Page Header */
-.page-header {
-    text-align: center;
-    margin-bottom: 3rem;
-    animation: fadeInUp 0.6s ease;
-}
-
-.page-header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-}
-
-.page-header h1 i {
-    color: var(--primary-color);
-}
-
-.page-header p {
-    color: var(--text-secondary);
-    font-size: 1.125rem;
-}
-
-/* Form Sections */
-.form-section {
-    background: white;
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
-    border: 1px solid var(--border-color);
-    position: relative;
-    animation: fadeInUp 0.6s ease;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--bg-tertiary);
-}
-
-.section-header h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.section-header h2 i {
-    color: var(--primary-color);
-}
-
-.section-number {
-    width: 2rem;
-    height: 2rem;
-    background: var(--gradient-secondary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
-
-/* Form Grid */
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-/* Form Controls */
-.form-group {
-    position: relative;
-}
-
-.form-group label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-}
-
-.form-group label i {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: var(--bg-primary);
-    font-family: inherit;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-}
-
-.form-control:hover {
-    border-color: var(--primary-light);
-}
-
-/* Custom Time Inputs */
-.custom-time-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-/* File Upload Section */
-.file-inputs-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.file-upload-card {
-    background: var(--bg-secondary);
-    border: 2px dashed var(--border-color);
-    border-radius: 12px;
-    padding: 2rem;
-        text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .file-upload-card:hover {
-            border-color: var(--primary-color);
-            background: var(--bg-tertiary);
-        }
-        
-        .file-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
-        .file-label {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .file-label:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .file-input {
-            display: none;
-        }
-        
-        .file-name {
-            display: block;
-            margin-top: 1rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        .file-name.file-selected {
-            color: var(--success-color);
-            font-weight: 500;
-        }
-        
-        /* Add File Button */
-        .add-file-btn,
-        .add-room-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .add-file-btn:hover,
-        .add-room-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        /* Room Details Container */
-        .room-details-container {
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .room-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            position: relative;
-            transition: all 0.3s ease;
-            animation: slideIn 0.3s ease;
-        }
-        
-        .room-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-        
-        .room-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .room-card-title {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 1.125rem;
-        }
-        
-        .room-card-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        
-        .room-detail {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .room-detail i {
-            color: var(--primary-color);
-        }
-        
-        .room-detail span {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        .remove-room-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 2rem;
-            height: 2rem;
-            background: var(--error-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .remove-room-btn:hover {
-            background: #dc2626;
-            transform: scale(1.1);
-        }
-        
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 3rem;
-        }
-        
-        /* Button Styles */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .btn i {
-            font-size: 1.2rem;
-        }
-        
-        .btn-primary {
-            background: var(--gradient-secondary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
-        }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-        
-        .btn-secondary:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .btn-download {
-            background: var(--success-color);
-            color: white;
-        }
-        
-        .btn-download:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-        }
-        
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
-        }
-        
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-        
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--shadow-xl);
-            width: 90%;
-            max-width: 500px;
-            animation: modalSlideIn 0.3s ease;
-        }
-        
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -45%);
-            }
-        
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .modal-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .modal-header h3 i {
-            color: var(--primary-color);
-        }
-        
-        .modal-close {
-            width: 2.5rem;
-            height: 2.5rem;
-            background: var(--bg-secondary);
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-close:hover {
-            background: var(--bg-tertiary);
-            transform: rotate(90deg);
-        }
-        
-        .modal-close i {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-        }
-        
-        .modal-body {
-            padding: 1.5rem;
-        }
-        
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        /* PDF Preview Section */
-        .pdf-preview-section {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: var(--shadow-md);
-            animation: fadeInUp 0.6s ease;
-        }
-        
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .preview-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .preview-header h2 i {
-            color: var(--primary-color);
-        }
-        
-        .pdf-preview {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1rem;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .pdf-preview iframe {
-            border-radius: 8px;
-            box-shadow: var(--shadow-md);
-        }
-        
-        /* Loading Overlay */
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-        }
-        
-        .loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-        }
-        
-        .loading-spinner i {
-            font-size: 3rem;
-            animation: spin 1s linear infinite;
-        }
-        
-        .loading-spinner p {
-            margin-top: 1rem;
-            font-size: 1.125rem;
-        }
-        
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: bottom 0.3s ease;
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .toast.show {
-            bottom: 2rem;
-        }
-        
-        .toast.success {
-            background: var(--success-color);
-            color: white;
-        }
-        
-        .toast.error {
-            background: var(--error-color);
-            color: white;
-        }
-        
-        .toast.info {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-        
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-        
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 0 0.5rem;
-            }
-        
-            .page-header h1 {
-                font-size: 2rem;
-            }
-        
-            .form-section {
-                padding: 1.5rem;
-            }
-        
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        
-            .file-inputs-container {
-                grid-template-columns: 1fr;
-            }
-        
-            .action-buttons {
-                flex-direction: column;
-            }
-        
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        
-            .modal-content {
-                width: 95%;
-            }
-        
-            .header-content {
-                padding: 1rem;
-            }
-        
-            .user-email {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .page-header h1 {
-                font-size: 1.5rem;
-            }
-        
-            .section-header h2 {
-                font-size: 1.25rem;
-            }
-        
-            .form-section {
-                padding: 1rem;
-            }
-        }
-        
-        /* Print Styles */
-        @media print {
-            body {
-                background: white;
-            }
-        
-            .header,
-            .progress-container,
-            .action-buttons,
-            .preview-header,
-            .toast,
-            .loading-overlay {
-                display: none !important;
-            }
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-        
-        /* Focus Styles for Accessibility */
-        *:focus-visible {
-            outline: 2px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-        
-        /* Utility Classes */
-        .text-center {
-            text-align: center;
-        }
-        
-        .mt-2 {
-            margin-top: 1rem;
-        }
-        
-        .mb-2 {
-            margin-bottom: 1rem;
-        }
-        
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Style.css">
 </head>
 
 <body>
-    <!-- Header -->
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
                 <i class="ri-layout-grid-fill"></i>
                 <span>Seat-Wise</span>
             </div>
-            <div class="user-info">
-                <span class="user-email" id="userEmail"></span>
-                <button class="logout-btn" onclick="logout()">
+
+            <nav class="sidebar-nav">
+                <a href="#basic-info" class="nav-item active" data-section="basic-info">
+                    <i class="ri-information-line"></i>
+                    <span>Basic Info</span>
+                </a>
+                <a href="#exam-details" class="nav-item" data-section="exam-details">
+                    <i class="ri-calendar-line"></i>
+                    <span>Exam Details</span>
+                </a>
+                <a href="#data-files" class="nav-item" data-section="data-files">
+                    <i class="ri-file-excel-2-line"></i>
+                    <span>Student Data</span>
+                </a>
+                <a href="#configuration" class="nav-item" data-section="configuration">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Configuration</span>
+                </a>
+                <a href="#anti-cheat" class="nav-item" data-section="anti-cheat">
+                    <i class="ri-shield-check-line"></i>
+                    <span>Anti-Cheating</span>
+                </a>
+                <a href="#templates" class="nav-item" data-section="templates">
+                    <i class="ri-save-line"></i>
+                    <span>Templates</span>
+                </a>
+                <a href="#rooms" class="nav-item" data-section="rooms">
+                    <i class="ri-door-open-line"></i>
+                    <span>Room Config</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar" id="userAvatar">G</div>
+                    <div class="user-info">
+                        <div class="user-name" id="userName">Guest</div>
+                        <div class="user-email" id="userEmail">guest@email.com</div>
+                    </div>
+                </div>
+                <button class="btn btn-danger mt-2" onclick="logout()" style="width: 100%;">
                     <i class="ri-logout-box-r-line"></i>
                     Logout
                 </button>
             </div>
-        </div>
-    </div>
+        </aside>
 
-    <!-- Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <div class="page-header">
-            <h1>
-                <i class="ri-file-list-3-line"></i>
-                Exam Hall Seating Arrangement
-            </h1>
-            <p>Configure exam details and generate professional seating arrangements</p>
-        </div>
-
-        <form id="examForm" class="exam-form">
-            <!-- Section 1: Basic Information -->
-            <div class="form-section">
-                <div class="section-header">
-                    <h2>
-                        <i class="ri-information-line"></i>
-                        Basic Information
-                    </h2>
-                    <span class="section-number">1</span>
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div>
+                    <h1 class="page-title">
+                        <i class="ri-file-list-3-line"></i>
+                        Seating Arrangement
+                    </h1>
+                    <p class="page-subtitle">Configure exam details and generate professional seating arrangements</p>
                 </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="CollegeName">
-                            <i class="ri-building-line"></i>
-                            College/University Name
-                        </label>
-                        <select id="CollegeName" class="form-control">
-                            <option value="">Choose College/University</option>
-                            <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
-                            <option value="Custom">Custom</option>
-                        </select>
-                        <input type="text" id="customCollege" class="form-control"
-                            placeholder="Enter custom college name" style="display:none;" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="branch">
-                            <i class="ri-git-branch-line"></i>
-                            Branch
-                        </label>
-                        <select id="branch" class="form-control">
-                            <option value="Select Branch">Select Branch</option>
-                            <option value="B.Tech">B.Tech</option>
-                            <option value="BCA">BCA</option>
-                            <option value="B.Sc">B.Sc</option>
-                            <option value="B.A">B.A</option>
-                            <option value="B.Com">B.Com</option>
-                            <option value="M.Tech">M.Tech</option>
-                            <option value="MCA">MCA</option>
-                            <option value="M.A">M.A</option>
-                            <option value="M.Com">M.Com</option>
-                            <option value="Custom">Custom</option>
-                        </select>
-                        <input type="text" id="customBranch" class="form-control" placeholder="Enter custom branch"
-                            style="display:none;" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="program">
-                            <i class="ri-book-2-line"></i>
-                            Program
-                        </label>
-                        <select id="program" class="form-control">
-                            <option value="Select Program">Select Program</option>
-                        </select>
-                        <input type="text" id="customProgram" class="form-control" placeholder="Enter custom program"
-                            style="display:none;" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="semester">
-                            <i class="ri-number-1"></i>
-                            Semester
-                        </label>
-                        <select id="semester" class="form-control">
-                            <option value="">Select Semester</option>
-                            <option value="I">I</option>
-                            <option value="II">II</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
-                            <option value="VI">VI</option>
-                            <option value="VII">VII</option>
-                            <option value="VIII">VIII</option>
-                        </select>
-                    </div>
+                <div class="top-actions">
+                    <button class="btn btn-icon btn-secondary" id="darkModeBtn" onclick="toggleDarkMode()"
+                        title="Toggle Dark Mode">
+                        <i class="ri-moon-line"></i>
+                    </button>
+                    <button class="btn btn-icon btn-secondary" onclick="showKeyboardShortcuts()"
+                        title="Keyboard Shortcuts (?)">
+                        <i class="ri-keyboard-line"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Section 2: Exam Details -->
-            <div class="form-section">
-                <div class="section-header">
-                    <h2>
-                        <i class="ri-calendar-line"></i>
-                        Exam Details
-                    </h2>
-                    <span class="section-number">2</span>
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsContainer">
+                <div class="stat-card blue">
+                    <div class="stat-icon"><i class="ri-group-line"></i></div>
+                    <div class="stat-value" id="statStudents">0</div>
+                    <div class="stat-label">Total Students</div>
                 </div>
+                <div class="stat-card green">
+                    <div class="stat-icon"><i class="ri-door-open-line"></i></div>
+                    <div class="stat-value" id="statRooms">0</div>
+                    <div class="stat-label">Rooms</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon"><i class="ri-user-settings-line"></i></div>
+                    <div class="stat-value" id="statCapacity">0</div>
+                    <div class="stat-label">Total Capacity</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-icon"><i class="ri-file-excel-line"></i></div>
+                    <div class="stat-value" id="statFiles">0</div>
+                    <div class="stat-label">Files Loaded</div>
+                </div>
+            </div>
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="examTime">
-                            <i class="ri-time-line"></i>
-                            Exam Time
-                        </label>
-                        <select id="examTime" class="form-control">
-                            <option value="Select Timing:">Select Exam Timing</option>
-                            <option value="10:30 AM - 01:30 PM">10:30 AM - 01:30 PM</option>
-                            <option value="2:00 PM - 05:00 PM">2:00 PM - 05:00 PM</option>
-                            <option value="Custom">Custom</option>
-                        </select>
-                        <div class="custom-time-inputs" style="display:none;">
-                            <input type="time" id="customStartTime" class="form-control" placeholder="Start Time" />
-                            <input type="time" id="customEndTime" class="form-control" placeholder="End Time" />
+            <!-- Form -->
+            <form id="examForm">
+
+                <!-- Section 1: Basic Information -->
+                <section id="basic-info" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-information-line"></i>
+                            Basic Information
+                        </h2>
+                        <span class="panel-badge">1</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="CollegeName">
+                                <i class="ri-building-line"></i>
+                                College/University Name
+                            </label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <select id="CollegeName" class="form-control" style="flex: 1;">
+                                    <option value="">Choose College/University</option>
+                                    <option value="SAGE University, Bhopal">SAGE University, Bhopal</option>
+                                    <option value="Custom">Custom</option>
+                                </select>
+                                <button type="button" class="btn btn-icon btn-primary" onclick="addCustomCollege()"
+                                    title="Add new college">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="customCollege" class="form-control mt-1"
+                                placeholder="Enter custom college name" style="display:none;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="branch">
+                                <i class="ri-git-branch-line"></i>
+                                Branch
+                            </label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <select id="branch" class="form-control" style="flex: 1;">
+                                    <option value="Select Branch">Select Branch</option>
+                                    <option value="B.Tech">B.Tech</option>
+                                    <option value="BCA">BCA</option>
+                                    <option value="B.Sc">B.Sc</option>
+                                    <option value="B.A">B.A</option>
+                                    <option value="B.Com">B.Com</option>
+                                    <option value="M.Tech">M.Tech</option>
+                                    <option value="MCA">MCA</option>
+                                    <option value="M.A">M.A</option>
+                                    <option value="M.Com">M.Com</option>
+                                    <option value="Custom">Custom</option>
+                                </select>
+                                <button type="button" class="btn btn-icon btn-primary" onclick="addCustomBranch()"
+                                    title="Add new branch">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="customBranch" class="form-control mt-1"
+                                placeholder="Enter custom branch" style="display:none;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="program">
+                                <i class="ri-book-2-line"></i>
+                                Program
+                            </label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <select id="program" class="form-control" style="flex: 1;">
+                                    <option value="Select Program">Select Program</option>
+                                </select>
+                                <button type="button" class="btn btn-icon btn-primary" onclick="addCustomProgram()"
+                                    title="Add new program">
+                                    <i class="ri-add-line"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="customProgram" class="form-control mt-1"
+                                placeholder="Enter custom program" style="display:none;" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="semester">
+                                <i class="ri-number-1"></i>
+                                Semester
+                            </label>
+                            <select id="semester" class="form-control">
+                                <option value="">Select Semester</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                                <option value="V">V</option>
+                                <option value="VI">VI</option>
+                                <option value="VII">VII</option>
+                                <option value="VIII">VIII</option>
+                            </select>
                         </div>
                     </div>
+                </section>
 
-                    <div class="form-group">
-                        <label for="examDate">
-                            <i class="ri-calendar-check-line"></i>
-                            Exam Date
-                        </label>
-                        <input type="date" id="examDate" class="form-control">
+                <!-- Section 2: Exam Details -->
+                <section id="exam-details" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-calendar-line"></i>
+                            Exam Details
+                        </h2>
+                        <span class="panel-badge">2</span>
                     </div>
 
-                    <div class="form-group">
-                        <label for="status">
-                            <i class="ri-user-line"></i>
-                            Student Status
-                        </label>
-                        <select id="status" class="form-control">
-                            <option value="">Select Student Status</option>
-                            <option value="Regular">Regular</option>
-                            <option value="Backlog">ATKT</option>
-                            <option value="Both">Both</option>
-                        </select>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="examTime">
+                                <i class="ri-time-line"></i>
+                                Exam Time
+                            </label>
+                            <select id="examTime" class="form-control">
+                                <option value="Select Timing:">Select Exam Timing</option>
+                                <option value="10:30 AM - 01:30 PM">10:30 AM - 01:30 PM</option>
+                                <option value="2:00 PM - 05:00 PM">2:00 PM - 05:00 PM</option>
+                                <option value="Custom">Custom</option>
+                            </select>
+                            <div class="custom-time-inputs" style="display:none; margin-top: 0.5rem;">
+                                <input type="time" id="customStartTime" class="form-control" placeholder="Start Time" />
+                                <input type="time" id="customEndTime" class="form-control" placeholder="End Time" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="examDate">
+                                <i class="ri-calendar-check-line"></i>
+                                Exam Date
+                            </label>
+                            <input type="date" id="examDate" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">
+                                <i class="ri-user-line"></i>
+                                Student Status
+                            </label>
+                            <select id="status" class="form-control">
+                                <option value="">Select Student Status</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Backlog">ATKT</option>
+                                <option value="Both">Both</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="arrangementType">
+                                <i class="ri-layout-line"></i>
+                                Arrangement Type
+                            </label>
+                            <select id="arrangementType" class="form-control">
+                                <option value="vertical">Vertical</option>
+                                <option value="horizontal">Horizontal</option>
+                            </select>
+                        </div>
                     </div>
+                </section>
 
-                    <div class="form-group">
-                        <label for="arrangementType">
-                            <i class="ri-layout-line"></i>
-                            Arrangement Type
-                        </label>
-                        <select id="arrangementType" class="form-control">
-                            <option value="vertical">Vertical</option>
-                            <option value="horizontal">Horizontal</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 3: Data Files -->
-            <div class="form-section">
-                <div class="section-header">
-                    <h2>
-                        <i class="ri-file-excel-2-line"></i>
-                        Student Data Files
-                    </h2>
-                    <span class="section-number">3</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="dataEntryType">
-                        <i class="ri-stack-line"></i>
-                        Data Entry Type
-                    </label>
-                    <select id="dataEntryType" class="form-control">
-                        <option value="single">Single</option>
-                        <option value="double">Double</option>
-                    </select>
-                </div>
-
-                <div id="fileInputsContainer" class="file-inputs-container">
-                    <div class="file-upload-card">
-                        <div class="file-icon">
+                <!-- Section 3: Data Files -->
+                <section id="data-files" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
                             <i class="ri-file-excel-2-line"></i>
-                        </div>
-                        <label for="file1" class="file-label">
-                            Upload Excel File 1
+                            Student Data Files
+                        </h2>
+                        <span class="panel-badge">3</span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="dataEntryType">
+                            <i class="ri-stack-line"></i>
+                            Data Entry Type
+                        </label>
+                        <select id="dataEntryType" class="form-control">
+                            <option value="single">Single</option>
+                            <option value="double">Double</option>
+                        </select>
+                    </div>
+
+                    <div id="fileInputsContainer" class="form-grid">
+                        <div class="file-upload-zone">
+                            <div class="file-icon">
+                                <i class="ri-file-excel-2-line"></i>
+                            </div>
+                            <label for="file1" class="file-label">
+                                Upload Excel File 1
+                            </label>
                             <input type="file" id="file1" class="file-input" accept=".xlsx">
-                        </label>
-                        <span class="file-name" id="fileName1">No file chosen</span>
-                    </div>
-                    <div class="file-upload-card" id="file2Container" style="display: none;">
-                        <div class="file-icon">
-                            <i class="ri-file-excel-2-line"></i>
+                            <span class="file-name" id="fileName1">No file chosen</span>
                         </div>
-                        <label for="file2" class="file-label">
-                            Upload Excel File 2
+                        <div class="file-upload-zone" id="file2Container" style="display: none;">
+                            <div class="file-icon">
+                                <i class="ri-file-excel-2-line"></i>
+                            </div>
+                            <label for="file2" class="file-label">
+                                Upload Excel File 2
+                            </label>
                             <input type="file" id="file2" class="file-input" accept=".xlsx">
-                        </label>
-                        <span class="file-name" id="fileName2">No file chosen</span>
+                            <span class="file-name" id="fileName2">No file chosen</span>
+                        </div>
                     </div>
-                </div>
 
-                <button type="button" class="add-file-btn" onclick="addFileInput()">
-                    <i class="ri-add-line"></i>
-                    Add More Files
-                </button>
-            </div>
+                    <button type="button" class="btn btn-outline mt-2" onclick="addFileInput()">
+                        <i class="ri-add-line"></i>
+                        Add More Files
+                    </button>
+                </section>
 
-            <!-- Section 4: Custom Configuration -->
-            <div class="form-section">
-                <div class="section-header">
-                    <h2>
-                        <i class="ri-settings-3-line"></i>
-                        Custom Configuration
+                <!-- Section 4: Custom Configuration -->
+                <section id="configuration" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-settings-3-line"></i>
+                            Custom Configuration
+                        </h2>
+                        <span class="panel-badge">4</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="blankRows">
+                                <i class="ri-layout-row-line"></i>
+                                Leave every nth row blank
+                            </label>
+                            <input type="number" id="blankRows" class="form-control" min="1" placeholder="e.g., 2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="doubleDataColumns">
+                                <i class="ri-layout-column-line"></i>
+                                Columns with double data
+                            </label>
+                            <input type="text" id="doubleDataColumns" class="form-control" placeholder="e.g., 1,3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customHeaders">
+                                <i class="ri-text"></i>
+                                Custom Headers
+                            </label>
+                            <input type="text" id="customHeaders" class="form-control"
+                                placeholder="e.g., Name, Age, Grade">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fontSize">
+                                <i class="ri-font-size-2"></i>
+                                Font Size
+                            </label>
+                            <input type="number" id="fontSize" class="form-control" min="5" max="20" value="12">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cellBorders">
+                                <i class="ri-border-all-line"></i>
+                                Cell Borders
+                            </label>
+                            <select id="cellBorders" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rowHeight">
+                                <i class="ri-line-height"></i>
+                                Row Height
+                            </label>
+                            <input type="number" id="rowHeight" class="form-control" min="10" max="50" value="20">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Anti-Cheating Options -->
+                <section id="anti-cheat" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-shield-check-line"></i>
+                            Anti-Cheating Options
+                        </h2>
+                        <span class="panel-badge">5</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="enableShuffle">
+                                <i class="ri-shuffle-line"></i>
+                                Shuffle Students Randomly
+                            </label>
+                            <small class="text-secondary mt-1" style="display: block;">Randomizes seating to prevent
+                                cheating</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shuffleSeed">
+                                <i class="ri-key-line"></i>
+                                Shuffle Seed (Optional)
+                            </label>
+                            <input type="number" id="shuffleSeed" class="form-control"
+                                placeholder="Leave empty for random">
+                            <small class="text-secondary">Same seed = same shuffle result</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="enableCheckerboard">
+                                <i class="ri-grid-line"></i>
+                                Checkerboard Pattern
+                            </label>
+                            <small class="text-secondary mt-1" style="display: block;">Alternates students from File 1 &
+                                2</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6: Templates -->
+                <section id="templates" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-save-line"></i>
+                            Templates
+                        </h2>
+                        <span class="panel-badge">6</span>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                        <button type="button" class="btn btn-outline" onclick="saveTemplate()">
+                            <i class="ri-save-line"></i>
+                            Save as Template
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="exportAllSettings()">
+                            <i class="ri-download-2-line"></i>
+                            Export All
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="importAllSettings()">
+                            <i class="ri-upload-2-line"></i>
+                            Import
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="clearExcelData()">
+                            <i class="ri-delete-bin-line"></i>
+                            Clear Data
+                        </button>
+                    </div>
+                    <div id="templateContainer">
+                        <p class="text-secondary">No saved templates</p>
+                    </div>
+                </section>
+
+                <!-- Section 7: Room Configuration -->
+                <section id="rooms" class="glass-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">
+                            <i class="ri-door-open-line"></i>
+                            Room Configuration
+                        </h2>
+                        <span class="panel-badge">7</span>
+                    </div>
+
+                    <div id="pageDetailsContainer" class="room-cards-grid mb-3"></div>
+
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-primary" onclick="showPopup()">
+                            <i class="ri-add-circle-line"></i>
+                            Add Room
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="autoDistributeRooms()">
+                            <i class="ri-magic-line"></i>
+                            Auto Distribute
+                        </button>
+                    </div>
+                </section>
+            </form>
+
+            <!-- PDF Preview Section -->
+            <section id="pdfPreviewSection" class="glass-panel pdf-preview-section" style="display: none;">
+                <div class="panel-header">
+                    <h2 class="panel-title">
+                        <i class="ri-file-pdf-line"></i>
+                        PDF Preview
                     </h2>
-                    <span class="section-number">4</span>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="blankRows">
-                            <i class="ri-layout-row-line"></i>
-                            Leave every nth row blank
-                        </label>
-                        <input type="number" id="blankRows" class="form-control" min="1" placeholder="e.g., 2">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doubleDataColumns">
-                            <i class="ri-layout-column-line"></i>
-                            Columns with double data
-                        </label>
-                        <input type="text" id="doubleDataColumns" class="form-control" placeholder="e.g., 1,3">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="customHeaders">
-                            <i class="ri-text"></i>
-                            Custom Headers
-                        </label>
-                        <input type="text" id="customHeaders" class="form-control" placeholder="e.g., Name, Age, Grade">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fontSize">
-                            <i class="ri-font-size-2"></i>
-                            Font Size
-                        </label>
-                        <input type="number" id="fontSize" class="form-control" min="5" max="20" value="12">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cellBorders">
-                            <i class="ri-border-all-line"></i>
-                            Cell Borders
-                        </label>
-                        <select id="cellBorders" class="form-control">
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="rowHeight">
-                            <i class="ri-line-height"></i>
-                            Row Height
-                        </label>
-                        <input type="number" id="rowHeight" class="form-control" min="10" max="50" value="20">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary" onclick="printPDF()">
+                            <i class="ri-printer-line"></i>
+                            Print
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="downloadPDF()">
+                            <i class="ri-download-line"></i>
+                            Download PDF
+                        </button>
                     </div>
                 </div>
-            </div>
+                <div id="pdfPreview" class="pdf-preview"></div>
+            </section>
 
-            <!-- Section 5: Room Details -->
-            <div class="form-section">
-                <div class="section-header">
-                    <h2>
-                        <i class="ri-door-open-line"></i>
-                        Room Configuration
-                    </h2>
-                    <span class="section-number">5</span>
-                </div>
+            <!-- Spacer for sticky action bar -->
+            <div style="height: 100px;"></div>
+        </main>
+    </div>
 
-                <div id="pageDetailsContainer" class="room-details-container"></div>
-
-                <button type="button" class="add-room-btn" onclick="showPopup()">
-                    <i class="ri-add-circle-line"></i>
-                    Add Room
-                </button>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary" onclick="generatePDF()">
-                    <i class="ri-file-pdf-line"></i>
-                    Generate PDF
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                    <i class="ri-refresh-line"></i>
-                    Reset Form
-                </button>
-            </div>
-        </form>
-
-        <!-- PDF Preview Section -->
-        <div id="pdfPreviewSection" class="pdf-preview-section" style="display: none;">
-            <div class="preview-header">
-                <h2>
-                    <i class="ri-file-pdf-line"></i>
-                    PDF Preview
-                </h2>
-                <button type="button" class="btn btn-download" onclick="downloadPDF()">
-                    <i class="ri-download-line"></i>
-                    Download PDF
-                </button>
-            </div>
-            <div id="pdfPreview" class="pdf-preview"></div>
-        </div>
+    <!-- Sticky Action Bar -->
+    <div class="action-bar">
+        <button type="button" class="btn btn-primary" onclick="generatePDF()">
+            <i class="ri-file-pdf-line"></i>
+            Generate PDF
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            <i class="ri-refresh-line"></i>
+            Reset Form
+        </button>
     </div>
 
     <!-- Room Details Modal -->
@@ -1205,7 +553,7 @@ body {
             </div>
 
             <div class="modal-body">
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="popupRoomNumber">
                         <i class="ri-hashtag"></i>
                         Room Number
@@ -1213,7 +561,7 @@ body {
                     <input type="text" id="popupRoomNumber" class="form-control" placeholder="e.g., 101">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="popupNumCandidates">
                         <i class="ri-group-line"></i>
                         Number of Candidates
@@ -1221,7 +569,7 @@ body {
                     <input type="number" id="popupNumCandidates" class="form-control" placeholder="e.g., 30">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="popupNumColumns">
                         <i class="ri-layout-column-line"></i>
                         Number of Columns
@@ -1256,6 +604,12 @@ body {
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
+    <!-- Mobile Menu Toggle (for responsive) -->
+    <button class="btn btn-icon btn-primary" id="mobileMenuBtn" onclick="toggleSidebar()"
+        style="position: fixed; top: 1rem; left: 1rem; z-index: 200; display: none;">
+        <i class="ri-menu-line"></i>
+    </button>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
@@ -1268,8 +622,10 @@ body {
                 window.location.href = '../auth.html';
             }
 
-            const userEmail = sessionStorage.getItem('userEmail');
-            document.getElementById('userEmail').textContent = userEmail || 'Guest User';
+            const userEmail = sessionStorage.getItem('userEmail') || 'Guest User';
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userName').textContent = userEmail.split('@')[0];
+            document.getElementById('userAvatar').textContent = userEmail.charAt(0).toUpperCase();
         })();
 
         function logout() {
@@ -1281,9 +637,12 @@ body {
         document.querySelectorAll('.file-input').forEach(input => {
             input.addEventListener('change', function () {
                 const fileName = this.files[0]?.name || 'No file chosen';
-                const fileNameSpan = this.closest('.file-upload-card').querySelector('.file-name');
-                fileNameSpan.textContent = fileName;
-                fileNameSpan.classList.add('file-selected');
+                const zone = this.closest('.file-upload-zone');
+                const fileNameSpan = zone ? zone.querySelector('.file-name') : null;
+                if (fileNameSpan) {
+                    fileNameSpan.textContent = fileName;
+                    fileNameSpan.classList.add('file-selected');
+                }
             });
         });
 
@@ -1298,7 +657,7 @@ body {
 
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.innerHTML = `<i class="ri-${type === 'success' ? 'check' : type === 'error' ? 'close' : 'information'}-line"></i> ${message}`;
             toast.className = `toast ${type} show`;
             setTimeout(() => {
                 toast.classList.remove('show');
@@ -1310,7 +669,7 @@ body {
             const form = document.getElementById('examForm');
             const inputs = form.querySelectorAll('input[required], select[required]');
             const filled = Array.from(inputs).filter(input => input.value).length;
-            const progress = (filled / inputs.length) * 100;
+            const progress = inputs.length ? (filled / inputs.length) * 100 : 0;
             document.getElementById('progressBar').style.width = `${progress}%`;
         }
 
@@ -1318,6 +677,49 @@ body {
         document.querySelectorAll('input, select').forEach(element => {
             element.addEventListener('change', updateProgress);
             element.addEventListener('input', updateProgress);
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function (e) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+
+        // Responsive: Show mobile menu button on small screens
+        function handleResize() {
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            if (window.innerWidth <= 768) {
+                mobileBtn.style.display = 'flex';
+            } else {
+                mobileBtn.style.display = 'none';
+                document.querySelector('.sidebar').classList.remove('open');
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Close sidebar when clicking outside on mobile
+        document.querySelector('.main-content').addEventListener('click', function () {
+            if (window.innerWidth <= 768) {
+                document.querySelector('.sidebar').classList.remove('open');
+            }
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function () {
+            updateCollegeDropdown();
+            updateBranchDropdown();
+            updateTemplateDropdown();
+            loadExcelDataFromStorage();
+            updateStatsDashboard();
+            applyDarkMode();
         });
     </script>
 </body>
